@@ -1,9 +1,13 @@
-# Bears-Team-15
-Voyage-4
+### About us
 
-### Team
-[Anton Tymczenko](https://github.com/AntonTymczenko)
+We are the **Bears-Team-15** from  [Chingu Voyage-4](https://github.com/chingu-voyage4).
 
-[Tomek Straszewski](https://github.com/tomski80)
+[Chingu](https://chingu.io/) cohorts is the best place for self learning web enthusiasts – to learn together, collaborate and work on real projects in remote teams.
 
-[Svetlana](https://github.com/svmi3195)
+#### Our team
+
+[Anton Tymczenko](https://github.com/AntonTymczenko) – project manager
+
+[Svetlana](https://github.com/svmi3195) – team member
+
+[Tomek Straszewski](https://github.com/tomski80) – team member
