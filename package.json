@@ -2,6 +2,7 @@
   "name": "cards",
   "version": "1.0.0",
   "description": "Flashcards application",
+  "main": "server/app.js",
   "author": "Chingu Voyage-4: team Bears-15",
   "contributors": [
     "Anton Tymczenko <a.tymczenko@gmail.com> (https://github.com/AntonTymczenko)",
@@ -11,6 +12,7 @@
   "private": true,
   "scripts": {
     "dev:client": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
+    "dev:server": "nodemon",
     "start": "npm run dev",
     "build": "node build/build.js"
   },
@@ -23,6 +25,8 @@
   },
   "homepage": "https://github.com/chingu-voyage4/Bears-Team-15/#readme",
   "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"
@@ -39,7 +43,9 @@
     "babel-preset-stage-2": "^6.22.0",
     "chalk": "^2.0.1",
     "copy-webpack-plugin": "^4.0.1",
+    "cors": "^2.8.4",
     "css-loader": "^0.28.0",
+    "dotenv": "^5.0.0",
     "extract-text-webpack-plugin": "^3.0.0",
     "file-loader": "^1.1.4",
     "friendly-errors-webpack-plugin": "^1.6.1",
