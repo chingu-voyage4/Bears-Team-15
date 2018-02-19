@@ -31,8 +31,12 @@ We are the **Bears-Team-15** from  [Chingu Voyage-4](https://github.com/chingu-v
 # install dependencies
 npm install
 
-# serve with hot reload at localhost:8080
+# serve client side with hot reload at localhost:8080
 npm run dev:client
+
+# run back-end with hot reload at localhost:8081
+# Attention! You'll need `nodemon` and `.env`. Details are below.
+npm run dev:server
 
 # build for production with minification
 npm run build
@@ -40,5 +44,15 @@ npm run build
 # build for production and view the bundle analyzer report
 npm run build --report
 ```
+
+To run back-end server locally you'll need to create a `.env` file in project's root directory. Example of `.env` file:
+
+```
+PORT=8081
+MONGODB_URI="mongodb://localhost:27017/cards"
+JWT_SECRET=someSuperSecret
+```
+
+And you'll need a `nodemon` npm package to be installed globally. See [guide](https://github.com/remy/nodemon#installation).
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
