@@ -57,6 +57,6 @@ And you'll need a `nodemon` npm package to be installed globally. See [guide](ht
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
 
-### Style guide on naming branches and writing commit messages
+### Style guide
 
 See our [style guide](Style-Guide.md)
