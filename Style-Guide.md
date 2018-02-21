@@ -3,6 +3,17 @@
 This is Bears-15 team’s style guide on naming branches, writing commit messages
 and general code style.
 
+## General
+
+Every file should contain an empty line at the end.
+
+There should not be empty spaces at the end of the line.
+
+These are just general conventions. So please make sure that your IDE or text
+editor is configured properly to automatically add an empty line and remove all
+the spaces at the end of line. It would prevent unnecessary headache of your
+teammates every time they will commit changes to files created or edited by you.
+
 ## Writing commit messages
 
 Commit messages should be meaningful and should explain the changes that have
