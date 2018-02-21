@@ -229,16 +229,16 @@ issue. So it makes the navigation much easier.
 
 #### Waffle.io automation
 
-* add an issue, look at the number on the card (lets consider it `33`)
+* add an issue, look at the number on the card (let's consider it `33`)
 * make a branch with a number of an issue at the end of name:
 	`docs-license-#33`
-* push a branch to origin. It would move to **In Progress**
+* push a branch to origin. It would move an issue to **In Progress**
 * do commits, push from time to time
 * when everything is done – test it and push to remote
-* issue a pull request at GitHub,
+* make a pull request at GitHub,
    add `closes #33` at the end of description (or title, if it is short enough).
-   It will move to **Review**
-* close PR and it will move to **Done**
+   It will move an issue to **Review**
+* merge a PR and it will move to **Done**
    (works only for merging into default branch)
 
 
