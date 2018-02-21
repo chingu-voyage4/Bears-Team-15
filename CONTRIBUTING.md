@@ -2,6 +2,23 @@
 
 The following is a set of guidelines for contributing to our project.
 
+#### Table Of Contents
+* [General](#general)
+* [Vue](#vue)
+* [Commit messages](#writing-commit-messages)
+  * [Type](#type)
+  * [Subject](#subject)
+  * [Body](#body)
+  * [Footer](#footer)
+* [Git workflow](#git-workflow-issues-branches-and-waffleio-integration)
+  * [Defining MVP](#about-defining-mvp)
+  * [Using Issues](#issue-as-a-structure-unit-in-a-developing-process)
+  * [Waffle dashboard](#waffleio-columns)
+  * [Issues related to features](#issue-as-a-product-of-user-stories)
+  * [Issues related to tasks](#issue-as-a-representatino-of-a-task)
+  * [Waffle.io automation](#waffleio-automation)
+  * [Naming Git branches](#naming-git-branches)
+
 ## General
 
 Every file should contain an empty line at the end.
