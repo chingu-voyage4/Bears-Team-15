@@ -161,7 +161,7 @@ Resolves #123
 ###### Additional resources:
 [Udacity Git commit message style guide](https://udacity.github.io/git-styleguide/)
 
-## Git workflow, branches
+## Git workflow: issues, branches
 
 ###### Additional resources:
 * [link](https://www.atlassian.com/git/tutorials/comparing-workflows/feature-branch-workflow)
