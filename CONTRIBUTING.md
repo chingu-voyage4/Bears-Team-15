@@ -1,7 +1,6 @@
-# Style guide
+# Contribution guidelines
 
-This is Bears-15 team’s style guide on naming branches, writing commit messages
-and general code style.
+The following is a set of guidelines for contributing to our project.
 
 ## General
 
