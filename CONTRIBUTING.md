@@ -203,7 +203,7 @@ tasks in each of these columns have their due dates.
 
 When a contributor starts working on an issue, it should be moved to
 **In Progress** column. It will happen automatically if a contributor would
-follow instructions mentioned below in *"Waffle.io automatization"* section
+follow instructions mentioned below in *"Waffle.io automation"* section
 of this guide.
 
 After a Pull Request (PR) solving particular issue was made, an issue moves to
@@ -227,7 +227,7 @@ of "parent" (or "feature") issue – to which the tasks belong. If everything
 is set properly, Waffle should group all the tasks issues under the feature
 issue. So it makes the navigation much easier.
 
-#### Waffle.io automatization
+#### Waffle.io automation
 
 * add an issue, look at the number on the card (lets consider it `33`)
 * make a branch with a number of an issue at the end of name:
