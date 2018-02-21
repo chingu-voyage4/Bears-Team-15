@@ -2,7 +2,6 @@
   <div>
     <h1>{{ greeting }}</h1>
     <div>{{ message }}</div>
-
     <router-view/>
   </div>
 </template>

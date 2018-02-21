@@ -11,28 +11,24 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect: '/home',
-    },
-    {
-      path: '/home',
       name: 'Homepage',
       component: Homepage,
       children: [
         {
-          path: 'dashboard',
+          path: '/',
           component: Dashboard
+        },
+        {
+          path: 'lesson',
+          name: 'Lesson',
+          component: Lesson
+        },
+        {
+          path: 'collection',
+          name: 'Collection',
+          component: Collection
         }
       ]
-    },
-    {
-      path: '/lesson',
-      name: 'Lesson',
-      component: Lesson
-    },
-    {
-      path: '/collection',
-      name: 'Collection',
-      component: Collection
     }
   ]
 })
