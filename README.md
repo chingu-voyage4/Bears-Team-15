@@ -59,4 +59,4 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 
 ### Style guide on naming branches and writing commit messages
 
-coming soon...
+See our [style guide](Style-Guide.md)
