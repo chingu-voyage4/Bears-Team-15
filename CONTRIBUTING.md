@@ -183,12 +183,12 @@ Resolves #123
 In general our workflow could be divided into following steps.
 
 1. Brainstorming in Discord and Google Docs
-* Defining user stories, tasks and MVP for the next sprint
-* Adding issues to GitHub via Waffle.io
-* Assigning contributors to resolve particular issues
-* Contributing code
-* Reviewing and merging
-* Deploying MVP
+2. Defining user stories, tasks and MVP for the next sprint
+3. Adding issues to GitHub via Waffle.io
+4. Assigning contributors to resolve particular issues
+5. Contributing code
+6. Reviewing and merging
+7. Deploying MVP
 
 #### About defining MVP
 
