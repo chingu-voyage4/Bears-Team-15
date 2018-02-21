@@ -10,7 +10,7 @@ There should not be empty spaces at the end of the line.
 
 These are just general conventions. So please make sure that your IDE or text
 editor is configured properly to automatically add an empty line and remove all
-the spaces at the end of line. It would prevent unnecessary headache of your
+the spaces at the end of line. It would prevent unnecessary headache for your
 teammates every time they will commit changes to files created or edited by you.
 
 ## Vue
