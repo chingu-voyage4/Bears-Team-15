@@ -109,7 +109,7 @@ The whole message should not exceed 72 characters. Most of contemporary IDE
 which have Git integration would tell you how many characters are left for your
 message while you're typing in. Just be attentive.
 
-Subjects should begin with a capital letter and not end with a period.
+Subjects should begin with a capital letter and do not end with a period.
 
 
 #### Body
