@@ -74,7 +74,7 @@ footer
 ```
 
 As body and footer are optional, your commit message should at least have a type
-and a subject.
+and a subject in a **title**.
 
 #### Type
 
