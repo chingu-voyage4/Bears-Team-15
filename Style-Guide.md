@@ -168,3 +168,12 @@ Resolves #123
 * [link](https://www.atlassian.com/git/tutorials/comparing-workflows/feature-branch-workflow)
 * [link](https://github.com/ollyjohn/turtles-nineteen/wiki/Git-Workflow)
 
+## Naming Git branches
+
+###### Additional resources:
+[link](https://allenan.com/git-branch-naming-conventions/)
+
+## GitHub + Waffle.io workflow
+
+###### Additional resources:
+[link](https://help.waffle.io/automatic-work-tracking/auto-work-tracking-basics/recommended-workflow-using-pull-requests-automatic-work-tracking)
