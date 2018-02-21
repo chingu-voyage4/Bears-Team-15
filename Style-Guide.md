@@ -14,6 +14,44 @@ editor is configured properly to automatically add an empty line and remove all
 the spaces at the end of line. It would prevent unnecessary headache of your
 teammates every time they will commit changes to files created or edited by you.
 
+## Vue
+
+First-level child (or children) of general tags like `<template>`, `<script>`
+and `<style>` should not be indented.
+
+To save some horizontal space by reducing an amount of indentation, `data`
+method of default exported object should have syntax like in example below.
+Besides, it looks sassy and hip ;D
+
+###### Example:
+
+```
+<template>
+<div class="bourgeoisie">
+  <p>I'm the second-level child, so I'm indented</p>
+</div>
+</template>
+
+<script>
+import Bananas from '../bananaRepublic/Bananas.vue'
+
+export default {
+  // export is not indented either
+  data: () => ({
+    key: 'value'
+  })
+}
+</script>
+
+<style>
+.bourgeoisie {
+  font-family: Aristocratic;
+}
+</style>
+```
+
+Indentation consists of two spaces.
+
 ## Writing commit messages
 
 Commit messages should be meaningful and should explain the changes that have
