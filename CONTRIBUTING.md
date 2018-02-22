@@ -234,10 +234,11 @@ When a PR was successfully merged into default branch, it moves to **Done**.
 
 #### Issue as a product of user stories
 
-When in a scope of a particular sprint there is a feature, around which
-several user stories could be gathered, these stories create an issue with
-a title in format `feat: few words of description`. And the stories go into
-description block of this issue.
+When there is a feature in a scope of a particular sprint,
+which fulfills several user stories,
+this feature creates an issue with
+a title in format `feat: few words of description`.
+And the stories should be listed in the description block of the issue.
 
 #### Issue as a representation of a task
 
