@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="homepage">
     <h1>{{ greeting }}</h1>
     <div>{{ message }}</div>
     <router-view/>
