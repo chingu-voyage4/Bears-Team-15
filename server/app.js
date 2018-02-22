@@ -11,6 +11,8 @@ if (NODE_ENV !== 'production') {
   require('dotenv').config()
 }
 
+app.use(express.static(path.resolve(__dirname, '../dist')))
+
 const {PORT, MONGODB_URI} = process.env
 
 // connect to database:
