@@ -17,7 +17,7 @@ The following is a set of guidelines for contributing to our project.
   * [Issues related to features](#issue-as-a-product-of-user-stories)
   * [Issues related to tasks](#issue-as-a-representation-of-a-task)
   * [Waffle.io automation](#waffleio-automation)
-  * [Naming Git branches](#naming-git-branches)
+* [Naming Git branches](#naming-git-branches)
 
 ## General
 
