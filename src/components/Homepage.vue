@@ -3,12 +3,18 @@
     <h1>{{ greeting }}</h1>
     <div>{{ message }}</div>
     <router-view/>
+    <app-footer/>
   </div>
 </template>
 
 <script>
+import Footer from '@/components/Footer'
+
 export default {
   name: 'Homepage',
+  components: {
+    'appFooter': Footer
+  },
   data () {
     return {
       greeting: 'Welcome to Bears-15 Cards!',
