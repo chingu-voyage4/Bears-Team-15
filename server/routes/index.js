@@ -2,7 +2,7 @@ const express = require('express'),
   router = express.Router()
 
 router.get('/', (req, res) => {
-  res.status(200).send('Team Bears-15 is greeting you!')
+  res.status(200).sendFile(path.resolve(__dirname, '../../dist/index.html'))
 })
 
 router.get('*', (req, res) => {
