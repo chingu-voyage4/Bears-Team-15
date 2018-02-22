@@ -1,5 +1,6 @@
 <template>
   <div class="homepage">
+    <app-header/>
     <h1>{{ greeting }}</h1>
     <div>{{ message }}</div>
     <router-view/>
@@ -8,12 +9,14 @@
 </template>
 
 <script>
+import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 
 export default {
   name: 'Homepage',
   components: {
-    'appFooter': Footer
+    'appFooter': Footer,
+    'appHeader': Header
   },
   data () {
     return {
