@@ -11,7 +11,7 @@
 export default {
   props: ['question'],
   computed: {
-    cardState: function () {
+    cardState () {
       return {
         question: this.question,
         answer: !this.question
