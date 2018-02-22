@@ -1,6 +1,5 @@
 <template>
 <div>
-  <router-link to="/">Home</router-link>
   <h1>{{ collection.collectionName }}</h1>
   <div
     @click.stop="nextCard"
