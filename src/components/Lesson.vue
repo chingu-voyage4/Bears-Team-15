@@ -37,6 +37,9 @@ export default {
       const item = this.collection.items[this.index]
       const card = this.question ? item.q : item.a
       return card
+    },
+    quantity () {
+      return this.collection.items.length
     }
   },
   methods: {
