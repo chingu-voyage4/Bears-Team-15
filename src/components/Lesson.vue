@@ -27,7 +27,14 @@ export default {
       items: [
         {q: 'ciotola', a: 'bowl'},
         {q: 'tazza', a: 'cup'},
-        {q: 'forchetta', a: 'fork'}
+        {q: 'forchetta', a: 'fork'},
+        {q: 'piatto', a: 'plate'},
+        {q: 'scrivania', a: 'desk'},
+        {q: 'tavola', a: 'table'},
+        {q: 'matita', a: 'pencil'},
+        {q: 'penna', a: 'pen'},
+        {q: 'quaderno', a: 'exercise book'},
+        {q: 'diario', a: 'diary'}
       ]
     },
     index: 0,
