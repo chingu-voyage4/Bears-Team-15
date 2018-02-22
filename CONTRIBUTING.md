@@ -66,7 +66,7 @@ export default {
 </style>
 ```
 
-Indentation consists of two spaces.
+Use two spaces for indentation in your code.
 
 ## Writing commit messages
 
