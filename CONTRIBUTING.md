@@ -321,4 +321,4 @@ completed and the whole feature is tested, now it is time for
 * [Git workflow | Chingu Voyage-2 Turtles-19](https://github.com/ollyjohn/turtles-nineteen/wiki/Git-Workflow)
 * [Waffle.io FAQ](https://help.waffle.io/faq)
 * [Waffle.io guide on using automatic work tracking](https://help.waffle.io/automatic-work-tracking/auto-work-tracking-basics/recommended-workflow-using-pull-requests-automatic-work-tracking)
-* [link](https://allenan.com/git-branch-naming-conventions/)
+* [Git Branch Naming Conventions | Andrew Allen](https://allenan.com/git-branch-naming-conventions/)
