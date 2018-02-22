@@ -11,7 +11,7 @@ The following is a set of guidelines for contributing to our project.
   * [Subject](#subject)
   * [Body](#body)
   * [Footer](#footer)
-* [Git workflow](#git-workflow-issues-branches-and-waffleio-integration)
+* [Workflow](#workflow-issues-branches-and-waffleio-integration)
   * [Defining MVP](#about-defining-mvp)
   * [Using Issues](#issue-as-a-structure-unit-in-a-developing-process)
   * [Waffle dashboard](#waffleio-columns)
@@ -183,7 +183,7 @@ Resolves #123
 ###### Additional resources:
 [Udacity Git commit message style guide](https://udacity.github.io/git-styleguide/)
 
-## Git workflow: issues, branches and Waffle.io integration
+## Workflow: issues, branches and Waffle.io integration
 
 In general our workflow could be divided into following steps.
 
