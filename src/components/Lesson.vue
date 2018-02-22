@@ -40,6 +40,9 @@ export default {
     index: 0,
     question: true
   }),
+  created () {
+    this.index = this.randIndex()
+  },
   computed: {
     card () {
       const item = this.collection.items[this.index]
@@ -53,9 +56,12 @@ export default {
   methods: {
     nextCard () {
       if (!this.question) {
-        this.index = (this.index + 1)%this.quantity
+        this.index = this.randIndex()
       }
       this.question = !this.question
+    },
+    randIndex () {
+      return Math.floor(Math.random()*(this.quantity))
     }
   }
 }
