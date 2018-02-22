@@ -213,6 +213,7 @@ and bad sides of user's experience.
 
 #### Waffle.io columns
 
+We use Waffle.io for issue management.
 By default all newly opened issues go to **Inbox** column. It is unordered list
 of all unsorted, uncategorized and unassigned issues. Just like your mail's
 inbox.
