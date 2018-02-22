@@ -8,6 +8,17 @@
 </template>
 
 <script>
+export default {
+  props: ['question'],
+  computed: {
+    cardState: function () {
+      return {
+        question: this.question,
+        answer: !this.question
+      }
+    }
+  }
+}
 </script>
 
 <style scoped>
