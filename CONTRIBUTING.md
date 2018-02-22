@@ -68,6 +68,10 @@ export default {
 
 Use two spaces for indentation in your code.
 
+## JavaScript
+
+For writing your JavaScript code use [AirBnB's style guide](https://github.com/airbnb/javascript).
+
 ## Writing commit messages
 
 Commit messages should be meaningful and should explain the changes that have
