@@ -241,7 +241,8 @@ description block of this issue.
 
 #### Issue as a representation of a task
 
-All tasks which are related to mentioned in a previous paragraph stories
+
+All tasks related to stories mentioned in a previous paragraph
 should be represented as individual issues. Each of them should contain
 `connected to #N` at the end of their description. Where `N` is an ID
 of "parent" (or "feature") issue – to which the tasks belong. If everything
