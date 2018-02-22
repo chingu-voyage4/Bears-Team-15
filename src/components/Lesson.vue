@@ -33,6 +33,11 @@ export default {
     question: true
   }),
   computed: {
+    card () {
+      const item = this.collection.items[this.index]
+      const card = this.question ? item.q : item.a
+      return card
+    }
   },
   methods: {
     nextCard () {
