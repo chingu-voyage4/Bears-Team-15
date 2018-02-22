@@ -17,7 +17,7 @@ app.use(express.static(path.resolve(__dirname, '../dist')))
 const {PORT, MONGODB_URI} = process.env
 
 // connect to database:
-// require('./mongoose')(MONGODB_URI)
+require('./mongoose')(MONGODB_URI)
 
 // routes:
 const routes = require('./routes')
