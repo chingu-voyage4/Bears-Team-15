@@ -15,7 +15,7 @@ The following is a set of guidelines for contributing to our project.
   * [Using Issues](#issue-as-a-structure-unit-in-a-developing-process)
   * [Waffle dashboard](#waffleio-columns)
   * [Issues related to features](#issue-as-a-product-of-user-stories)
-  * [Issues related to tasks](#issue-as-a-representatino-of-a-task)
+  * [Issues related to tasks](#issue-as-a-representation-of-a-task)
   * [Waffle.io automation](#waffleio-automation)
   * [Naming Git branches](#naming-git-branches)
 
