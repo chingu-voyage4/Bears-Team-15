@@ -225,8 +225,8 @@ tasks in each of these columns have their due dates.
 
 When a contributor starts working on an issue, it should be moved to
 **In Progress** column. It will happen automatically if a contributor would
-follow instructions mentioned below in *"Waffle.io automation"* section
-of this guide.
+follow instructions mentioned below in [Waffle.io automation](#waffleio-automation)
+section of this guide.
 
 After a Pull Request (PR) solving particular issue was made, an issue moves to
 **Review** column.
