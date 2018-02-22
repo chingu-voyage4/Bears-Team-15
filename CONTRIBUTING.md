@@ -291,7 +291,7 @@ a name of a "parent" branch by adding description and ID of your current task.
 
 > There is a feature-related issue `feat: homepage` with ID of `18`. And the
 branch `feat-homepage-#18` is in the repo.
-
+>
 > Your task is to create a Footer component. The ID of an issue with this task
 is `12`. Then your new branch should be named `feat-homepage-#18-footer-#12`.
 This way you will not forget where to merge your current branch – into
