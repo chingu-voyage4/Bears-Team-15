@@ -19,12 +19,12 @@ export default new Router({
           component: Dashboard
         },
         {
-          path: 'lesson',
+          path: '/lesson',
           name: 'Lesson',
           component: Lesson
         },
         {
-          path: 'collection',
+          path: '/collection',
           name: 'Collection',
           component: Collection
         }
