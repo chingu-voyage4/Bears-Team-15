@@ -5,6 +5,7 @@ The following is a set of guidelines for contributing to our project.
 #### Table Of Contents
 * [General](#general)
 * [Vue](#vue)
+* [JavaScript](#javascript)
 * [Commit messages](#writing-commit-messages)
   * [Type](#type)
   * [Subject](#subject)
