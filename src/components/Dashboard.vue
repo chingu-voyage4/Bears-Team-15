@@ -1,11 +1,13 @@
 <template>
 <div class="dashboard">
   <div class="spacer"></div>
-  <router-link to="/lesson">
-    <div class="lesson">  
-      <h3>{{ collection[0].name }}</h3>
-    </div>
-  </router-link>
+  <div>
+    <router-link to="/lesson">
+      <div class="lesson">  
+        <h3>{{ collection[0].name }}</h3>
+      </div>
+    </router-link>
+  </div>
   <div class="spacer"></div>
 </div>
 </template>
@@ -46,7 +48,7 @@ a {
   height: 80px;
   margin: 0 auto;
   margin-top: 80px;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
   padding: 60px 0;
   background: rgb(240,240,240);
   border-radius: 10px;
@@ -57,4 +59,5 @@ a {
   width: 33%;
   margin: 0 auto;
 }
+
 </style>
