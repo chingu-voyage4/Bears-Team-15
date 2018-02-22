@@ -4,6 +4,7 @@
   <h1>{{ collection.collectionName }}</h1>
   <div
     @click.stop="nextCard"
+    class="pointer"
   >
     <app-card
     > {{ card }} </app-card>
@@ -43,3 +44,10 @@ export default {
   }
 }
 </script>
+
+<style>
+.pointer {
+  display: inline-block;
+  cursor: pointer;
+}
+</style>
