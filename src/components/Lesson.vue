@@ -7,6 +7,7 @@
     class="pointer"
   >
     <app-card
+     :question="question"
     > {{ card }} </app-card>
   </div>
 </div>
