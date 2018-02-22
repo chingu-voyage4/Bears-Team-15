@@ -3,6 +3,7 @@
   <router-link to="/">Home</router-link>
   <h1>{{ collection.collectionName }}</h1>
   <div
+    @click.stop="nextCard"
   >
     <app-card
     > {{ card }} </app-card>
@@ -31,6 +32,14 @@ export default {
     question: true
   }),
   computed: {
+  },
+  methods: {
+    nextCard () {
+      if (!this.question) {
+        this.index = (this.index + 1)%this.quantity
+      }
+      this.question = !this.question
+    }
   }
 }
 </script>
