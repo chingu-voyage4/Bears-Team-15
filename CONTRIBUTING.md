@@ -71,7 +71,7 @@ Use two spaces for indentation in your code.
 
 ## JavaScript
 
-For writing your JavaScript code use [AirBnB's style guide](https://github.com/airbnb/javascript).
+For writing your JavaScript code use [AirBnB's style guide](https://github.com/airbnb/javascript#airbnb-javascript-style-guide-).
 
 ## Writing commit messages
 
