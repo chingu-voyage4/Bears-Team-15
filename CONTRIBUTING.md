@@ -182,6 +182,7 @@ Resolves #123
 
 ###### Additional resources:
 [Udacity Git commit message style guide](https://udacity.github.io/git-styleguide/)
+[Make your commit messages look sassy with proper Emoji](https://gitmoji.carloscuesta.me/)
 
 ## Workflow: issues, branches and Waffle.io integration
 
