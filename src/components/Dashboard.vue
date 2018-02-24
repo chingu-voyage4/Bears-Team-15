@@ -1,17 +1,28 @@
 <template>
-<div>
-  <h1>This is {{ label }} placeholder</h1>
-  <router-link to="/lesson">Lesson</router-link>
-  <router-link to="/collection">Collection</router-link>
+<div class="dashboard">
+  <div class="spacer"></div>
+  <div>
+    <router-link to="/lesson">
+      <div class="lesson">
+        <h3>{{ collection[0].name }}</h3>
+      </div>
+    </router-link>
+  </div>
+  <div class="spacer"></div>
 </div>
 </template>
 
 <script>
 export default {
-  name: 'Dashboard',
+  name: "Dashboard",
   data () {
     return {
-      label: 'Dashboard'
+      label: "Dashboard",
+      collection: [
+        { name: "Collection 1" },
+        { name: "Collection 2" },
+        { name: "Collection 3" }
+      ]
     }
   }
 }
