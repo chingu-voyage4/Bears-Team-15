@@ -19,9 +19,9 @@ export default {
     return {
       label: "Dashboard",
       collection: [
-        { name: "Lesson 1" },
-        { name: "Lesson 2" },
-        { name: "Lesson 3" }
+        { name: "Collection 1" },
+        { name: "Collection 2" },
+        { name: "Collection 3" }
       ]
     }
   }
