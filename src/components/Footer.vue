@@ -35,6 +35,7 @@ body, .homepage {
 
 footer {
   min-height: 50px;
+  height: 10vh;
   width: 100%;
   background: #ddd;
   margin-top: auto;
