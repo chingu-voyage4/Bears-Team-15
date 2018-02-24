@@ -27,16 +27,16 @@ header{
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  padding: 0 30px;
 }
 
 a{
   color: white;
   font-size: 2em;
-  padding: 0 10px;
 }
 
 img{
   height: 50px;
-  margin: 10px;
+  margin: 10px 0;
 }
 </style>
