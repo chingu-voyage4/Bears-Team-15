@@ -3,7 +3,7 @@
   <div class="spacer"></div>
   <div>
     <router-link to="/lesson">
-      <div class="lesson">  
+      <div class="lesson">
         <h3>{{ collection[0].name }}</h3>
       </div>
     </router-link>
@@ -18,13 +18,12 @@ export default {
   data () {
     return {
       label: "Dashboard",
-      collection: [ 
+      collection: [
         { name: "Lesson 1" },
         { name: "Lesson 2" },
         { name: "Lesson 3" }
-      ] 
+      ]
     }
   }
 }
-
 </script>
