@@ -56,3 +56,7 @@ JWT_SECRET=someSuperSecret
 And you'll need a `nodemon` npm package to be installed globally. See [guide](https://github.com/remy/nodemon#installation).
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+
+### Contribution guidelines
+
+See our [contribution guidelines](CONTRIBUTING.md)
