@@ -71,7 +71,7 @@ Use two spaces for indentation in your code.
 
 ## JavaScript
 
-For writing your JavaScript code use [AirBnB's style guide](https://github.com/airbnb/javascript).
+For writing your JavaScript code use [AirBnB's style guide](https://github.com/airbnb/javascript#airbnb-javascript-style-guide-).
 
 ## Writing commit messages
 
@@ -182,6 +182,8 @@ Resolves #123
 
 ###### Additional resources:
 [Udacity Git commit message style guide](https://udacity.github.io/git-styleguide/)
+
+[Make your commit messages look sassy with proper Emoji](https://gitmoji.carloscuesta.me/)
 
 ## Workflow: issues, branches and Waffle.io integration
 
