@@ -1,7 +1,7 @@
 <template>
 <div>
   <h1>
-    <router-link to="/collection">{{ name }}</router-link>
+    <router-link to="/collection">{{ collection.collectionName }}</router-link>
   </h1>
   <div
     @click.stop="nextCard"
@@ -31,17 +31,17 @@ export default {
     this.index = this.randIndex()
   },
   computed: {
+    ...mapState(['collections']),
+    collection () {
+      return this.collections[1]
+    },
     card () {
-      //const item = this.collection.items[this.index]
-      const item = this.$store.state.collections[1].items[this.index] // use store state
+      const item = this.collection.items[this.index]
       const card = this.question ? item.q : item.a
       return card
     },
     quantity () {
-      return this.$store.state.collections[1].items.length //this.collection.items.length
-    },
-    name () {
-      return this.$store.state.collections[1].collectionName
+      return this.collection.items.length
     }
   },
   methods: {
