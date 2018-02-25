@@ -198,7 +198,7 @@ In general our workflow could be divided into following steps.
 #### About defining MVP
 
 Our team believes that in Scrum methodology the scope of a project is
-an estimated thing. So we could not predict how shiny would be our application
+an estimated thing. So we could not predict how shiny our application would be
 at the end of Chingu's Voyage-4. But we can define the amount of work to be
 done in the next sprint, so at the end of each iteration a user could actually
 use our product. And the product would be better compared to a previous version.
@@ -207,9 +207,10 @@ use our product. And the product would be better compared to a previous version.
 
 GitHub is a great platform for software developers. And one of its features
 which our team uses as a main structuring element is **Issue**. By opening
-an issue one can request some enhancement in UI/UX or report about some bugs.
-So despite negative semantics of a word "issue", it is both about good
-and bad sides of user's experience.
+an issue one can request some enhancement in UI/UX or report a bug.
+So despite the negative semantics of the word "issue", it is not only
+about negative aspects of the user experience, but also about possible
+enhancements in the application.
 
 #### Waffle.io columns
 
