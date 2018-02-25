@@ -1,7 +1,7 @@
 <template>
 <div>
   <h1>
-    <router-link to="/collection">{{ collection.collectionName }}</router-link>
+    <router-link to="/collection">{{ name }}</router-link>
   </h1>
   <div
     @click.stop="nextCard"
@@ -16,6 +16,7 @@
 
 <script>
 import Card from '@/components/Card'
+import { mapState } from 'vuex'
 
 export default {
   name: 'Lesson',
@@ -23,21 +24,6 @@ export default {
     appCard: Card
   },
   data: () => ({
-    collection: {
-      collectionName: 'Italian words',
-      items: [
-        {q: 'ciotola', a: 'bowl'},
-        {q: 'tazza', a: 'cup'},
-        {q: 'forchetta', a: 'fork'},
-        {q: 'piatto', a: 'plate'},
-        {q: 'scrivania', a: 'desk'},
-        {q: 'tavola', a: 'table'},
-        {q: 'matita', a: 'pencil'},
-        {q: 'penna', a: 'pen'},
-        {q: 'quaderno', a: 'exercise book'},
-        {q: 'diario', a: 'diary'}
-      ]
-    },
     index: 0,
     question: true
   }),
@@ -46,12 +32,16 @@ export default {
   },
   computed: {
     card () {
-      const item = this.collection.items[this.index]
+      //const item = this.collection.items[this.index]
+      const item = this.$store.state.collections[1].items[this.index] // use store state
       const card = this.question ? item.q : item.a
       return card
     },
     quantity () {
-      return this.collection.items.length
+      return this.$store.state.collections[1].items.length //this.collection.items.length
+    },
+    name () {
+      return this.$store.state.collections[1].collectionName
     }
   },
   methods: {
