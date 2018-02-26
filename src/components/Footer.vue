@@ -3,7 +3,7 @@
   <div class="content">
     <span class="pull-left">
       © {{ currentYear }}
-      <a href="https://github.com/chingu-voyage4/Bears-Team-15#readme" target="_blank">Chingu Voyage-4, team Bears-15</a>
+      <a href="https://github.com/chingu-voyage4/Bears-Team-15#readme" target="_blank">Chingu Voyage-4 Team Bears-15</a>
     </span>
     <span class="pull-right">
       v {{ version }}
