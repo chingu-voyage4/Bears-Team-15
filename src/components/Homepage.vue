@@ -2,7 +2,6 @@
   <div class="homepage">
     <app-header/>
     <h1>{{ greeting }}</h1>
-    <div>{{ message }}</div>
     <router-view/>
     <app-footer/>
   </div>
