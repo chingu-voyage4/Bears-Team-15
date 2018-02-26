@@ -1,7 +1,9 @@
 <template>
 <div class="flashcard" :class="cardState">
   <div class="content">
-    <slot> Card </slot>
+    <div>
+      <slot> Card </slot>
+    </div>
   </div>
   <div class="overlay"></div>
 </div>
@@ -32,6 +34,15 @@ export default {
   border-radius: 20px;
 }
 
+.flashcard .content {
+  display: table;
+}
+
+.flashcard .content > div {
+  display: table-cell;
+  vertical-align: middle;
+}
+
 .question {
   border-color: #39f;
   font-size: 2rem;
@@ -43,16 +54,12 @@ export default {
   font-size: 1.4rem;
 }
 
-.flashcard * {
+.flashcard > * {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-}
-
-.flashcard .content {
-  line-height: 200px;
 }
 
 .flashcard .overlay {
