@@ -16,6 +16,7 @@
 
 <script>
 import Card from '@/components/Card'
+import { mapState } from 'vuex'
 
 export default {
   name: 'Lesson',
@@ -23,21 +24,6 @@ export default {
     appCard: Card
   },
   data: () => ({
-    collection: {
-      collectionName: 'Italian words',
-      items: [
-        {q: 'ciotola', a: 'bowl'},
-        {q: 'tazza', a: 'cup'},
-        {q: 'forchetta', a: 'fork'},
-        {q: 'piatto', a: 'plate'},
-        {q: 'scrivania', a: 'desk'},
-        {q: 'tavola', a: 'table'},
-        {q: 'matita', a: 'pencil'},
-        {q: 'penna', a: 'pen'},
-        {q: 'quaderno', a: 'exercise book'},
-        {q: 'diario', a: 'diary'}
-      ]
-    },
     index: 0,
     question: true
   }),
@@ -45,6 +31,10 @@ export default {
     this.index = this.randIndex()
   },
   computed: {
+    ...mapState(['collections']),
+    collection () {
+      return this.collections[1]
+    },
     card () {
       const item = this.collection.items[this.index]
       const card = this.question ? item.q : item.a
