@@ -34,7 +34,15 @@ export default {
         {q: 'penna', a: 'pen'},
         {q: 'quaderno', a: 'exercise book'},
         {q: 'diario', a: 'diary'}
-      ]
+      ].sort(function(prev, next){
+        if(prev.q.toLowerCase() > next.q.toLowerCase()){
+          return 1
+          }else if(prev.q.toLowerCase() < next.q.toLowerCase()){
+            return -1
+          }else{
+            return 0
+          }
+        })
     },
     question: true
   })
