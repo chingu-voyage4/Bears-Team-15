@@ -3,7 +3,7 @@
 <div class="cards-container">
   <app-card class="card"
     v-for="item in collection.items" :key="item.id"
-    :question='question'
+    :question="question"
     > {{ item.q }} </app-card>
 </div>
 </div>
