@@ -29,12 +29,12 @@ export default {
       collection.items.sort(function(prev, next){
         if(prev.q.toLowerCase() > next.q.toLowerCase()){
           return 1
-          }else if(prev.q.toLowerCase() < next.q.toLowerCase()){
-            return -1
-          }else{
-            return 0
-          }
-        })
+        }else if(prev.q.toLowerCase() < next.q.toLowerCase()){
+          return -1
+        }else{
+          return 0
+        }
+      })
       return collection
     }
   }  
