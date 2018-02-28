@@ -13,6 +13,7 @@
 
 <script>
 import Card from '@/components/Card'
+import { mapState } from 'vuex'
 
 export default {
   name: 'Collection',
@@ -20,21 +21,14 @@ export default {
     'appCard': Card
   },
   data: () => ({
-    label: 'Collection',
-    collection: {
-      collectionName: 'Italian words',
-      items: [
-        {q: 'ciotola', a: 'bowl'},
-        {q: 'tazza', a: 'cup'},
-        {q: 'forchetta', a: 'fork'},
-        {q: 'piatto', a: 'plate'},
-        {q: 'scrivania', a: 'desk'},
-        {q: 'tavola', a: 'table'},
-        {q: 'matita', a: 'pencil'},
-        {q: 'penna', a: 'pen'},
-        {q: 'quaderno', a: 'exercise book'},
-        {q: 'diario', a: 'diary'}
-      ].sort(function(prev, next){
+    label: 'Collection',    
+    question: true
+  }),
+  computed: {
+    ...mapState(['collections']),
+    collection () {
+      let collection = this.collections[1]
+      collection.items.sort(function(prev, next){
         if(prev.q.toLowerCase() > next.q.toLowerCase()){
           return 1
           }else if(prev.q.toLowerCase() < next.q.toLowerCase()){
@@ -43,9 +37,9 @@ export default {
             return 0
           }
         })
-    },
-    question: true
-  })
+      return collection
+    }
+  }  
 }
 </script>
 
