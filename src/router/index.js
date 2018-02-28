@@ -11,20 +11,20 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Homepage',
       component: Homepage,
       children: [
         {
           path: '/',
+          name: 'Home',
           component: Dashboard
         },
         {
-          path: 'lesson',
+          path: '/lesson',
           name: 'Lesson',
           component: Lesson
         },
         {
-          path: 'collection',
+          path: '/collection',
           name: 'Collection',
           component: Collection
         }

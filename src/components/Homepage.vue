@@ -1,14 +1,22 @@
 <template>
-  <div>
+  <div class="homepage">
+    <app-header/>
     <h1>{{ greeting }}</h1>
-    <div>{{ message }}</div>
     <router-view/>
+    <app-footer/>
   </div>
 </template>
 
 <script>
+import Header from '@/components/Header'
+import Footer from '@/components/Footer'
+
 export default {
   name: 'Homepage',
+  components: {
+    'appFooter': Footer,
+    'appHeader': Header
+  },
   data () {
     return {
       greeting: 'Welcome to Bears-15 Cards!',
