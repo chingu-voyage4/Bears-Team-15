@@ -1,7 +1,5 @@
 <template>
 <div>
-<h1>This is {{ label }} placeholder</h1>
-<router-link to="/">Home</router-link>
 <div class="cards-container">
   <app-card class="card"
     v-for="item in collection.items" :key="item.id"
