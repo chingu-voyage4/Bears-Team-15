@@ -1,6 +1,7 @@
-const express = require('express'),
-  app = express(),
-  {NODE_ENV} = process.env
+const express = require('express')
+const app = express()
+const path = require('path')
+const {NODE_ENV} = process.env
 
 // application-level middleware:
 const bodyParser = require('body-parser')
@@ -10,6 +11,8 @@ if (NODE_ENV !== 'production') {
   app.use(cors({exposedHeaders: ['x-auth']}))
   require('dotenv').config()
 }
+
+app.use(express.static(path.resolve(__dirname, '../dist')))
 
 const {PORT, MONGODB_URI} = process.env
 
