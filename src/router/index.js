@@ -18,7 +18,7 @@ export default new Router({
       children: [
         {
           path: '/',
-          name: 'Home',
+          name: 'home',
           component: Dashboard
         },
         {
@@ -27,24 +27,24 @@ export default new Router({
           children: [
             {
               path: '/',
-              name: 'Collection',
+              name: 'collection',
               component: Lesson
             },
             {
               path: 'cards',
-              name: 'CollectionView',
+              name: 'collectionView',
               component: CollectionView
             },
             {
               path: 'edit',
-              name: 'CollectionEdit',
+              name: 'collectionEdit',
               component: CollectionEdit
             },
           ]
         },
         {
           path: '/collection/new',
-          name: 'CollectionNew',
+          name: 'collectionNew',
           component: CollectionNew
         },
       ]
