@@ -16,17 +16,14 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: "Dashboard",
   data: () => ({
-    label: "Dashboard",
     greeting: 'Welcome to Bears-15 Cards!',
-    collection: [
-      { name: "Collection 1" },
-      { name: "Collection 2" },
-      { name: "Collection 3" }
-    ]
-  })
+  }),
+  computed: mapState(['collections']),
 }
 </script>
 
