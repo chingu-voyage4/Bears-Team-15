@@ -2,7 +2,7 @@
 <div>
 <div class="cards-container">
   <app-card
-    v-for="item in collection.items" :key="item.id"
+    v-for="item in deck" :key="item.id"
     :card="item"
   ></app-card>
 </div>
@@ -22,8 +22,11 @@ export default {
   },
   computed: {
     collection () {
-      const collection = this.$store.state.collections[this.id]
-      collection.items.sort(function(prev, next){
+      return this.$store.state.collections[this.id]
+    },
+    deck () {
+      const deck = [...this.collection.items]
+      deck.sort(function(prev, next){
         if(prev.q.toLowerCase() > next.q.toLowerCase()){
           return 1
         }else if(prev.q.toLowerCase() < next.q.toLowerCase()){
@@ -32,7 +35,7 @@ export default {
           return 0
         }
       })
-      return collection
+      return deck
     }
   }
 }
