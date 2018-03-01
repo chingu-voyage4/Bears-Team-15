@@ -4,11 +4,8 @@
   @click="flip"
 >
   <div class="content">
-    <div>
-      {{ cardSide }}
-    </div>
+    {{ cardSide }}
   </div>
-  <div class="overlay"></div>
 </div>
 </template>
 
@@ -42,22 +39,26 @@ export default {
 
 <style scoped>
 .flashcard {
+  display: flex;
   margin: 15px;
   width: 200px;
   height: 200px;
-  position: relative;
   border-width: 3px;
   border-style: solid;
   border-radius: 20px;
+
+  -webkit-user-select: none; /* Chrome/Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+ */
+  -o-user-select: none;
+  user-select: none;
 }
 
 .flashcard .content {
-  display: table;
-}
-
-.flashcard .content > div {
-  display: table-cell;
-  vertical-align: middle;
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .question {
@@ -69,18 +70,6 @@ export default {
 .answer {
   border-color: #aaa;
   font-size: 1.4rem;
-}
-
-.flashcard > * {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.flashcard .overlay {
-  z-index: 10;
 }
 
 .pointer {
