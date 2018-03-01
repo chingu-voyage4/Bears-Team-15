@@ -3,8 +3,8 @@
 <div class="cards-container">
   <app-card class="card"
     v-for="item in collection.items" :key="item.id"
-    :question="question"
-    > {{ item.q }} </app-card>
+    :card="item"
+  ></app-card>
 </div>
 </div>
 </template>
@@ -19,8 +19,7 @@ export default {
     'appCard': Card
   },
   data: () => ({
-    label: 'Collection',    
-    question: true
+    label: 'Collection',
   }),
   computed: {
     ...mapState(['collections']),
@@ -37,7 +36,7 @@ export default {
       })
       return collection
     }
-  }  
+  }
 }
 </script>
 
