@@ -68,7 +68,6 @@ export default {
     },
     add () {
       let lastIndex = this.collection.items.length-1;
-      console.log(lastIndex)
       //prevent adding new card if previouse if empty
       if(this.collection.items[lastIndex].q !== '' && this.collection.items[lastIndex].a !== ''){
         this.collection.items.push({...this.emptyCard})
