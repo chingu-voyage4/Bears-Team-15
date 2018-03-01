@@ -1,8 +1,5 @@
 <template>
 <div>
-  <h1>
-    {{ collection.collectionName }}
-  </h1>
   <div>
     <app-card
       :card="card"

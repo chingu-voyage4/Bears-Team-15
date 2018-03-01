@@ -1,6 +1,6 @@
 <template>
 <div>
-  <h1>collection parent</h1>
+  <h1> {{ collection.collectionName }} </h1>
   <router-view/>
 </div>
 </template>
@@ -10,6 +10,11 @@ export default {
   props: {
     id: { required: true }
   },
+  computed: {
+    collection () {
+      return this.$store.state.collections[this.id]
+    },
+  }
 }
 </script>
 
