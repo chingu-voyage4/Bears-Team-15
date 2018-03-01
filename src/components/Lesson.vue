@@ -1,7 +1,7 @@
 <template>
 <div>
   <h1>
-    <router-link to="/collection">{{ collection.collectionName }}</router-link>
+    {{ collection.collectionName }}
   </h1>
   <div
     @click.stop="nextCard"
