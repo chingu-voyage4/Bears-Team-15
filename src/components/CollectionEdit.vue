@@ -10,12 +10,19 @@
       @click="remove(index)"
     >X</button>
   </div>
+  <button
+    class="newCard"
+    @click="add"
+  >+</button>
 </div>
 </template>
 
 <script>
 export default {
   props: ['id'],
+  data: () => ({
+    emptyCard: { q: '', a: '' },
+  }),
   computed: {
     collection () {
       if (this.id === undefined) {
@@ -30,6 +37,9 @@ export default {
   methods: {
     remove (index) {
       this.collection.items.splice(index, 1)
+    },
+    add () {
+      this.collection.items.push({...this.emptyCard})
     }
   }
 }
