@@ -1,7 +1,7 @@
 <template>
 <div>
 <div class="cards-container">
-  <app-card class="card"
+  <app-card
     v-for="item in collection.items" :key="item.id"
     :card="item"
   ></app-card>
