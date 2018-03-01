@@ -4,8 +4,8 @@
     class="card"
     v-for="(card, index) in collection.items" :key="index"
   >
-    <input type="text" v-model="card.q">
-    <input type="text" v-model="card.a">
+    <input type="text" v-model="card.q" placeholder="Question">
+    <input type="text" v-model="card.a" placeholder="Answer">
     <button
       @click="remove(index)"
     >X</button>
