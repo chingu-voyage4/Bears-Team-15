@@ -4,9 +4,7 @@
 
 <script>
 export default {
-  props: {
-    id: { required: true }
-  },
+  props: ['id'],
 }
 </script>
 
