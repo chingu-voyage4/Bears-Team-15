@@ -22,23 +22,27 @@ export default new Router({
           component: Dashboard
         },
         {
-          path: '/collection',
+          path: '/collection/:id',
           component: Collection,
+          props: true,
           children: [
             {
               path: '/',
               name: 'collection',
-              component: Lesson
+              component: Lesson,
+              props: true,
             },
             {
               path: 'cards',
               name: 'collectionView',
-              component: CollectionView
+              component: CollectionView,
+              props: true,
             },
             {
               path: 'edit',
               name: 'collectionEdit',
-              component: CollectionEdit
+              component: CollectionEdit,
+              props: true,
             },
           ]
         },
