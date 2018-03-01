@@ -3,6 +3,11 @@
 </template>
 
 <script>
+export default {
+  props: {
+    id: { required: true }
+  },
+}
 </script>
 
 <style scoped>

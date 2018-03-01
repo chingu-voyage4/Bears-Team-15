@@ -21,6 +21,9 @@ export default {
   components: {
     appCard: Card
   },
+  props: {
+    id: { required: true }
+  },
   data: () => ({
     index: 0,
   }),
