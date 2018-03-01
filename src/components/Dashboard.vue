@@ -37,9 +37,11 @@ export default {
 <style scoped>
 .dashboard {
   width: 80%;
-  height: 400px;
+  min-height: 400px;
   margin: 0 auto;
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .deck {
@@ -53,9 +55,9 @@ export default {
     4px 10px 0px rgb(180, 180, 180),
     12px 15px 10px rgba(0, 0, 0, 0.2);
 }
-
+/*
 .spacer {
   width: 33%;
   margin: 0 auto;
-}
+}*/
 </style>
