@@ -4,7 +4,7 @@
     <app-card
       :card="card"
       @nextCard="nextCard"
-    > {{ card }} </app-card>
+    ></app-card>
   </div>
 </div>
 </template>
