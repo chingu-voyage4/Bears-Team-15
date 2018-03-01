@@ -11,23 +11,18 @@
 
 <script>
 import Card from '@/components/Card'
-import { mapState } from 'vuex'
 
 export default {
-  name: 'Collection',
+  name: 'CollectionView',
   components: {
     'appCard': Card
   },
   props: {
     id: { required: true }
   },
-  data: () => ({
-    label: 'Collection',
-  }),
   computed: {
-    ...mapState(['collections']),
     collection () {
-      let collection = this.collections[1]
+      const collection = this.$store.state.collections[this.id]
       collection.items.sort(function(prev, next){
         if(prev.q.toLowerCase() > next.q.toLowerCase()){
           return 1
