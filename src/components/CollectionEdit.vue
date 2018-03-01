@@ -6,6 +6,9 @@
   >
     <input type="text" v-model="card.q">
     <input type="text" v-model="card.a">
+    <button
+      @click="remove(index)"
+    >X</button>
   </div>
 </div>
 </template>
@@ -24,6 +27,11 @@ export default {
       return {...this.$store.state.collections[this.id]}
     }
   },
+  methods: {
+    remove (index) {
+      this.collection.items.splice(index, 1)
+    }
+  }
 }
 </script>
 
