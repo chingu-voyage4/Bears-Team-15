@@ -1,8 +1,5 @@
 <template>
-<div>
-  <h1>collection parent</h1>
-  <router-view/>
-</div>
+<h1>collection edit</h1>
 </template>
 
 <script>
