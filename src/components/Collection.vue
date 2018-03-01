@@ -1,6 +1,15 @@
 <template>
 <div>
   <h1> {{ collection.collectionName }} </h1>
+  <nav>
+    <ul>
+      <li
+        v-for="(item, index) in navItems" :key="index"
+      >
+        <router-link :to="item.route">{{ item.display }}</router-link>
+      </li>
+    </ul>
+  </nav>
   <router-view/>
 </div>
 </template>
