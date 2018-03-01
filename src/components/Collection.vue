@@ -1,57 +1,68 @@
 <template>
 <div>
-<div class="cards-container">
-  <app-card class="card"
-    v-for="item in collection.items" :key="item.id"
-    :card="item"
-  ></app-card>
-</div>
+  <h1> {{ collection.collectionName }} </h1>
+  <nav>
+    <ul>
+      <li
+        v-for="(item, index) in navItems" :key="index"
+      >
+        <router-link :to="item.route">{{ item.display }}</router-link>
+      </li>
+    </ul>
+  </nav>
+  <router-view/>
 </div>
 </template>
 
 <script>
-import Card from '@/components/Card'
-import { mapState } from 'vuex'
-
 export default {
-  name: 'Collection',
-  components: {
-    'appCard': Card
+  props: {
+    id: { required: true }
   },
   data: () => ({
-    label: 'Collection',
+    navItems: [
+      {
+        display: 'Lesson',
+        route: { name: 'collection' }
+      },
+      {
+        display: 'Cards',
+        route: { name: 'collectionView' }
+      },
+      {
+        display: 'Edit',
+        route: { name: 'collectionEdit' }
+      },
+    ]
   }),
   computed: {
-    ...mapState(['collections']),
     collection () {
-      let collection = this.collections[1]
-      collection.items.sort(function(prev, next){
-        if(prev.q.toLowerCase() > next.q.toLowerCase()){
-          return 1
-        }else if(prev.q.toLowerCase() < next.q.toLowerCase()){
-          return -1
-        }else{
-          return 0
-        }
-      })
-      return collection
-    }
+      return this.$store.state.collections[this.id]
+    },
   }
 }
 </script>
 
 <style scoped>
-.cards-container{
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-  padding: 30px;
-  max-width:2000px;
-  margin: 0 auto;
+nav {
+  margin-bottom: 40px;
 }
 
-.cards-container .card {
-  margin: 15px;
+nav ul {
+  list-style: none;
+}
+
+nav li {
+  display: inline;
+  margin: 0 20px;
+}
+
+nav li a {
+  font-size: 1.2rem;
+  padding: 10px;
+}
+
+nav .router-link-exact-active {
+  background: #0bf;
 }
 </style>

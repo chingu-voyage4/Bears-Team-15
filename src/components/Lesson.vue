@@ -1,25 +1,24 @@
 <template>
 <div>
-  <h1>
-    {{ collection.collectionName }}
-  </h1>
   <div>
     <app-card
       :card="card"
       @nextCard="nextCard"
-    > {{ card }} </app-card>
+    ></app-card>
   </div>
 </div>
 </template>
 
 <script>
 import Card from '@/components/Card'
-import { mapState } from 'vuex'
 
 export default {
   name: 'Lesson',
   components: {
     appCard: Card
+  },
+  props: {
+    id: { required: true }
   },
   data: () => ({
     index: 0,
@@ -28,9 +27,8 @@ export default {
     this.index = this.randIndex()
   },
   computed: {
-    ...mapState(['collections']),
     collection () {
-      return this.collections[1]
+      return this.$store.state.collections[this.id]
     },
     card () {
       return this.collection.items[this.index]
