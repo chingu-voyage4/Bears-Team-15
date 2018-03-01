@@ -1,4 +1,6 @@
 <template>
+<div>
+<h1>{{ greeting }}</h1>
 <div class="dashboard">
   <div class="spacer"></div>
   <div>
@@ -10,6 +12,7 @@
   </div>
   <div class="spacer"></div>
 </div>
+</div>
 </template>
 
 <script>
@@ -18,6 +21,7 @@ export default {
   data () {
     return {
       label: "Dashboard",
+      greeting: 'Welcome to Bears-15 Cards!',
       collection: [
         { name: "Collection 1" },
         { name: "Collection 2" },
