@@ -49,6 +49,12 @@ export default {
   border-width: 3px;
   border-style: solid;
   border-radius: 20px;
+
+  -webkit-user-select: none; /* Chrome/Safari */        
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+ */
+  -o-user-select: none;
+  user-select: none;  
 }
 
 .flashcard .content {
