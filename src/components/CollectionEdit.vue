@@ -21,17 +21,21 @@
 export default {
   props: ['id'],
   data: () => ({
+    editMode: true,
     emptyCard: { q: '', a: '' },
+    newCollection: {
+      collectionName: '',
+      items: [{...this.emptyCard}]
+    },
   }),
+  created () {
+    this.editMode = this.id !== undefined
+  },
   computed: {
     collection () {
-      if (this.id === undefined) {
-        return {
-          collectionName: '',
-          items: [{ q: '', a: '' }]
-        }
-      }
-      return {...this.$store.state.collections[this.id]}
+      return this.editMode
+        ? this.$store.state.collections[this.id]
+        : this.newCollection
     }
   },
   methods: {
