@@ -14,7 +14,6 @@
 
 <script>
 import Card from '@/components/Card'
-import { mapState } from 'vuex'
 
 export default {
   name: 'Lesson',
@@ -31,9 +30,8 @@ export default {
     this.index = this.randIndex()
   },
   computed: {
-    ...mapState(['collections']),
     collection () {
-      return this.collections[1]
+      return this.$store.state.collections[this.id]
     },
     card () {
       return this.collection.items[this.index]
