@@ -3,10 +3,17 @@
   <h1>{{ greeting }}</h1>
   <div class="dashboard">
     <div class="spacer"></div>
+    <div v-for="(deck, index) in collections" :key="index">
+      <router-link :to="{ name: 'collection', params: { id: index } }">
+        <div class="deck">
+          <h3>{{ collections[index].collectionName }}</h3>
+        </div>
+      </router-link>
+    </div>
     <div>
-      <router-link :to="{ name: 'collection' }">
-        <div class="lesson">
-          <h3>{{ collection[0].name }}</h3>
+      <router-link :to="{ name: 'collectionNew' }">
+        <div class="deck">
+          <h3>+</h3>
         </div>
       </router-link>
     </div>
