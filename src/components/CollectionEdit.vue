@@ -1,5 +1,10 @@
 <template>
 <div class="container">
+  <div>
+    <input
+      v-model="collection.collectionName"
+      type="text" placeholder="Collection name">
+  </div>
   <div
     class="card"
     v-for="(card, index) in collection.items" :key="index"
