@@ -1,8 +1,11 @@
 <template>
-<div class="flashcard" :class="cardState">
+<div
+  class="flashcard pointer" :class="cardState"
+  @click="flip"
+>
   <div class="content">
     <div>
-      <slot> Card </slot>
+      {{ cardSide }}
     </div>
   </div>
   <div class="overlay"></div>
@@ -11,15 +14,29 @@
 
 <script>
 export default {
-  props: ['question'],
+  props: ['card'],
+  data: () => ({
+    question: true
+  }),
   computed: {
     cardState () {
       return {
         question: this.question,
         answer: !this.question
       }
+    },
+    cardSide () {
+      return this.question ? this.card.q : this.card.a
     }
-  }
+  },
+  methods: {
+    flip () {
+      if (!this.question) {
+        this.$emit('nextCard')
+      }
+      this.question = !this.question
+    }
+  },
 }
 </script>
 
@@ -64,5 +81,10 @@ export default {
 
 .flashcard .overlay {
   z-index: 10;
+}
+
+.pointer {
+  display: inline-block;
+  cursor: pointer;
 }
 </style>
