@@ -19,6 +19,7 @@
     class="newCard"
     @click="add"
   >+</button>
+  <p v-if=emptyWarningMessage>Please edit <em>Question</em> and <em>Answer</em> before adding new Card</p>
 </div>
 </template>
 
@@ -32,9 +33,20 @@ export default {
       collectionName: '',
       items: [{...this.emptyCard}]
     },
+    emptyWarningMessage: false
   }),
   created () {
     this.editMode = this.id !== undefined
+  },
+  beforeRouteLeave (to, from, next) {
+    // called when the route that renders this component is about to
+    // be navigated away from.
+    // has access to `this` component instance.
+
+    // clear empty card before leaving (we dont want user creating empty cards)
+    this.removeLastEmpty();
+    // call next so we can navigate away
+    next()
   },
   computed: {
     collection () {
@@ -47,8 +59,26 @@ export default {
     remove (index) {
       this.collection.items.splice(index, 1)
     },
+    removeLastEmpty(){
+      //remove last element only if empty
+      let lastIndex = this.collection.items.length-1
+      if(this.collection.items[lastIndex].q === '' && this.collection.items[lastIndex].a === ''){
+          this.collection.items.pop()
+      }
+    },
     add () {
-      this.collection.items.push({...this.emptyCard})
+      let lastIndex = this.collection.items.length-1;
+      console.log(lastIndex)
+      //prevent adding new card if previouse if empty
+      if(this.collection.items[lastIndex].q !== '' && this.collection.items[lastIndex].a !== ''){
+        this.collection.items.push({...this.emptyCard})
+      }else{
+        //show message for one second
+        this.emptyWarningMessage = true;
+        setTimeout(() =>{
+          this.emptyWarningMessage = false;
+        },1000)
+      }
     }
   }
 }
