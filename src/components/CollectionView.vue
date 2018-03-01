@@ -53,8 +53,4 @@ export default {
   max-width:2000px;
   margin: 0 auto;
 }
-
-.cards-container .card {
-  margin: 15px;
-}
 </style>

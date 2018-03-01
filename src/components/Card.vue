@@ -42,7 +42,7 @@ export default {
 
 <style scoped>
 .flashcard {
-  margin: 0 auto;
+  margin: 15px;
   width: 200px;
   height: 200px;
   position: relative;
