@@ -3,12 +3,10 @@
   <h1>
     {{ collection.collectionName }}
   </h1>
-  <div
-    @click.stop="nextCard"
-    class="pointer"
-  >
+  <div>
     <app-card
-     :question="question"
+      :card="card"
+      @nextCard="nextCard"
     > {{ card }} </app-card>
   </div>
 </div>
@@ -25,7 +23,6 @@ export default {
   },
   data: () => ({
     index: 0,
-    question: true
   }),
   created () {
     this.index = this.randIndex()
@@ -36,9 +33,7 @@ export default {
       return this.collections[1]
     },
     card () {
-      const item = this.collection.items[this.index]
-      const card = this.question ? item.q : item.a
-      return card
+      return this.collection.items[this.index]
     },
     quantity () {
       return this.collection.items.length
@@ -46,10 +41,7 @@ export default {
   },
   methods: {
     nextCard () {
-      if (!this.question) {
-        this.index = this.randIndex()
-      }
-      this.question = !this.question
+      this.index = this.randIndex()
     },
     randIndex () {
       return Math.floor(Math.random()*(this.quantity))
@@ -57,10 +49,3 @@ export default {
   }
 }
 </script>
-
-<style>
-.pointer {
-  display: inline-block;
-  cursor: pointer;
-}
-</style>
