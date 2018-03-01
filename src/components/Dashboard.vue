@@ -4,7 +4,7 @@
   <div class="dashboard">
     <div class="spacer"></div>
     <div>
-      <router-link to="/lesson">
+      <router-link :to="{ name: 'collection' }">
         <div class="lesson">
           <h3>{{ collection[0].name }}</h3>
         </div>
