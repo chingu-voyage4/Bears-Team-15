@@ -2,7 +2,6 @@
 <div>
   <h1>{{ greeting }}</h1>
   <div class="dashboard">
-    <div class="spacer"></div>
     <div v-for="(deck, index) in collections" :key="index">
       <router-link :to="{ name: 'collection', params: { id: index } }">
         <div class="deck">
@@ -17,7 +16,6 @@
         </div>
       </router-link>
     </div>
-    <div class="spacer"></div>
   </div>
 </div>
 </template>
@@ -55,9 +53,4 @@ export default {
     4px 10px 0px rgb(180, 180, 180),
     12px 15px 10px rgba(0, 0, 0, 0.2);
 }
-/*
-.spacer {
-  width: 33%;
-  margin: 0 auto;
-}*/
 </style>
