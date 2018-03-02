@@ -105,17 +105,18 @@ export default {
       }
     },
     blur (index, qa) {
-      if (this.collection.items[index][qa] === ''){
-        // if on blur value is empty – make a record in errors
-        this.errors[qa].push(index)
-      } else {
-        // if on blur value is not empty – check if there was an error before
-        const errorIndex = this.errors[qa]
-          .findIndex(x => x === index)
-        if (errorIndex !== -1) {
-          // if there was an error – remove it from error list
+      //check if there was an error before
+      const errorIndex = this.errors[qa]
+        .findIndex(x => x === index)
+      if (errorIndex !== -1) {
+        // if there was an error – remove it from error list
+        // if on blur value is not empty
+        if (this.collection.items[index][qa] !== ''){
           this.errors[qa].splice(errorIndex, 1)
         }
+      } else if (this.collection.items[index][qa] === ''){
+        // if there wasn't an error and now it is – push it
+        this.errors[qa].push(index)
       }
     }
   }
