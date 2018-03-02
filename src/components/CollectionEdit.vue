@@ -12,10 +12,14 @@
     <input
       type="text" v-model="card.q" placeholder="Question"
       @blur="blur(index, 'q')"
+      ref="q"
+      :class="inputClass(index, 'q')"
     >
     <input
       type="text" v-model="card.a" placeholder="Answer"
       @blur="blur(index, 'a')"
+      ref="a"
+      :class="inputClass(index, 'a')"
     >
     <button
       @click="remove(index)"
@@ -25,20 +29,6 @@
     class="newCard"
     @click="add"
   >+</button>
-
-<!-- all this block with error messages should be improved -->
-  <div v-if="!readyToSave">
-    <p
-      v-for="(e, index) in errors.q" :key="'q'+index"
-    >
-        Please fill <em>Question</em> at {{ e }} card
-    </p>
-    <p
-      v-for="(e, index) in errors.a" :key="'a'+index"
-    >
-        Please fill <em>Answer</em> at {{ e }} card
-    </p>
-  </div>
 </div>
 </template>
 
@@ -128,10 +118,19 @@ export default {
         // if there wasn't an error and now it is – push it
         this.errors[qa].push(index)
       }
+    },
+    inputClass (index, qa) {
+      return {
+        error: this.errors[qa]
+          .filter( x => x === index).length > 0 ? true : false
+      }
     }
   }
 }
 </script>
 
 <style scoped>
+.error {
+  border: 1px solid red;
+}
 </style>
