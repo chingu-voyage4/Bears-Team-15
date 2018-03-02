@@ -73,10 +73,10 @@ export default {
       this.collection.items.splice(index, 1)
     },
     removeLastEmpty(){
-      //remove last element only if empty
-      let lastIndex = this.collection.items.length-1
-      if(this.collection.items[lastIndex].q === '' && this.collection.items[lastIndex].a === ''){
-          this.collection.items.pop()
+      if(this.collection.items[this.lastIndex].q === ''
+        && this.collection.items[this.lastIndex].a === '')
+      {
+        this.collection.items.pop()
       }
     },
     add () {
