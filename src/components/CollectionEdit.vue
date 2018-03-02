@@ -31,16 +31,12 @@
     <p
       v-for="(e, index) in errors.q" :key="'q'+index"
     >
-      <span v-if="!lastCardIsEmpty && e === lastIndex || e !== lastIndex">
         Please fill <em>Question</em> at {{ e }} card
-      </span>
     </p>
     <p
       v-for="(e, index) in errors.a" :key="'a'+index"
     >
-      <span v-if="!lastCardIsEmpty && e === lastIndex || e !== lastIndex">
         Please fill <em>Answer</em> at {{ e }} card
-      </span>
     </p>
   </div>
   <p v-else>ok to save </p>
