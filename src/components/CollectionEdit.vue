@@ -63,9 +63,7 @@ export default {
     this.editMode = this.id !== undefined
   },
   beforeRouteLeave (to, from, next) {
-    const lastCard = this.collection.items[this.lastIndex]
-    const onlyLastCardIsEmpty = lastCard.q === '' && lastCard.a === ''
-    if (this.readyToSave || onlyLastCardIsEmpty) {
+    if (this.readyToSave || this.lastCardIsEmpty) {
       this.removeLastEmpty()
       next()
     }
@@ -78,6 +76,10 @@ export default {
     },
     lastIndex () {
       return this.collection.items.length - 1;
+    },
+    lastCardIsEmpty () {
+      const lastCard = this.collection.items[this.lastIndex]
+      return lastCard.q === '' && lastCard.a === ''
     },
     readyToSave () {
       return this.errors.q.length === 0
