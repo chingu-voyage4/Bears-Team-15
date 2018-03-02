@@ -25,7 +25,23 @@
     class="newCard"
     @click="add"
   >+</button>
-  <p v-if=emptyWarningMessage>Please edit <em>Question</em> and <em>Answer</em> before adding new Card</p>
+  <div v-if="!readyToSave">
+    <p
+      v-for="(e, index) in errors.q" :key="'q'+index"
+    >
+      <span v-if="e !== lastIndex">
+        {{ errMsg.emptyQ }} at {{ e }} card
+      </span>
+    </p>
+    <p
+      v-for="(e, index) in errors.a" :key="'a'+index"
+    >
+      <span v-if="e !== lastIndex">
+        {{ errMsg.emptyA }} at {{ e }} card
+      </span>
+    </p>
+  </div>
+  <p v-else>ok to save </p>
 </div>
 </template>
 
@@ -39,7 +55,12 @@ export default {
       collectionName: '',
       items: [{...this.emptyCard}]
     },
-    emptyWarningMessage: false
+    errors: { q: [], a: [] },
+    errMsg: {
+      emptyCard: 'fill Q and A',
+      emptyQ: 'Please fill Question',
+      emptyA: 'Please fill Answer',
+    },
   }),
   created () {
     this.editMode = this.id !== undefined
