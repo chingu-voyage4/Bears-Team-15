@@ -89,6 +89,10 @@ export default {
   methods: {
     remove (index) {
       this.collection.items.splice(index, 1)
+      const helper = a => a.filter(x => x !== index)
+        .map(x => x > index ? x - 1 : x)
+      this.errors.q = helper(this.errors.q)
+      this.errors.a = helper(this.errors.a)
     },
     removeLastEmpty(){
       if(this.collection.items[this.lastIndex].q === ''
