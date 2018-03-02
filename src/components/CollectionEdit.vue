@@ -39,7 +39,6 @@
         Please fill <em>Answer</em> at {{ e }} card
     </p>
   </div>
-  <p v-else>ok to save </p>
 </div>
 </template>
 
