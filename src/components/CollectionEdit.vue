@@ -59,7 +59,14 @@ export default {
       return this.editMode
         ? this.$store.state.collections[this.id]
         : this.newCollection
-    }
+    },
+    lastIndex () {
+      return this.collection.items.length - 1;
+    },
+    readyToSave () {
+      return this.errors.q.length === 0
+        && this.errors.a.length === 0 ? true : false
+    },
   },
   methods: {
     remove (index) {
