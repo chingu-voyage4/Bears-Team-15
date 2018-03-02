@@ -45,14 +45,12 @@ export default {
     this.editMode = this.id !== undefined
   },
   beforeRouteLeave (to, from, next) {
-    // called when the route that renders this component is about to
-    // be navigated away from.
-    // has access to `this` component instance.
-
-    // clear empty card before leaving (we dont want user creating empty cards)
-    this.removeLastEmpty();
-    // call next so we can navigate away
-    next()
+    const lastCard = this.collection.items[this.lastIndex]
+    const onlyLastCardIsEmpty = lastCard.q === '' && lastCard.a === ''
+    if (this.readyToSave || onlyLastCardIsEmpty) {
+      this.removeLastEmpty()
+      next()
+    }
   },
   computed: {
     collection () {
