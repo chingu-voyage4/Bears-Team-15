@@ -77,6 +77,18 @@ export default {
       const lastCard = this.collection.items[this.lastIndex]
       return lastCard.q === '' && lastCard.a === ''
     },
+    lastCardIsNotFilled () {
+      const lastCard = this.collection.items[this.lastIndex]
+      if (lastCard.q === '') {
+        if (lastCard.a === '') {
+          return 'both'
+        }
+        return 'q'
+      } else if (lastCard.a === ''){
+        return 'a'
+      }
+      return null
+    },
     readyToSave () {
       return this.errors.q.length === 0
         && this.errors.a.length === 0 ? true : false
@@ -100,6 +112,8 @@ export default {
         if (this.lastCardIsEmpty) {
           this.blur(this.lastIndex, 'q')
           this.blur(this.lastIndex, 'a')
+        } else if (this.lastCardIsNotFilled) {
+          this.blur(this.lastIndex, this.lastCardIsNotFilled)
         } else {
           this.collection.items.push({...this.emptyCard})
         }
