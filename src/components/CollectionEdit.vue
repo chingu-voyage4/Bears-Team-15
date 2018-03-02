@@ -96,8 +96,13 @@ export default {
       }
     },
     add () {
-      if (this.readyToSave) {
-        this.collection.items.push({...this.emptyCard})
+      if (this.readyToSave ) {
+        if (this.lastCardIsEmpty) {
+          this.blur(this.lastIndex, 'q')
+          this.blur(this.lastIndex, 'a')
+        } else {
+          this.collection.items.push({...this.emptyCard})
+        }
       }
     },
     blur (index, qa) {
