@@ -25,6 +25,8 @@
     class="newCard"
     @click="add"
   >+</button>
+
+<!-- all this block with error messages should be improved -->
   <div v-if="!readyToSave">
     <p
       v-for="(e, index) in errors.q" :key="'q'+index"
