@@ -73,10 +73,6 @@ export default {
     lastIndex () {
       return this.collection.items.length - 1;
     },
-    lastCardIsEmpty () {
-      const lastCard = this.collection.items[this.lastIndex]
-      return lastCard.q === '' && lastCard.a === ''
-    },
     lastCardIsNotFilled () {
       const lastCard = this.collection.items[this.lastIndex]
       if (lastCard.q === '') {
@@ -103,13 +99,13 @@ export default {
       this.errors.a = helper(this.errors.a)
     },
     removeLastEmpty(){
-      if (this.lastCardIsEmpty) {
+      if (this.lastCardIsNotFilled === 'both') {
         this.collection.items.pop()
       }
     },
     add () {
       if (this.readyToSave ) {
-        if (this.lastCardIsEmpty) {
+        if (this.lastCardIsNotFilled === 'both') {
           this.blur(this.lastIndex, 'q')
           this.blur(this.lastIndex, 'a')
         } else if (this.lastCardIsNotFilled) {
