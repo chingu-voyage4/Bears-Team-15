@@ -32,14 +32,14 @@
       v-for="(e, index) in errors.q" :key="'q'+index"
     >
       <span v-if="e !== lastIndex">
-        {{ errMsg.emptyQ }} at {{ e }} card
+        Please fill <em>Question</em> at {{ e }} card
       </span>
     </p>
     <p
       v-for="(e, index) in errors.a" :key="'a'+index"
     >
       <span v-if="e !== lastIndex">
-        {{ errMsg.emptyA }} at {{ e }} card
+        Please fill <em>Answer</em> at {{ e }} card
       </span>
     </p>
   </div>
@@ -58,11 +58,6 @@ export default {
       items: [{...this.emptyCard}]
     },
     errors: { q: [], a: [] },
-    errMsg: {
-      emptyCard: 'fill Q and A',
-      emptyQ: 'Please fill Question',
-      emptyA: 'Please fill Answer',
-    },
   }),
   created () {
     this.editMode = this.id !== undefined
