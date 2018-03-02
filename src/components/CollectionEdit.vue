@@ -9,8 +9,14 @@
     class="card"
     v-for="(card, index) in collection.items" :key="index"
   >
-    <input type="text" v-model="card.q" placeholder="Question">
-    <input type="text" v-model="card.a" placeholder="Answer">
+    <input
+      type="text" v-model="card.q" placeholder="Question"
+      @blur="blur(index, 'q')"
+    >
+    <input
+      type="text" v-model="card.a" placeholder="Answer"
+      @blur="blur(index, 'a')"
+    >
     <button
       @click="remove(index)"
     >X</button>
