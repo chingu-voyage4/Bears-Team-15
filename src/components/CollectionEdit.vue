@@ -95,9 +95,7 @@ export default {
       this.errors.a = helper(this.errors.a)
     },
     removeLastEmpty(){
-      if(this.collection.items[this.lastIndex].q === ''
-        && this.collection.items[this.lastIndex].a === '')
-      {
+      if (this.lastCardIsEmpty) {
         this.collection.items.pop()
       }
     },
