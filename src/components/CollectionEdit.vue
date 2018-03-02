@@ -63,7 +63,7 @@ export default {
     this.editMode = this.id !== undefined
   },
   beforeRouteLeave (to, from, next) {
-    if (this.readyToSave || this.lastCardIsEmpty) {
+    if (this.readyToSave) {
       this.removeLastEmpty()
       next()
     }
@@ -102,8 +102,6 @@ export default {
     add () {
       if (this.readyToSave) {
         this.collection.items.push({...this.emptyCard})
-        this.errors.q.push(this.lastIndex)
-        this.errors.a.push(this.lastIndex)
       }
     },
     blur (index, qa) {
