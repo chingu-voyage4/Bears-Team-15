@@ -85,6 +85,19 @@ export default {
         this.errors.q.push(this.lastIndex)
         this.errors.a.push(this.lastIndex)
       }
+    },
+    blur (index, qa) {
+      if (this.collection.items[index][qa] === ''){
+        // if on blur value is empty – make a record in errors
+        this.errors[qa].push(index)
+      } else {
+        // if on blur value is not empty – check if there was an error before
+        const errorIndex = this.errors[qa]
+          .findIndex(x => x === index)
+        if (errorIndex !== -1) {
+          // if there was an error – remove it from error list
+          this.errors[qa].splice(errorIndex, 1)
+        }
       }
     }
   }
