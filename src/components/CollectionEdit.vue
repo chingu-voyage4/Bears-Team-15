@@ -80,16 +80,11 @@ export default {
       }
     },
     add () {
-      let lastIndex = this.collection.items.length-1;
-      //prevent adding new card if previouse if empty
-      if(this.collection.items[lastIndex].q !== '' && this.collection.items[lastIndex].a !== ''){
+      if (this.readyToSave) {
         this.collection.items.push({...this.emptyCard})
-      }else{
-        //show message for one second
-        this.emptyWarningMessage = true;
-        setTimeout(() =>{
-          this.emptyWarningMessage = false;
-        },1000)
+        this.errors.q.push(this.lastIndex)
+        this.errors.a.push(this.lastIndex)
+      }
       }
     }
   }
