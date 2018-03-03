@@ -49,7 +49,9 @@ export default {
   },
   beforeRouteLeave (to, from, next) {
     if (this.readyToSave) {
-      this.removeLastEmpty()
+      if(this.lastCard){
+        this.removeLastEmpty()
+      }      
       next()
     }
   },
@@ -94,7 +96,9 @@ export default {
     },
     add () {
       if (this.readyToSave ) {
-        if (this.lastCardIsNotFilled === 'both') {
+        if(!this.lastCard){
+          this.collection.items.push({...this.emptyCard})
+        } else if (this.lastCardIsNotFilled === 'both') {
           this.blur(this.lastIndex, 'q')
           this.blur(this.lastIndex, 'a')
         } else if (this.lastCardIsNotFilled) {
