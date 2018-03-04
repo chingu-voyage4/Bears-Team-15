@@ -57,7 +57,7 @@ export default new Vuex.Store({
     },
     mutations: {
         deleteCollection(state, id){
-            state.collections[id] = { collectionName: 'deleted', items:[{q:'del', a:'del'}]}
+            state.collections[id] = null
         }
     },
     actions: {
