@@ -137,7 +137,7 @@ export default {
           this.$store.commit('increment') // make sure to do this on every change
                                           // otherwise local storage wont work as
                                           // vuex won't register state change
-          this.$router.push('/')
+          this.$router.push({ name: 'home' })
         }
       }
     },
