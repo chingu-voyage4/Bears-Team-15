@@ -101,6 +101,7 @@ export default {
   methods: {
     deleteCollection (){
       this.$store.dispatch('deleteCollection', this.id)
+      this.$router.push({ name: 'home' })
     },
     remove (index) {
       this.collection.items.splice(index, 1)
