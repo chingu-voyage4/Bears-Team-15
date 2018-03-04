@@ -10,13 +10,13 @@
     v-for="(card, index) in collection.items" :key="index"
   >
     <input
-      type="text" v-model="card.q" placeholder="Question"
+      type="text" v-model.trim="card.q" placeholder="Question"
       @blur="blur(index, 'q')"
       ref="q"
       :class="inputClass(index, 'q')"
     >
     <input
-      type="text" v-model="card.a" placeholder="Answer"
+      type="text" v-model.trim="card.a" placeholder="Answer"
       @blur="blur(index, 'a')"
       ref="a"
       :class="inputClass(index, 'a')"
