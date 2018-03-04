@@ -40,7 +40,7 @@ export default {
     emptyCard: { q: '', a: '' },
     newCollection: {
       collectionName: '',
-      items: [{...this.emptyCard}]
+      items: [{ q: '', a: '' }]
     },
     errors: { q: [], a: [] },
   }),
