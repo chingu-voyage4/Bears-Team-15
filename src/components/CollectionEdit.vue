@@ -4,6 +4,9 @@
     <input
       v-model="collection.collectionName"
       type="text" placeholder="Collection name">
+    <button
+      @click="deleteCollection"
+    >Delete Collection</button>
   </div>
   <div
     class="card"
@@ -81,6 +84,9 @@ export default {
     },
   },
   methods: {
+    deleteCollection (){
+      this.$store.dispatch('deleteCollection', this.id)
+    },
     remove (index) {
       this.collection.items.splice(index, 1)
       const helper = a => a.filter(x => x !== index)

@@ -54,5 +54,15 @@ export default new Vuex.Store({
                 ]
             }
         ]
+    },
+    mutations: {
+        deleteCollection(state, id){
+            state.collections[id] = { collectionName: 'deleted', items:[{q:'del', a:'del'}]}
+        }
+    },
+    actions: {
+        deleteCollection(context, id){
+            context.commit('deleteCollection', id)
+        }
     }
 })
