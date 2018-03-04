@@ -3,7 +3,8 @@
   <div>
     <input
       v-model="collection.collectionName"
-      type="text" placeholder="Collection name">
+      type="text" placeholder="Collection name"
+      :class="{error : titleClass }">
   </div>
   <div
     class="card"
@@ -26,9 +27,14 @@
     >X</button>
   </div>
   <button
-    class="newCard"
+    class="btn btn-add newCard"
     @click="add"
-  >+</button>
+  >Add</button>
+  <button
+    class="btn btn-save"
+    v-if="!editMode"
+    @click="save">
+  Save</button>
 </div>
 </template>
 
@@ -40,7 +46,7 @@ export default {
     emptyCard: { q: '', a: '' },
     newCollection: {
       collectionName: '',
-      items: [{...this.emptyCard}]
+      items: [{ q: '', a: '' }]
     },
     errors: { q: [], a: [] },
   }),
@@ -78,6 +84,15 @@ export default {
       return this.errors.q.length === 0
         && this.errors.a.length === 0 ? true : false
     },
+    readyToSaveCollection () {
+      if (this.editMode) return false
+      this.findEmptyInCards()
+      return this.errors.q.length === 0
+        && this.errors.a.length === 0 ? true : false
+    },
+    titleClass () {
+        return this.collection.collectionName === ''
+    }
   },
   methods: {
     remove (index) {
@@ -101,6 +116,19 @@ export default {
           this.blur(this.lastIndex, this.lastCardIsNotFilled)
         } else {
           this.collection.items.push({...this.emptyCard})
+        }
+      }
+    },
+    save () {
+     if (this.readyToSave ) {
+        if (this.lastCardIsNotFilled === 'both') {
+          this.blur(this.lastIndex, 'q')
+          this.blur(this.lastIndex, 'a')
+        } else if (this.lastCardIsNotFilled) {
+          this.blur(this.lastIndex, this.lastCardIsNotFilled)
+        } else {
+          this.$store.state.collections.push(this.collection)
+          this.$router.push('/')
         }
       }
     },
@@ -133,4 +161,34 @@ export default {
 .error {
   border: 1px solid red;
 }
+
+.btn {
+  color: #fff;
+  border: none;
+  padding: .5em 1.0em .5em;
+  margin: 5px;
+  font: inherit;
+  cursor: pointer;
+  outline: 0;
+  display: inline-block;
+  border-radius: 1em/50%;
+}
+
+
+.btn-add {
+  background-color: #7db85e;
+}
+
+.btn-save {
+  background-color: #2185d0;
+}
+
+.btn-save:hover {
+  background-color:  #1678c2;
+}
+
+.btn-save:active {
+  background-color:  #1a69a4;
+}
+
 </style>
