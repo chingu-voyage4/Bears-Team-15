@@ -53,6 +53,24 @@ export default new Vuex.Store({
                     {q: 'Luxembourg', a: 'Luxembourg City'}
                 ]
             }
-        ]
+        ],
+    //this is little hack, because vuex doesn't register state change
+    //when we push to collection []
+    //so we need to remember to use this 'incement' mutation on every change.
+    //this need to be rethink, but for now it let me save to local storage
+    updateCount: 0
+    },
+    mutations: {
+      increment (state) {
+        state.updateCount++;
+      },
+      initialiseStore(state) {
+        // load from local storage
+        if(localStorage.getItem('store')) {
+          this.replaceState(
+            Object.assign(state, JSON.parse(localStorage.getItem('store')))
+          )
+        }
+     }
     }
 })
