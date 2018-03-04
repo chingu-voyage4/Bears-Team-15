@@ -22,6 +22,11 @@ export default new Router({
           component: Dashboard
         },
         {
+          path: '/collection/new',
+          name: 'collectionNew',
+          component: CollectionNew
+        },
+        {
           path: '/collection/:id',
           component: Collection,
           props: true,
@@ -45,11 +50,6 @@ export default new Router({
               props: true,
             },
           ]
-        },
-        {
-          path: '/collection/new',
-          name: 'collectionNew',
-          component: CollectionNew
         },
       ]
     }

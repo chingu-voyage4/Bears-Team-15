@@ -69,6 +69,7 @@ export default {
       return this.collection.items.length - 1;
     },
     lastCardIsNotFilled () {
+      if (this.lastIndex === -1) return null
       const lastCard = this.collection.items[this.lastIndex]
       if (lastCard.q === '') {
         if (lastCard.a === '') {
