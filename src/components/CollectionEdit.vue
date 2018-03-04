@@ -98,6 +98,7 @@ export default {
   methods: {
     remove (index) {
       this.collection.items.splice(index, 1)
+      this.$store.commit('increment') // update state
       const helper = a => a.filter(x => x !== index)
         .map(x => x > index ? x - 1 : x)
       this.errors.q = helper(this.errors.q)
@@ -106,6 +107,7 @@ export default {
     removeLastEmpty(){
       if (this.lastCardIsNotFilled === 'both') {
         this.collection.items.pop()
+        this.$store.commit('increment') // update state
       }
     },
     add () {
@@ -117,6 +119,9 @@ export default {
           this.blur(this.lastIndex, this.lastCardIsNotFilled)
         } else {
           this.collection.items.push({...this.emptyCard})
+          this.$store.commit('increment') // make sure to do this on every change
+                                          // otherwise local storage wont work as
+                                          // vuex won't register state change
         }
       }
     },
@@ -129,6 +134,9 @@ export default {
           this.blur(this.lastIndex, this.lastCardIsNotFilled)
         } else {
           this.$store.state.collections.push(this.collection)
+          this.$store.commit('increment') // make sure to do this on every change
+                                          // otherwise local storage wont work as
+                                          // vuex won't register state change
           this.$router.push('/')
         }
       }
