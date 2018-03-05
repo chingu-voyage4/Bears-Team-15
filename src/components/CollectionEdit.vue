@@ -11,7 +11,7 @@
     >Delete Collection</button>
     <router-link
       v-if="createMode"
-      :to="{ name: 'home' }"
+      :to="homeRoute"
     >
       <button>Discard</button>
     </router-link>
@@ -52,6 +52,7 @@
 export default {
   props: ['id', 'createMode'],
   data: () => ({
+    homeRoute: { name: 'home' },
     emptyCard: { q: '', a: '' },
     errors: { q: [], a: [] },
   }),
@@ -107,7 +108,7 @@ export default {
     },
     deleteCollection () {
       this.$store.dispatch('deleteCollection', this.id)
-      this.$router.push({ name: 'home' })
+      this.$router.push(this.homeRoute)
     },
     remove (index) {
       const id = this.id
@@ -127,7 +128,7 @@ export default {
     save () {
       if (this.checkLastCard()) {
         this.$emit('save')
-        this.$router.push({ name: 'home' })
+        this.$router.push(this.homeRoute)
       }
     },
     blur (index, qa) {
