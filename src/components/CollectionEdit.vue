@@ -5,6 +5,9 @@
       v-model="collection.collectionName"
       type="text" placeholder="Collection name"
       :class="{error : titleClass }">
+    <button
+      @click="deleteCollection"
+    >Delete Collection</button>
   </div>
   <div
     class="card"
@@ -94,6 +97,10 @@ export default {
         }
       }
       return false
+    },
+    deleteCollection () {
+      this.$store.dispatch('deleteCollection', this.id)
+      this.$router.push({ name: 'home' })
     },
     remove (index) {
       const id = this.id

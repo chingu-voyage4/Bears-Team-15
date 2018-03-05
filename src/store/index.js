@@ -79,6 +79,9 @@ export default new Vuex.Store({
     createCollection (state, { collection }) {
       state.collections.push(collection)
     },
+    deleteCollection (state, id){
+      state.collections[id] = null
+    },
     removeCollection (state, id) {
       state.collections.splice(id, 1)
     },
@@ -89,5 +92,10 @@ export default new Vuex.Store({
         this.replaceState(Object.assign(state, JSON.parse(loc)))
       }
     },
+  },
+  actions: {
+    deleteCollection (context, id) {
+      context.commit('deleteCollection', id)
+    }
   }
 })
