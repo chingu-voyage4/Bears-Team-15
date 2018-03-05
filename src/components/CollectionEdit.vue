@@ -123,11 +123,12 @@ export default {
       this.errors.q = helper(this.errors.q)
       this.errors.a = helper(this.errors.a)
     },
-    add () {
+    add (cb) {
       if (this.checkLastCard()) {
         const card = { ...this.emptyCard }
         const id = this.id
         this.$store.commit('addCard', { id, card })
+        if (typeof cb === 'function') cb()
       }
     },
     save () {
@@ -152,11 +153,14 @@ export default {
       }
     },
     focusNext (target, type, index) {
-      if (target.value !== '') {
+      if (target.value.trim() !== '') {
         const focus = (qa, i) => {
           this.$nextTick(() => {
             const column = this.$refs[qa]
             if (column && column[i]) column[i].focus()
+            else if (qa !== 'a') {
+              this.add(() => this.focusNext(target, type, index))
+            }
           })
         }
         switch (type) {
