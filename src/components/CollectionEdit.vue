@@ -55,7 +55,9 @@ export default {
   },
   beforeRouteLeave (to, from, next) {
     if (this.readyToSave) {
-      this.removeLastEmpty()
+      if (this.lastCardIsNotFilled === 'both') {
+        this.remove(this.lastIndex, 1)
+      }
       next()
     }
   },
@@ -97,12 +99,6 @@ export default {
         .map(x => x > index ? x - 1 : x)
       this.errors.q = helper(this.errors.q)
       this.errors.a = helper(this.errors.a)
-    },
-    removeLastEmpty(){
-      if (this.lastCardIsNotFilled === 'both') {
-        this.collection.items.pop()
-        this.$store.commit('increment') // update state
-      }
     },
     add () {
       if (this.readyToSave ) {
