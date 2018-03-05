@@ -4,7 +4,8 @@
     <input
       v-model="collection.collectionName"
       type="text" placeholder="Collection name"
-      :class="titleClass">
+      :class="titleClass"
+    >
     <button
       v-if="!createMode"
       @click="deleteCollection"
