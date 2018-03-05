@@ -64,7 +64,10 @@ export default new Vuex.Store({
         else return 0
       })
       return deck
-    }
+    },
+    collectionQuantity: state => {
+      return state.collections.length
+    },
   },
   mutations: {
     addCard (state, { id, card }) {
@@ -73,8 +76,11 @@ export default new Vuex.Store({
     removeCard (state, { id, index }) {
       state.collections[id].items.splice(index, 1)
     },
-    saveCollection (state, { collection }) {
+    createCollection (state, { collection }) {
       state.collections.push(collection)
+    },
+    removeCollection (state, id) {
+      state.collections.splice(id, 1)
     },
     initialiseStore (state) {
       // load from local storage

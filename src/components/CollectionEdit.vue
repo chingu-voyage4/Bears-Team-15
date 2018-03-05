@@ -32,7 +32,7 @@
   >Add</button>
   <button
     class="btn btn-save"
-    v-if="!editMode"
+    v-if="createMode"
     @click="save">
   Save</button>
 </div>
@@ -40,19 +40,11 @@
 
 <script>
 export default {
-  props: ['id'],
+  props: ['id', 'createMode'],
   data: () => ({
-    editMode: true,
     emptyCard: { q: '', a: '' },
-    newCollection: {
-      collectionName: '',
-      items: [{ q: '', a: '' }]
-    },
     errors: { q: [], a: [] },
   }),
-  created () {
-    this.editMode = this.id !== undefined
-  },
   beforeRouteLeave (to, from, next) {
     if (this.readyToSave) {
       if (this.lastCardIsNotFilled === 'both') {
@@ -63,9 +55,7 @@ export default {
   },
   computed: {
     collection () {
-      return this.editMode
-        ? this.$store.state.collections[this.id]
-        : this.newCollection
+      return this.$store.state.collections[this.id]
     },
     lastIndex () {
       return this.collection.items.length - 1;
@@ -122,8 +112,7 @@ export default {
         } else if (this.lastCardIsNotFilled) {
           this.blur(this.lastIndex, this.lastCardIsNotFilled)
         } else {
-          const collection = this.collection
-          this.$store.commit('saveCollection', { collection })
+          this.$emit('save')
           this.$router.push({ name: 'home' })
         }
       }
