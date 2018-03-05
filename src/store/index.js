@@ -66,8 +66,9 @@ export default new Vuex.Store({
     },
     initialiseStore (state) {
       // load from local storage
-      if (localStorage.getItem('store')) {
-        this.replaceState( Object.assign(state, JSON.parse(localStorage.getItem('store'))) )
+      const loc = localStorage.getItem('store')
+      if (loc) {
+        this.replaceState(Object.assign(state, JSON.parse(loc)))
       }
     },
   }
