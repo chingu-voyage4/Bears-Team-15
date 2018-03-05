@@ -9,6 +9,12 @@
       v-if="!createMode"
       @click="deleteCollection"
     >Delete Collection</button>
+    <router-link
+      v-if="createMode"
+      :to="{ name: 'home' }"
+    >
+      <button>Discard</button>
+    </router-link>
   </div>
   <div
     class="card"
