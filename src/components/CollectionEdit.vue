@@ -82,6 +82,19 @@ export default {
     }
   },
   methods: {
+    checkLastCard () {
+      if (this.readyToSave ) {
+        if (this.lastCardIsNotFilled === 'both') {
+          this.blur(this.lastIndex, 'q')
+          this.blur(this.lastIndex, 'a')
+        } else if (this.lastCardIsNotFilled) {
+          this.blur(this.lastIndex, this.lastCardIsNotFilled)
+        } else {
+          return true
+        }
+      }
+      return false
+    },
     remove (index) {
       const id = this.id
       this.$store.commit('removeCard', { id, index })
@@ -91,30 +104,16 @@ export default {
       this.errors.a = helper(this.errors.a)
     },
     add () {
-      if (this.readyToSave ) {
-        if (this.lastCardIsNotFilled === 'both') {
-          this.blur(this.lastIndex, 'q')
-          this.blur(this.lastIndex, 'a')
-        } else if (this.lastCardIsNotFilled) {
-          this.blur(this.lastIndex, this.lastCardIsNotFilled)
-        } else {
-          const card = { ...this.emptyCard }
-          const id = this.id
-          this.$store.commit('addCard', { id, card })
-        }
+      if (this.checkLastCard()) {
+        const card = { ...this.emptyCard }
+        const id = this.id
+        this.$store.commit('addCard', { id, card })
       }
     },
     save () {
-     if (this.readyToSave ) {
-        if (this.lastCardIsNotFilled === 'both') {
-          this.blur(this.lastIndex, 'q')
-          this.blur(this.lastIndex, 'a')
-        } else if (this.lastCardIsNotFilled) {
-          this.blur(this.lastIndex, this.lastCardIsNotFilled)
-        } else {
-          this.$emit('save')
-          this.$router.push({ name: 'home' })
-        }
+      if (this.checkLastCard()) {
+        this.$emit('save')
+        this.$router.push({ name: 'home' })
       }
     },
     blur (index, qa) {
