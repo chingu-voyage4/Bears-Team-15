@@ -72,6 +72,9 @@ export default new Vuex.Store({
     }
   },
   mutations: {
+    addCard (state, { id, card }) {
+      state.collections[id].items.push(card)
+    },
     increment (state) {
       state.updateCount++;
     },

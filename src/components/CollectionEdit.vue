@@ -118,10 +118,13 @@ export default {
         } else if (this.lastCardIsNotFilled) {
           this.blur(this.lastIndex, this.lastCardIsNotFilled)
         } else {
-          this.collection.items.push({...this.emptyCard})
-          this.$store.commit('increment') // make sure to do this on every change
-                                          // otherwise local storage wont work as
-                                          // vuex won't register state change
+          const card = { ...this.emptyCard }
+          const id = this.id
+          this.$store.commit('addCard', { id, card })
+          this.$store.commit('increment')
+          // make sure to do this 'increment' on every change
+          // otherwise local storage wont work as
+          // vuex won't register state change
         }
       }
     },
