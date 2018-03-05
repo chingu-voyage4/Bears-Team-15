@@ -6,6 +6,7 @@
       type="text" placeholder="Collection name"
       :class="titleClass"
       :autofocus="createMode"
+      @keyup.enter="focusNext($event.target, 'title')"
     >
     <button
       v-if="!createMode"
@@ -27,12 +28,14 @@
       @blur="blur(index, 'q')"
       ref="q"
       :class="inputClass(index, 'q')"
+      @keyup.enter="focusNext($event.target, 'q')"
     >
     <input
       type="text" v-model="card.a" placeholder="Answer"
       @blur="blur(index, 'a')"
       ref="a"
       :class="inputClass(index, 'a')"
+      @keyup.enter="focusNext($event.target, 'a', index)"
     >
     <button
       @click="remove(index)"
@@ -146,6 +149,26 @@ export default {
       } else if (this.collection.items[index][qa] === ''){
         // if there wasn't an error and now it is – push it
         this.errors[qa].push(index)
+      }
+    },
+    focusNext (target, type, index) {
+      if (target.value !== '') {
+        switch (type) {
+          case 'title':
+            this.$nextTick(() => {
+              const questions = this.$refs.q
+              if (questions) questions[0].focus()
+            })
+            break;
+          case 'q': target.nextElementSibling.focus()
+            break;
+          case 'a':
+            this.$nextTick(() => {
+              const nextQ = this.$refs.q[index + 1]
+              if (nextQ) nextQ.focus()
+            })
+            break;
+        }
       }
     },
     inputClass (index, qa) {
