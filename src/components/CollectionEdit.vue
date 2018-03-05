@@ -85,12 +85,6 @@ export default {
       return this.errors.q.length === 0
         && this.errors.a.length === 0 ? true : false
     },
-    readyToSaveCollection () {
-      if (this.editMode) return false
-      this.findEmptyInCards()
-      return this.errors.q.length === 0
-        && this.errors.a.length === 0 ? true : false
-    },
     titleClass () {
         return this.collection.collectionName === ''
     }
