@@ -2,7 +2,7 @@
 <div class="container">
   <div>
     <input
-      v-model="collection.collectionName"
+      v-model.trim="collection.collectionName"
       type="text" placeholder="Collection name">
   </div>
   <div
