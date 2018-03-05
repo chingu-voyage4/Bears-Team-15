@@ -28,7 +28,7 @@
       @blur="blur(index, 'q')"
       ref="q"
       :class="inputClass(index, 'q')"
-      @keyup.enter="focusNext($event.target, 'q')"
+      @keyup.enter="focusNext($event.target, 'q', index)"
     >
     <input
       type="text" v-model="card.a" placeholder="Answer"
@@ -153,20 +153,21 @@ export default {
     },
     focusNext (target, type, index) {
       if (target.value !== '') {
+        const focus = (qa, i) => {
+          this.$nextTick(() => {
+            const column = this.$refs[qa]
+            if (column && column[i]) column[i].focus()
+          })
+        }
         switch (type) {
           case 'title':
-            this.$nextTick(() => {
-              const questions = this.$refs.q
-              if (questions) questions[0].focus()
-            })
+            focus('q', 0)
             break;
-          case 'q': target.nextElementSibling.focus()
+          case 'q':
+            focus('a', index)
             break;
           case 'a':
-            this.$nextTick(() => {
-              const nextQ = this.$refs.q[index + 1]
-              if (nextQ) nextQ.focus()
-            })
+            focus('q', index + 1)
             break;
         }
       }
