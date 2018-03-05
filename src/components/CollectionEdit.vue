@@ -127,7 +127,8 @@ export default {
         } else if (this.lastCardIsNotFilled) {
           this.blur(this.lastIndex, this.lastCardIsNotFilled)
         } else {
-          this.$store.state.collections.push(this.collection)
+          const collection = this.collection
+          this.$store.commit('saveCollection', { collection })
           this.$store.commit('increment') // make sure to do this on every change
                                           // otherwise local storage wont work as
                                           // vuex won't register state change
