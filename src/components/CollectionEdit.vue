@@ -6,6 +6,7 @@
       type="text" placeholder="Collection name"
       :class="{error : titleClass }">
     <button
+      v-if="!createMode"
       @click="deleteCollection"
     >Delete Collection</button>
   </div>
