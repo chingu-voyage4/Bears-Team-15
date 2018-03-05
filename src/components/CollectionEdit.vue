@@ -93,7 +93,8 @@ export default {
   },
   methods: {
     remove (index) {
-      this.collection.items.splice(index, 1)
+      const id = this.id
+      this.$store.commit('removeCard', { id, index })
       this.$store.commit('increment') // update state
       const helper = a => a.filter(x => x !== index)
         .map(x => x > index ? x - 1 : x)

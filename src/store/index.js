@@ -75,6 +75,9 @@ export default new Vuex.Store({
     addCard (state, { id, card }) {
       state.collections[id].items.push(card)
     },
+    removeCard (state, { id, index }) {
+      state.collections[id].items.splice(index, 1)
+    },
     increment (state) {
       state.updateCount++;
     },
