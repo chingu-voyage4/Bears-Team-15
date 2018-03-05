@@ -89,7 +89,7 @@ export default {
         && this.errors.a.length === 0 ? true : false
     },
     titleClass () {
-        return { error:  this.collection.collectionName === '' }
+      return { error:  this.collection.collectionName === '' }
     }
   },
   methods: {
