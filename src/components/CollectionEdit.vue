@@ -5,6 +5,7 @@
       v-model="collection.collectionName"
       type="text" placeholder="Collection name"
       :class="titleClass"
+      :autofocus="createMode"
     >
     <button
       v-if="!createMode"
