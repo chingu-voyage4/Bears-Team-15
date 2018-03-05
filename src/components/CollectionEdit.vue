@@ -4,7 +4,7 @@
     <input
       v-model="collection.collectionName"
       type="text" placeholder="Collection name"
-      :class="{error : titleClass }">
+      :class="titleClass">
     <button
       v-if="!createMode"
       @click="deleteCollection"
@@ -82,7 +82,7 @@ export default {
         && this.errors.a.length === 0 ? true : false
     },
     titleClass () {
-        return this.collection.collectionName === ''
+        return { error:  this.collection.collectionName === '' }
     }
   },
   methods: {
