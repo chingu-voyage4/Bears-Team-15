@@ -54,11 +54,6 @@ export default new Vuex.Store({
         ]
       }
     ],
-    //this is little hack, because vuex doesn't register state change
-    //when we push to collection []
-    //so we need to remember to use this 'incement' mutation on every change.
-    //this need to be rethink, but for now it let me save to local storage
-    updateCount: 0
   },
   getters: {
     alphabeticalDeck: state => index => {
@@ -80,9 +75,6 @@ export default new Vuex.Store({
     },
     saveCollection (state, { collection }) {
       state.collections.push(collection)
-    },
-    increment (state) {
-      state.updateCount++;
     },
     initialiseStore (state) {
       // load from local storage

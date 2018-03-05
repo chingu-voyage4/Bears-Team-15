@@ -95,7 +95,6 @@ export default {
     remove (index) {
       const id = this.id
       this.$store.commit('removeCard', { id, index })
-      this.$store.commit('increment') // update state
       const helper = a => a.filter(x => x !== index)
         .map(x => x > index ? x - 1 : x)
       this.errors.q = helper(this.errors.q)
@@ -112,10 +111,6 @@ export default {
           const card = { ...this.emptyCard }
           const id = this.id
           this.$store.commit('addCard', { id, card })
-          this.$store.commit('increment')
-          // make sure to do this 'increment' on every change
-          // otherwise local storage wont work as
-          // vuex won't register state change
         }
       }
     },
@@ -129,9 +124,6 @@ export default {
         } else {
           const collection = this.collection
           this.$store.commit('saveCollection', { collection })
-          this.$store.commit('increment') // make sure to do this on every change
-                                          // otherwise local storage wont work as
-                                          // vuex won't register state change
           this.$router.push({ name: 'home' })
         }
       }
