@@ -61,6 +61,9 @@ export default new Vuex.Store({
     updateCount: 0
     },
     mutations: {
+      deleteCollection(state, id){
+            state.collections[id] = null
+      },
       increment (state) {
         state.updateCount++;
       },
@@ -71,6 +74,11 @@ export default new Vuex.Store({
             Object.assign(state, JSON.parse(localStorage.getItem('store')))
           )
         }
-     }
+      }
+    },
+    actions: {
+        deleteCollection(context, id){
+            context.commit('deleteCollection', id)
+        }
     }
 })
