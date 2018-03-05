@@ -21,21 +21,8 @@ export default {
     id: { required: true }
   },
   computed: {
-    collection () {
-      return this.$store.state.collections[this.id]
-    },
     deck () {
-      const deck = [...this.collection.items]
-      deck.sort(function(prev, next){
-        if(prev.q.toLowerCase() > next.q.toLowerCase()){
-          return 1
-        }else if(prev.q.toLowerCase() < next.q.toLowerCase()){
-          return -1
-        }else{
-          return 0
-        }
-      })
-      return deck
+      return this.$store.getters.alphabeticalDeck(this.id)
     }
   }
 }

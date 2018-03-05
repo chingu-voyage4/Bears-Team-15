@@ -60,6 +60,17 @@ export default new Vuex.Store({
     //this need to be rethink, but for now it let me save to local storage
     updateCount: 0
   },
+  getters: {
+    alphabeticalDeck: state => index => {
+      const deck = [...state.collections[index].items]
+      deck.sort((prev, next) => {
+        if (prev.q.toLowerCase() > next.q.toLowerCase()) return 1
+        else if (prev.q.toLowerCase() < next.q.toLowerCase()) return -1
+        else return 0
+      })
+      return deck
+    }
+  },
   mutations: {
     increment (state) {
       state.updateCount++;
