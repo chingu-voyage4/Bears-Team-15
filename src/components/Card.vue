@@ -1,5 +1,5 @@
 <template>
-<div class="flip-container pointer" @click="flip" :class="{ flip: !newCard, flipper: !newCard, flipperFast: newCard }">
+<div class="flip-container pointer" @click="flip" :class="flipClass">
   <div class="flipper">
     <div class="front">
       {{ card.q }}
@@ -13,7 +13,7 @@
 
 <script>
 export default {
-  props: ['card'],
+  props: ['card', 'endlessFlip'],
   data: () => ({
     question: true,
     newCard: true
@@ -27,13 +27,27 @@ export default {
     },
     cardSide () {
       return this.question ? this.card.q : this.card.a
+    },
+    flipClass () {
+      if(this.endlessFlip){  
+        return {
+          flip: !this.question,
+          flipper: true
+        }
+      }else{
+        return {
+          flip: !this.question,
+          flipper: !this.question,
+          flipperFast: true
+        }
+      }
     }
   },
   methods: {
     flip () {
       if (!this.question) {
         this.$emit('nextCard')
-        this.newCard = true
+          this.newCard = true
       }else{
         this.newCard = false
       }

@@ -4,6 +4,7 @@
   <app-card
     v-for="item in deck" :key="item.id"
     :card="item"
+    :endlessFlip="true"
   ></app-card>
 </div>
 </div>
