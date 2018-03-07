@@ -1,14 +1,19 @@
 <template>
 <div class="container">
   <div>
-    <input
-      v-model="collection.collectionName"
-      type="text" placeholder="Collection name"
-      :class="titleClass">
     <button
       v-if="!createMode"
       @click="deleteCollection"
     >Delete Collection</button>
+    <button
+      @click="removeDuplicates"
+    >Remove Duplicates</button>
+  </div>
+  <div>
+    <input
+      v-model="collection.collectionName"
+      type="text" placeholder="Collection name"
+      :class="titleClass">    
     <router-link
       v-if="createMode"
       :to="homeRoute"
@@ -109,6 +114,9 @@ export default {
     deleteCollection () {
       this.$store.dispatch('deleteCollection', this.id)
       this.$router.push(this.homeRoute)
+    },
+    removeDuplicates () {
+      this.$store.dispatch('removeDuplicates', this.id)
     },
     remove (index) {
       const id = this.id

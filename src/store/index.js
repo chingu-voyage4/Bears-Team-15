@@ -92,10 +92,24 @@ export default new Vuex.Store({
         this.replaceState(Object.assign(state, JSON.parse(loc)))
       }
     },
+    removeDuplicates (state, id){
+      let deck = state.collections[id].items
+      let arrQ = deck.map((item) => item.q)
+      let setQ = new Set(arrQ)
+      if(setQ.length == arrQ.length){return}
+      let newDeck = []
+      setQ.forEach(function(q){
+        newDeck.push(deck[arrQ.indexOf(q)])
+      })
+      state.collections[id].items = newDeck
+    }
   },
   actions: {
     deleteCollection (context, id) {
       context.commit('deleteCollection', id)
+    },
+    removeDuplicates (context, id) {
+      context.commit('removeDuplicates', id)
     }
   }
 })
