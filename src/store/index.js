@@ -93,9 +93,9 @@ export default new Vuex.Store({
       }
     },
     removeDuplicates (state, id){
-      let deck = state.collections[id].items
-      let arrQ = deck.map((item) => item.q)
-      let setQ = new Set(arrQ)
+      const deck = state.collections[id].items
+      const arrQ = deck.map((item) => item.q)
+      const setQ = new Set(arrQ)
       if(setQ.length == arrQ.length){return}
       let newDeck = []
       setQ.forEach(function(q){
