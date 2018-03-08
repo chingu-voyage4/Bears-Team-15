@@ -6,7 +6,9 @@
       <a href="https://github.com/chingu-voyage4/Bears-Team-15#readme" target="_blank">Chingu Voyage-4 Team Bears-15</a>
     </span>
     <span class="pull-right">
-      v {{ version }}
+      <a href="https://github.com/chingu-voyage4/Bears-Team-15/wiki/What's-new">
+        v {{ version }}
+      </a>
     </span>
   </div>
 </footer>
@@ -15,7 +17,7 @@
 <script>
 export default {
   data: () => ({
-    version: '0.2'
+    version: '0.3'
   }),
   computed: {
     currentYear () {
