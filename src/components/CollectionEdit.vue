@@ -61,16 +61,20 @@ export default {
     errors: { q: [], a: [] },
   }),
   beforeRouteLeave (to, from, next) {
-    if (this.readyToSave) {
-      if (this.lastCardIsNotFilled === 'both') {
-        this.remove(this.lastIndex, 1)
+    if (this.collection) {
+      if (this.readyToSave) {
+        if (this.lastCardIsNotFilled === 'both') {
+          this.remove(this.lastIndex, 1)
+        }
+        next()
       }
+    } else {
       next()
     }
   },
   computed: {
     collection () {
-      return this.$store.state.collections[this.id]
+      return this.$store.getters.collection(this.id)
     },
     lastIndex () {
       return this.collection.items.length - 1;

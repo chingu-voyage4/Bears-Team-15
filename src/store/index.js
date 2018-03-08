@@ -8,6 +8,7 @@ export default new Vuex.Store({
     collections: [
       {
         collectionName: 'Italian words',
+        id: '1',
         items: [
           {q: 'ciotola', a: 'bowl'},
           {q: 'tazza', a: 'cup'},
@@ -23,6 +24,7 @@ export default new Vuex.Store({
       },
       {
         collectionName: 'European Capital Cities',
+        id: '2',
         items: [
           {q: 'England', a: 'London'},
           {q: 'France', a: 'Paris'},
@@ -54,10 +56,15 @@ export default new Vuex.Store({
         ]
       }
     ],
+    counter: 3,
   },
   getters: {
-    alphabeticalDeck: state => index => {
-      const deck = [...state.collections[index].items]
+    collection: state => id => {
+      return state.collections.find(x => x.id === id)
+    },
+    alphabeticalDeck: state => id => {
+      const collection = state.collections.find(x => x.id === id)
+      const deck = [...collection.items]
       deck.sort((prev, next) => {
         if (prev.q.toLowerCase() > next.q.toLowerCase()) return 1
         else if (prev.q.toLowerCase() < next.q.toLowerCase()) return -1
@@ -71,22 +78,22 @@ export default new Vuex.Store({
   },
   mutations: {
     addCard (state, { id, card }) {
-      state.collections[id].items.push(card)
+      state.collections.find(x => x.id === id).items.push(card)
     },
     removeCard (state, { id, index }) {
-      state.collections[id].items.splice(index, 1)
+      state.collections.find(x => x.id === id).items.splice(index, 1)
     },
-    createCollection (state, { collection }) {
-      state.collections.push(collection)
+    saveNewCollection (state, id) {
+      const toSave = state.collections.find(x => x.id === id)
+      toSave.id = state.counter
+      state.counter += 1
     },
     deleteCollection (state, id){
-      state.collections[id] = null
+      state.collections = state.collections.filter(x => x.id !== id)
     },
-    removeCollection (state, id) {
-      state.collections.splice(id, 1)
-    },
-    readLocalCollections (state, collections) {
+    readLocalCollections (state, { collections, counter }) {
       state.collections = collections
+      state.counter = counter
     },
     saveLocally (state) {
       localStorage.setItem('store', JSON.stringify(state));
@@ -96,7 +103,7 @@ export default new Vuex.Store({
     initializeStore ({ state, commit }) {
       const loc = localStorage.getItem('store')
       if (loc) {
-        commit('readLocalCollections', JSON.parse(loc).collections)
+        commit('readLocalCollections', JSON.parse(loc))
       }
     },
     deleteCollection (context, id) {
@@ -105,6 +112,19 @@ export default new Vuex.Store({
     },
     saveState (context) {
       context.commit('saveLocally')
+    },
+    createCollection ({ state, commit }, id) {
+      const collection = {
+        collectionName: '',
+        id,
+        items: [{ q: '', a: '' }]
+      }
+      commit('deleteCollection', id)
+      state.collections.push(collection)
+    },
+    saveNewCollection ({ commit }, id) {
+      commit('saveNewCollection', id)
+      commit('saveLocally')
     },
   }
 })
