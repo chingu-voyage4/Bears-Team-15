@@ -47,7 +47,6 @@
   >Add</button>
   <button
     class="btn btn-save"
-    v-if="createMode"
     @click="save">
   Save</button>
 </div>
@@ -133,7 +132,11 @@ export default {
     },
     save () {
       if (this.checkLastCard()) {
-        this.$emit('save')
+        if (this.createMode) {
+          this.$emit('save')
+        } else {
+          this.$store.dispatch('saveState')
+        }
         this.$router.push(this.homeRoute)
       }
     },
