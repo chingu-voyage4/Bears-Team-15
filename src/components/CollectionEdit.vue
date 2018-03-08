@@ -132,7 +132,11 @@ export default {
     },
     save () {
       if (this.checkLastCard()) {
-        this.$emit('save')
+        if (this.createMode) {
+          this.$emit('save')
+        } else {
+          this.$store.dispatch('saveState')
+        }
         this.$router.push(this.homeRoute)
       }
     },
