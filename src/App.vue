@@ -7,15 +7,6 @@
 <script>
 export default {
   name: 'App',
-  created() {
-    //subscribe to store
-    // so we can  save to local storage on every mutation
-    this.$store.subscribe((mutation, state) => {
-
-      localStorage.setItem('store', JSON.stringify(state));
-
-    })
-  }
 }
 </script>
 

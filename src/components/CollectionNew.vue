@@ -30,7 +30,9 @@ export default {
     this.id = this.$store.getters.collectionQuantity - 1
   },
   beforeRouteLeave (to, from, next) {
-    if (!this.saved) {
+    if (this.saved) {
+      this.$store.dispatch('saveState')
+    } else {
       this.$store.commit('removeCollection', this.id)
     }
     next()
