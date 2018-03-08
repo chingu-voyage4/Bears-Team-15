@@ -4,10 +4,17 @@
     <input
       v-model.trim="collection.collectionName"
       type="text" placeholder="Collection name"
-      :class="{error : titleClass }">
+      :class="titleClass">
     <button
+      v-if="!createMode"
       @click="deleteCollection"
     >Delete Collection</button>
+    <router-link
+      v-if="createMode"
+      :to="homeRoute"
+    >
+      <button>Discard</button>
+    </router-link>
   </div>
   <div
     class="card"
@@ -35,7 +42,7 @@
   >Add</button>
   <button
     class="btn btn-save"
-    v-if="!editMode"
+    v-if="createMode"
     @click="save">
   Save</button>
 </div>
@@ -43,30 +50,23 @@
 
 <script>
 export default {
-  props: ['id'],
+  props: ['id', 'createMode'],
   data: () => ({
-    editMode: true,
+    homeRoute: { name: 'home' },
     emptyCard: { q: '', a: '' },
-    newCollection: {
-      collectionName: '',
-      items: [{ q: '', a: '' }]
-    },
     errors: { q: [], a: [] },
   }),
-  created () {
-    this.editMode = this.id !== undefined
-  },
   beforeRouteLeave (to, from, next) {
     if (this.readyToSave) {
-      this.removeLastEmpty()
+      if (this.lastCardIsNotFilled === 'both') {
+        this.remove(this.lastIndex, 1)
+      }
       next()
     }
   },
   computed: {
     collection () {
-      return this.editMode
-        ? this.$store.state.collections[this.id]
-        : this.newCollection
+      return this.$store.state.collections[this.id]
     },
     lastIndex () {
       return this.collection.items.length - 1;
@@ -88,36 +88,12 @@ export default {
       return this.errors.q.length === 0
         && this.errors.a.length === 0 ? true : false
     },
-    readyToSaveCollection () {
-      if (this.editMode) return false
-      this.findEmptyInCards()
-      return this.errors.q.length === 0
-        && this.errors.a.length === 0 ? true : false
-    },
     titleClass () {
-        return this.collection.collectionName === ''
+        return { error:  this.collection.collectionName === '' }
     }
   },
   methods: {
-    deleteCollection (){
-      this.$store.dispatch('deleteCollection', this.id)
-      this.$router.push({ name: 'home' })
-    },
-    remove (index) {
-      this.collection.items.splice(index, 1)
-      this.$store.commit('increment') // update state
-      const helper = a => a.filter(x => x !== index)
-        .map(x => x > index ? x - 1 : x)
-      this.errors.q = helper(this.errors.q)
-      this.errors.a = helper(this.errors.a)
-    },
-    removeLastEmpty(){
-      if (this.lastCardIsNotFilled === 'both') {
-        this.collection.items.pop()
-        this.$store.commit('increment') // update state
-      }
-    },
-    add () {
+    checkLastCard () {
       if (this.readyToSave ) {
         if (this.lastCardIsNotFilled === 'both') {
           this.blur(this.lastIndex, 'q')
@@ -125,27 +101,34 @@ export default {
         } else if (this.lastCardIsNotFilled) {
           this.blur(this.lastIndex, this.lastCardIsNotFilled)
         } else {
-          this.collection.items.push({...this.emptyCard})
-          this.$store.commit('increment') // make sure to do this on every change
-                                          // otherwise local storage wont work as
-                                          // vuex won't register state change
+          return true
         }
+      }
+      return false
+    },
+    deleteCollection () {
+      this.$store.dispatch('deleteCollection', this.id)
+      this.$router.push(this.homeRoute)
+    },
+    remove (index) {
+      const id = this.id
+      this.$store.commit('removeCard', { id, index })
+      const helper = a => a.filter(x => x !== index)
+        .map(x => x > index ? x - 1 : x)
+      this.errors.q = helper(this.errors.q)
+      this.errors.a = helper(this.errors.a)
+    },
+    add () {
+      if (this.checkLastCard()) {
+        const card = { ...this.emptyCard }
+        const id = this.id
+        this.$store.commit('addCard', { id, card })
       }
     },
     save () {
-     if (this.readyToSave ) {
-        if (this.lastCardIsNotFilled === 'both') {
-          this.blur(this.lastIndex, 'q')
-          this.blur(this.lastIndex, 'a')
-        } else if (this.lastCardIsNotFilled) {
-          this.blur(this.lastIndex, this.lastCardIsNotFilled)
-        } else {
-          this.$store.state.collections.push(this.collection)
-          this.$store.commit('increment') // make sure to do this on every change
-                                          // otherwise local storage wont work as
-                                          // vuex won't register state change
-          this.$router.push({ name: 'home' })
-        }
+      if (this.checkLastCard()) {
+        this.$emit('save')
+        this.$router.push(this.homeRoute)
       }
     },
     blur (index, qa) {
