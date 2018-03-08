@@ -16,5 +16,8 @@ export default {
     'appHeader': Header,
     'appFooter': Footer,
   },
+  beforeCreate() {
+    this.$store.dispatch('initializeStore')
+  },
 }
 </script>
