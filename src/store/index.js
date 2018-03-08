@@ -85,24 +85,26 @@ export default new Vuex.Store({
     removeCollection (state, id) {
       state.collections.splice(id, 1)
     },
-    initializeStore (state) {
-      // load from local storage
-      const loc = localStorage.getItem('store')
-      if (loc) {
-        this.replaceState(Object.assign(state, JSON.parse(loc)))
-      }
+    readLocalCollections (state, collections) {
+      state.collections = collections
     },
     saveLocally (state) {
       localStorage.setItem('store', JSON.stringify(state));
     }
   },
   actions: {
+    initializeStore ({ state, commit }) {
+      const loc = localStorage.getItem('store')
+      if (loc) {
+        commit('readLocalCollections', JSON.parse(loc).collections)
+      }
+    },
     deleteCollection (context, id) {
       context.commit('deleteCollection', id)
       context.commit('saveLocally')
     },
     saveState (context) {
       context.commit('saveLocally')
-    }
+    },
   }
 })
