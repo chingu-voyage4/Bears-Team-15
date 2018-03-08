@@ -47,7 +47,6 @@
   >Add</button>
   <button
     class="btn btn-save"
-    v-if="createMode"
     @click="save">
   Save</button>
 </div>
