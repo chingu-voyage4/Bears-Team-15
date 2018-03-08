@@ -16,7 +16,6 @@ export default {
   props: ['card', 'endlessFlip'],
   data: () => ({
     question: true,
-    newCard: true
   }),
   computed: {
     cardState () {
@@ -47,9 +46,6 @@ export default {
     flip () {
       if (!this.question) {
         this.$emit('nextCard')
-          this.newCard = true
-      }else{
-        this.newCard = false
       }
       this.question = !this.question
     }
