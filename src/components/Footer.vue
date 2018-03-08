@@ -6,7 +6,7 @@
       <a href="https://github.com/chingu-voyage4/Bears-Team-15#readme" target="_blank">Chingu Voyage-4 Team Bears-15</a>
     </span>
     <span class="pull-right">
-      <a href="https://github.com/chingu-voyage4/Bears-Team-15/wiki/What's-new">
+      <a href="https://github.com/chingu-voyage4/Bears-Team-15/wiki/What's-new" target="_blank">
         v {{ version }}
       </a>
     </span>
