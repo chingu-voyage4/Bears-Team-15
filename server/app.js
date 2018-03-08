@@ -1,7 +1,18 @@
+<<<<<<< HEAD
 const express = require('express'),
   app = express(),
   path = require('path'),
   {NODE_ENV} = process.env
+||||||| merged common ancestors
+const express = require('express'),
+  app = express(),
+  {NODE_ENV} = process.env
+=======
+const express = require('express')
+const app = express()
+const path = require('path')
+const {NODE_ENV} = process.env
+>>>>>>> development
 
 // application-level middleware:
 const bodyParser = require('body-parser')

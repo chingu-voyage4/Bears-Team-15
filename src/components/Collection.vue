@@ -1,17 +1,68 @@
 <template>
 <div>
-<h1>This is {{ label }} placeholder</h1>
-<router-link to="/">Home</router-link>
+  <h1> {{ collection.collectionName }} </h1>
+  <nav>
+    <ul>
+      <li
+        v-for="(item, index) in navItems" :key="index"
+      >
+        <router-link :to="item.route">{{ item.display }}</router-link>
+      </li>
+    </ul>
+  </nav>
+  <router-view/>
 </div>
 </template>
 
 <script>
 export default {
-  name: 'Collection',
-  data () {
-    return {
-      label: 'Collection'
-    }
+  props: {
+    id: { required: true }
+  },
+  data: () => ({
+    navItems: [
+      {
+        display: 'Lesson',
+        route: { name: 'collection' }
+      },
+      {
+        display: 'Cards',
+        route: { name: 'collectionView' }
+      },
+      {
+        display: 'Edit',
+        route: { name: 'collectionEdit' }
+      },
+    ]
+  }),
+  computed: {
+    collection () {
+      return this.$store.state.collections[this.id]
+    },
   }
 }
 </script>
+
+<style scoped>
+nav {
+  margin-bottom: 40px;
+}
+
+nav ul {
+  list-style: none;
+}
+
+nav li {
+  display: inline;
+  margin: 0 20px;
+}
+
+nav li a {
+  font-size: 1.2rem;
+  padding: 10px;
+}
+
+nav .router-link-exact-active {
+  background: #0bf;
+}
+</style>
