@@ -11,9 +11,12 @@
   </div>
   <div>
     <input
-      v-model="collection.collectionName"
+      v-model.trim="collection.collectionName"
       type="text" placeholder="Collection name"
-      :class="titleClass">    
+      :class="titleClass"
+      :autofocus="createMode"
+      @keyup.enter="focusNext($event.target, 'title')"
+    >   
     <router-link
       v-if="createMode"
       :to="homeRoute"
@@ -26,16 +29,18 @@
     v-for="(card, index) in collection.items" :key="index"
   >
     <input
-      type="text" v-model="card.q" placeholder="Question"
+      type="text" v-model.trim="card.q" placeholder="Question"
       @blur="blur(index, 'q')"
       ref="q"
       :class="inputClass(index, 'q')"
+      @keyup.enter="focusNext($event.target, 'q', index)"
     >
     <input
-      type="text" v-model="card.a" placeholder="Answer"
+      type="text" v-model.trim="card.a" placeholder="Answer"
       @blur="blur(index, 'a')"
       ref="a"
       :class="inputClass(index, 'a')"
+      @keyup.enter="focusNext($event.target, 'a', index)"
     >
     <button
       @click="remove(index)"
@@ -94,7 +99,7 @@ export default {
         && this.errors.a.length === 0 ? true : false
     },
     titleClass () {
-        return { error:  this.collection.collectionName === '' }
+      return { error:  this.collection.collectionName === '' }
     }
   },
   methods: {
@@ -126,11 +131,12 @@ export default {
       this.errors.q = helper(this.errors.q)
       this.errors.a = helper(this.errors.a)
     },
-    add () {
+    add (cb) {
       if (this.checkLastCard()) {
         const card = { ...this.emptyCard }
         const id = this.id
         this.$store.commit('addCard', { id, card })
+        if (typeof cb === 'function') cb()
       }
     },
     save () {
@@ -152,6 +158,30 @@ export default {
       } else if (this.collection.items[index][qa] === ''){
         // if there wasn't an error and now it is – push it
         this.errors[qa].push(index)
+      }
+    },
+    focusNext (target, type, index) {
+      if (target.value.trim() !== '') {
+        const focus = (qa, i) => {
+          this.$nextTick(() => {
+            const column = this.$refs[qa]
+            if (column && column[i]) column[i].focus()
+            else if (qa !== 'a') {
+              this.add(() => this.focusNext(target, type, index))
+            }
+          })
+        }
+        switch (type) {
+          case 'title':
+            focus('q', 0)
+            break;
+          case 'q':
+            focus('a', index)
+            break;
+          case 'a':
+            focus('q', index + 1)
+            break;
+        }
       }
     },
     inputClass (index, qa) {
