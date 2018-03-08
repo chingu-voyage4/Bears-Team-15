@@ -28,17 +28,10 @@ export default {
       return this.question ? this.card.q : this.card.a
     },
     flipClass () {
-      if(this.endlessFlip){  
-        return {
-          flip: !this.question,
-          flipper: true
-        }
-      }else{
-        return {
-          flip: !this.question,
-          flipper: !this.question,
-          flipperFast: true
-        }
+      return {
+        flip: !this.question,
+        flipper: this.endlessFlip || !this.endlessFlip && !this.question,
+        flipperFast: !this.endlessFlip,
       }
     }
   },
