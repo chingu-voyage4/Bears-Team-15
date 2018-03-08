@@ -8,7 +8,7 @@ const bodyParser = require('body-parser')
 app.use(bodyParser.json())
 if (NODE_ENV !== 'production') {
   const cors = require('cors')
-  app.use(cors({exposedHeaders: ['x-auth']}))
+  app.use(cors({ exposedHeaders: ['x-auth'] }))
   require('dotenv').config()
 }
 
