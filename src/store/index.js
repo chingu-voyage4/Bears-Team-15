@@ -85,7 +85,7 @@ export default new Vuex.Store({
     removeCollection (state, id) {
       state.collections.splice(id, 1)
     },
-    initialiseStore (state) {
+    initializeStore (state) {
       // load from local storage
       const loc = localStorage.getItem('store')
       if (loc) {

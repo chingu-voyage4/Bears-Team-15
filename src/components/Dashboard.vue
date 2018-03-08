@@ -28,8 +28,8 @@ export default {
   data: () => ({
     greeting: 'Welcome to Bears-15 Cards!',
   }),
-  beforeCreate() {
-    this.$store.commit('initialiseStore')
+  beforeCreate () {
+    this.$store.commit('initializeStore')
   },
   computed: mapState(['collections']),
 }
