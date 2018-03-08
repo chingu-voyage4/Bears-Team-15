@@ -1,11 +1,11 @@
 <template>
 <div class="container">
   <div>
-    <button
+    <button class="btn btn-delete"
       v-if="!createMode"
       @click="deleteCollection"
     >Delete Collection</button>
-    <button
+    <button class="btn btn-delete"
       @click="removeDuplicates"
     >Remove Duplicates</button>
   </div>
@@ -181,6 +181,9 @@ export default {
   border-radius: 1em/50%;
 }
 
+.btn-delete{
+  background-color: #ff4d4d;
+}
 
 .btn-add {
   background-color: #7db85e;
