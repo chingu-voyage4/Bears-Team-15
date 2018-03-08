@@ -1,44 +1,37 @@
 <template>
 <div>
-  <h1>
-    <router-link to="/collection">{{ collection.collectionName }}</router-link>
-  </h1>
-  <div
-    @click.stop="nextCard"
-    class="pointer"
-  >
+  <div>
     <app-card
-     :question="question"
-    > {{ card }} </app-card>
+      :card="card"
+      @nextCard="nextCard"
+    ></app-card>
   </div>
 </div>
 </template>
 
 <script>
 import Card from '@/components/Card'
-import { mapState } from 'vuex'
 
 export default {
   name: 'Lesson',
   components: {
     appCard: Card
   },
+  props: {
+    id: { required: true }
+  },
   data: () => ({
     index: 0,
-    question: true
   }),
   created () {
     this.index = this.randIndex()
   },
   computed: {
-    ...mapState(['collections']),
     collection () {
-      return this.collections[1]
+      return this.$store.state.collections[this.id]
     },
     card () {
-      const item = this.collection.items[this.index]
-      const card = this.question ? item.q : item.a
-      return card
+      return this.collection.items[this.index]
     },
     quantity () {
       return this.collection.items.length
@@ -46,10 +39,7 @@ export default {
   },
   methods: {
     nextCard () {
-      if (!this.question) {
-        this.index = this.randIndex()
-      }
-      this.question = !this.question
+      this.index = this.randIndex()
     },
     randIndex () {
       return Math.floor(Math.random()*(this.quantity))
@@ -57,10 +47,3 @@ export default {
   }
 }
 </script>
-
-<style>
-.pointer {
-  display: inline-block;
-  cursor: pointer;
-}
-</style>

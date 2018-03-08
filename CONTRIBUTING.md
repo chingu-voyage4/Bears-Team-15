@@ -19,6 +19,7 @@ The following is a set of guidelines for contributing to our project.
   * [Issues related to tasks](#issue-as-a-representation-of-a-task)
   * [Waffle.io automation](#waffleio-automation)
   * [Naming Git branches](#naming-git-branches)
+* [Git FAQ](#git-faq)
 
 ## General
 
@@ -325,3 +326,42 @@ completed and the whole feature is tested, now it is time for
 * [Waffle.io FAQ](https://help.waffle.io/faq)
 * [Waffle.io guide on using automatic work tracking](https://help.waffle.io/automatic-work-tracking/auto-work-tracking-basics/recommended-workflow-using-pull-requests-automatic-work-tracking)
 * [Git Branch Naming Conventions | Andrew Allen](https://allenan.com/git-branch-naming-conventions/)
+
+## Git FAQ
+
+#### Q: I've made some commits but I realized that I was on `development` branch.
+
+#### Solution:
+
+``` bash
+$ git log
+# find the ID of the most recent commit
+# which wasn't among your current changes
+
+$ git reset --mixed <commit-ID>
+# now everything is like you didn't commit, all changes are
+# preserved, but they are in unstaged area
+
+$ git stash
+# it will "cut" your changes in files
+
+$ git checkout -b new-branch-name
+
+$ git stash pop
+# it will "paste" your changes
+
+# now use 'add' and 'commit' to make commits
+```
+
+Another way is to push your current `development` under another name
+to remote, then `checkout` to any other branch, delete `development`
+and fetch it anew from remote.
+
+```
+$ git push origin development:new-branch-name
+
+$ git checkout foo
+$ git branch -D development
+$ git fetch
+# now you can checkout to `development` or `new-branch-name`
+```
