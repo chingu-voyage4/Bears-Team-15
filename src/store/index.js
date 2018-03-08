@@ -100,7 +100,7 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    initializeStore ({ state, commit }) {
+    initializeStore ({ commit }) {
       const loc = localStorage.getItem('store')
       if (loc) {
         commit('readLocalCollections', JSON.parse(loc))
