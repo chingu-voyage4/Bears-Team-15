@@ -2,10 +2,11 @@
 <div>
   <h1>{{ greeting }}</h1>
   <div class="dashboard">
-    <div v-for="(deck, index) in collections" :key="index" v-if="collections[index]">
-      <router-link :to="{ name: 'collection', params: { id: index } }">
+    <div v-for="(deck, index) in collections" :key="index"
+    >
+      <router-link :to="{ name: 'collection', params: { id: deck.id } }">
         <div class="deck">
-          <h3>{{ collections[index].collectionName }}</h3>
+          <h3>{{ deck.collectionName }}</h3>
         </div>
       </router-link>
     </div>

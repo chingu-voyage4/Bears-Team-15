@@ -37,7 +37,7 @@ export default {
   }),
   computed: {
     collection () {
-      return this.$store.state.collections[this.id]
+      return this.$store.getters.collection(this.id)
     },
   }
 }
