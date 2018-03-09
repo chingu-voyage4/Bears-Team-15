@@ -50,7 +50,7 @@ export default new Vuex.Store({
       state.collections = collections
       state.counter = counter
     },
-    readPublicCollections (state, { collections, counter }) {
+    readPublicCollections (state, { collections }) {
       state.publicCollections = collections
     },
     saveLocally (state) {
