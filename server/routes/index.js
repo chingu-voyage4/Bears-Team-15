@@ -64,7 +64,6 @@ router.get('/collections/public', (req, res) => {
         ]
       }
     ],
-    counter: 3,
   })
 })
 
