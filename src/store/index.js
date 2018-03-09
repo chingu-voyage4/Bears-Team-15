@@ -24,9 +24,6 @@ export default new Vuex.Store({
       })
       return deck
     },
-    collectionQuantity: state => {
-      return state.collections.length
-    },
   },
   mutations: {
     addCard (state, { id, card }) {
