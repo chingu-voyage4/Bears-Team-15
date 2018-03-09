@@ -60,6 +60,24 @@ export default new Vuex.Store({
       }
       commit('setLoadingMode', false)
     },
+    fetchRemoteCollections ({ commit }) {
+      commit('setLoadingMode', true)
+      axios({
+        method: 'get',
+        url: '/collections/public',
+        headers: {'x-auth': 'im-the-user'},
+      })
+        .then(res => {
+          if (res) {
+            commit('readCollections', res.data)
+            commit('setLoadingMode', false)
+          } else throw new Error('No response')
+        })
+        .catch(err => {
+          commit('setLoadingMode', false)
+          console.log(err.response ? err.response.statusText : err.message )
+        })
+    },
     deleteCollection (context, id) {
       context.commit('deleteCollection', id)
       context.commit('saveLocally')
