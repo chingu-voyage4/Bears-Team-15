@@ -57,7 +57,8 @@ export default new Vuex.Store({
       localStorage.setItem('store', JSON.stringify(state));
     },
     removeDuplicates (state, id){
-      const deck = state.collections[id].items
+      const collection = state.collections.find(x => x.id == id)
+      const deck = collection.items
       const arrQ = deck.map((item) => item.q)
       const setQ = new Set(arrQ)
       if(setQ.length == arrQ.length){return}
@@ -65,7 +66,7 @@ export default new Vuex.Store({
       setQ.forEach(function(q){
         newDeck.push(deck[arrQ.indexOf(q)])
       })
-      state.collections[id].items = newDeck
+      collection.items = [...newDeck]
     },
   },
   actions: {
