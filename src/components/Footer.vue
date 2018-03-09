@@ -1,16 +1,14 @@
 <template>
 <footer>
-  <div class="content">
-    <span class="pull-left">
+    <div class="content">
       © {{ currentYear }}
       <a href="https://github.com/chingu-voyage4/Bears-Team-15#readme" target="_blank">Chingu Voyage-4 Team Bears-15</a>
-    </span>
-    <span class="pull-right">
+    </div>
+    <div class="content">
       <a href="https://github.com/chingu-voyage4/Bears-Team-15/wiki/What's-new" target="_blank">
         v {{ version }}
       </a>
-    </span>
-  </div>
+    </div>
 </footer>
 </template>
 
