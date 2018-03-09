@@ -18,7 +18,6 @@ export default {
   name: "DashboardPublic",
   computed: mapState(['publicCollections']),
   beforeCreate () {
-    this.$store.dispatch('fetchRemoteCollections')
   },
 }
 </script>
