@@ -8,6 +8,7 @@ export default new Vuex.Store({
   state: {
     collections: [],
     counter: 1,
+    loadingMode: false,
   },
   getters: {
     collection: state => id => {
@@ -42,6 +43,9 @@ export default new Vuex.Store({
     deleteCollection (state, id){
       state.collections = state.collections.filter(x => x.id !== id)
     },
+    setLoadingMode (state, status) {
+      state.loadingMode = status
+    },
     readCollections (state, { collections, counter }) {
       state.collections = collections
       state.counter = counter
@@ -52,10 +56,12 @@ export default new Vuex.Store({
   },
   actions: {
     fetchLocalCollections ({ commit }) {
+      commit('setLoadingMode', true)
       const loc = localStorage.getItem('store')
       if (loc) {
         commit('readCollections', JSON.parse(loc))
       }
+      commit('setLoadingMode', false)
     },
     deleteCollection (context, id) {
       context.commit('deleteCollection', id)
