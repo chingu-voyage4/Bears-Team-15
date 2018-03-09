@@ -42,7 +42,7 @@ export default new Vuex.Store({
     deleteCollection (state, id){
       state.collections = state.collections.filter(x => x.id !== id)
     },
-    readLocalCollections (state, { collections, counter }) {
+    readCollections (state, { collections, counter }) {
       state.collections = collections
       state.counter = counter
     },
@@ -51,10 +51,10 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    initializeStore ({ commit }) {
+    fetchLocalCollections ({ commit }) {
       const loc = localStorage.getItem('store')
       if (loc) {
-        commit('readLocalCollections', JSON.parse(loc))
+        commit('readCollections', JSON.parse(loc))
       }
     },
     deleteCollection (context, id) {

@@ -16,8 +16,8 @@ export default {
     'appHeader': Header,
     'appFooter': Footer,
   },
-  beforeCreate() {
-    this.$store.dispatch('initializeStore')
+  beforeCreate () {
+    this.$store.dispatch('fetchLocalCollections')
   },
 }
 </script>
