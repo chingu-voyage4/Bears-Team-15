@@ -92,6 +92,9 @@ export default new Vuex.Store({
         this.replaceState(Object.assign(state, JSON.parse(loc)))
       }
     },
+    saveLocally (state) {
+      localStorage.setItem('store', JSON.stringify(state));
+    },
     removeDuplicates (state, id){
       const deck = state.collections[id].items
       const arrQ = deck.map((item) => item.q)
@@ -102,11 +105,15 @@ export default new Vuex.Store({
         newDeck.push(deck[arrQ.indexOf(q)])
       })
       state.collections[id].items = newDeck
-    }
+    },
   },
   actions: {
     deleteCollection (context, id) {
       context.commit('deleteCollection', id)
+      context.commit('saveLocally')
+    },
+    saveState (context) {
+      context.commit('saveLocally')
     },
     removeDuplicates (context, id) {
       context.commit('removeDuplicates', id)
