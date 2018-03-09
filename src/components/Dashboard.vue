@@ -1,23 +1,9 @@
 <template>
 <div>
   <h1>{{ greeting }}</h1>
-  <div class="dashboard">
-    <div v-for="(deck, index) in collections" :key="index"
-    >
-      <router-link :to="{ name: 'collection', params: { id: deck.id } }">
-        <div class="deck">
-          <h3>{{ deck.collectionName }}</h3>
-        </div>
-      </router-link>
-    </div>
-    <div>
-      <router-link :to="{ name: 'collectionNew' }">
-        <div class="deck">
-          <h3>+</h3>
-        </div>
-      </router-link>
-    </div>
   <app-nav-tabs :navItems="navItems"></app-nav-tabs>
+  <div>
+    <router-view/>
   </div>
 </div>
 </template>
@@ -48,7 +34,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 .dashboard {
   width: 80%;
   min-height: 400px;

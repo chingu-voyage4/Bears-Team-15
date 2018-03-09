@@ -7,6 +7,8 @@ import CollectionView from '@/components/CollectionView'
 import Lesson from '@/components/Lesson'
 import Homepage from '@/components/Homepage'
 import Dashboard from '@/components/Dashboard'
+import DashboardPrivate from '@/components/DashboardPrivate'
+import DashboardPublic from '@/components/DashboardPublic'
 
 Vue.use(Router)
 
@@ -18,8 +20,19 @@ export default new Router({
       children: [
         {
           path: '/',
-          name: 'home',
-          component: Dashboard
+          component: Dashboard,
+          children: [
+            {
+              path: '/',
+              name: 'home',
+              component: DashboardPrivate,
+            },
+            {
+              path: 'public',
+              name: 'public',
+              component: DashboardPublic,
+            }
+          ]
         },
         {
           path: '/collection/new',
