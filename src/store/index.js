@@ -55,7 +55,18 @@ export default new Vuex.Store({
     },
     saveLocally (state) {
       localStorage.setItem('store', JSON.stringify(state));
-    }
+    },
+    removeDuplicates (state, id){
+      const deck = state.collections[id].items
+      const arrQ = deck.map((item) => item.q)
+      const setQ = new Set(arrQ)
+      if(setQ.length == arrQ.length){return}
+      let newDeck = []
+      setQ.forEach(function(q){
+        newDeck.push(deck[arrQ.indexOf(q)])
+      })
+      state.collections[id].items = newDeck
+    },
   },
   actions: {
     fetchLocalCollections ({ commit }) {
@@ -103,6 +114,9 @@ export default new Vuex.Store({
     saveNewCollection ({ commit }, id) {
       commit('saveNewCollection', id)
       commit('saveLocally')
+    },
+    removeDuplicates (context, id) {
+      context.commit('removeDuplicates', id)
     },
   }
 })
