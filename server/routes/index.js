@@ -16,7 +16,7 @@ router.get('/collections/public', (req, res) => {
     collections: [
       {
         collectionName: 'Italian words',
-        id: '1',
+        id: 'remote1',
         items: [
           {q: 'ciotola', a: 'bowl'},
           {q: 'tazza', a: 'cup'},
@@ -32,7 +32,7 @@ router.get('/collections/public', (req, res) => {
       },
       {
         collectionName: 'European Capital Cities',
-        id: '2',
+        id: 'remote2',
         items: [
           {q: 'England', a: 'London'},
           {q: 'France', a: 'Paris'},
