@@ -77,14 +77,20 @@ export default {
 }
 
 .front, .back {
+  padding: 0 15px;
   display: flex;
   height: 100%;
   flex-direction: column;
   justify-content: center;
 
+  text-overflow: ellipsis;
+  /* Required for text-overflow to do anything */
+  white-space: wrap;
+  overflow: hidden;
+
   text-align: center;
   margin: auto;
-  width: 200px;
+  width: 170px;
   height: 250px;
   border: none;
   border-radius: 20px;
@@ -106,7 +112,7 @@ export default {
 /* front pane, placed above back */
 .front {
   background-color: #f1f7fa;
-  font-size: 2rem;
+  font-size: 1.75rem;
   font-weight: 700;
 
 	z-index: 2;
