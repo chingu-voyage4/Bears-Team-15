@@ -1,17 +1,22 @@
 <template>
 <div class="container">
   <div>
+    <button class="btn btn-delete"
+      v-if="!createMode"
+      @click="deleteCollection"
+    >Delete Collection</button>
+    <button class="btn btn-delete"
+      @click="removeDuplicates"
+    >Remove Duplicates</button>
+  </div>
+  <div>
     <input
       v-model.trim="collection.collectionName"
       type="text" placeholder="Collection name"
       :class="titleClass"
       :autofocus="createMode"
       @keyup.enter="focusNext($event.target, 'title')"
-    >
-    <button
-      v-if="!createMode"
-      @click="deleteCollection"
-    >Delete Collection</button>
+    >   
     <router-link
       v-if="createMode"
       :to="homeRoute"
@@ -115,6 +120,9 @@ export default {
       this.$store.dispatch('deleteCollection', this.id)
       this.$router.push(this.homeRoute)
     },
+    removeDuplicates () {
+      this.$store.dispatch('removeDuplicates', this.id)
+    },
     remove (index) {
       const id = this.id
       this.$store.commit('removeCard', { id, index })
@@ -203,6 +211,9 @@ export default {
   border-radius: 1em/50%;
 }
 
+.btn-delete{
+  background-color: #ff4d4d;
+}
 
 .btn-add {
   background-color: #7db85e;
