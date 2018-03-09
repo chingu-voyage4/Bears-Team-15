@@ -1,5 +1,5 @@
 <template>
-<div>
+<div v-if="collection">
   <h1> {{ collection.collectionName }} </h1>
   <nav>
     <ul>
