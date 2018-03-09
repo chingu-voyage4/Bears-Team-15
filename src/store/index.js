@@ -7,15 +7,18 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     collections: [],
+    publicCollections: [],
     counter: 1,
     loadingMode: false,
   },
   getters: {
     collection: state => id => {
-      return state.collections.find(x => x.id == id)
+      return state.collections.find(x => x.id == id) ||
+        state.publicCollections.find(x => x.id == id)
     },
     alphabeticalDeck: state => id => {
-      const collection = state.collections.find(x => x.id == id)
+      const collection = state.collections.find(x => x.id == id) ||
+        state.publicCollections.find(x => x.id == id)
       const deck = [...collection.items]
       deck.sort((prev, next) => {
         if (prev.q.toLowerCase() > next.q.toLowerCase()) return 1
@@ -47,6 +50,9 @@ export default new Vuex.Store({
       state.collections = collections
       state.counter = counter
     },
+    readPublicCollections (state, { collections, counter }) {
+      state.publicCollections = collections
+    },
     saveLocally (state) {
       localStorage.setItem('store', JSON.stringify(state));
     }
@@ -69,7 +75,7 @@ export default new Vuex.Store({
       })
         .then(res => {
           if (res) {
-            commit('readCollections', res.data)
+            commit('readPublicCollections', res.data)
             commit('setLoadingMode', false)
           } else throw new Error('No response')
         })
