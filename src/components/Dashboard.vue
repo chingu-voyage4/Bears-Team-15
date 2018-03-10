@@ -5,7 +5,7 @@
     <div v-for="(deck, index) in collections" :key="index" v-if="collections[index]">
       <router-link :to="{ name: 'collection', params: { id: index } }">
         <div class="deck">
-          <h3>{{ collections[index].collectionName }}</h3>
+          <h3 class="ellipsis">{{ collections[index].collectionName }}</h3>
         </div>
       </router-link>
     </div>
