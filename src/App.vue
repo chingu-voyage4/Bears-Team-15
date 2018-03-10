@@ -22,36 +22,11 @@ export default {
   color: #2c3e50;
 }
 
-body, .homepage {
-  height: 100vh;
-  min-height: 600px;
+body, #app, .homepage {
   margin: 0;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-}
-
-footer {
-  min-height: 50px;
-  height: 10vh;
-  width: 100%;
-  background: #ddd;
-  margin-top: auto;
-  display: table;
-}
-
-footer .content {
-  display: table-cell;
-  vertical-align: middle;
-  line-height: 50px;
-  padding: 0 30px;
-}
-
-.pull-left {
-  float: left;
-}
-
-.pull-right {
-  float: right;
 }
 
 a {
