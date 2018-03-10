@@ -34,13 +34,10 @@ footer {
   width: 100%;
   background: #ddd;
   margin: auto auto 0 0;
-  padding: 0;
 }
 
 footer .content {
-  padding: 30px 5px 30px 5px;
   margin: 0 3vw 0 4vw;
-  min-width: 60px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
