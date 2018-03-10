@@ -2,10 +2,10 @@
 <div class="flip-container pointer" @click="flip" :class="flipClass">
   <div class="flipper">
     <div class="front">
-      <p>{{ card.q }}</p>
+      <p class="ellipsis">{{ card.q }}</p>
     </div>
     <div class="back">
-      <p>{{ card.a }}</p>
+      <p class="ellipsis">{{ card.a }}</p>
     </div>
   </div>
 </div>
@@ -104,9 +104,6 @@ export default {
 
 .front p, .back p {
   margin: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: pre-line;
 }
 
 /* front pane, placed above back */
