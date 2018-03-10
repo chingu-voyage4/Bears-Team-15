@@ -37,7 +37,7 @@ footer {
 }
 
 footer .content {
-  margin: 0 3vw 0 4vw;
+  margin: 0 3vw;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
