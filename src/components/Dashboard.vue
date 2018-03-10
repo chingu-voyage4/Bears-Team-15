@@ -44,7 +44,7 @@ export default {
 
 .deck {
   width: 140px;
-  height: 80px;
+  height: 200px;
   margin: 40px;
   padding: 60px 0;
   background: rgb(240, 240, 240);
