@@ -30,7 +30,7 @@ body, .homepage {
 footer {
   display: flex;
   justify-content: space-between;
-  min-height: 40px;
+  height: 3rem;
   width: 100%;
   background: #ddd;
   margin: auto auto 0 0;
