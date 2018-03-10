@@ -11,6 +11,9 @@ export default {
 </script>
 
 <style>
+* {
+  box-sizing: border-box;
+}
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -19,40 +22,25 @@ export default {
   color: #2c3e50;
 }
 
-body, .homepage {
-  height: 100vh;
-  min-height: 600px;
+body, #app, .homepage {
   margin: 0;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-}
-
-footer {
-  min-height: 50px;
-  height: 10vh;
-  width: 100%;
-  background: #ddd;
-  margin-top: auto;
-  display: table;
-}
-
-footer .content {
-  display: table-cell;
-  vertical-align: middle;
-  line-height: 50px;
-  padding: 0 30px;
-}
-
-.pull-left {
-  float: left;
-}
-
-.pull-right {
-  float: right;
 }
 
 a {
   text-decoration: none;
   color: black;
+}
+
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: pre-line;
+  /*overflow-wrap: break-word;*/
+  /* if this last property is added, very long words would be broken
+    in the middle, so they will be fully displayed, but it's pretty
+    lame and it overrides 'ellipsis' property */
 }
 </style>
