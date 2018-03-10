@@ -6,7 +6,7 @@
     >
       <router-link :to="{ name: 'collection', params: { id: deck.id } }">
         <div class="deck">
-          <h3>{{ deck.collectionName }}</h3>
+          <h3 class="ellipsis">{{ deck.collectionName }}</h3>
         </div>
       </router-link>
     </div>
@@ -45,7 +45,7 @@ export default {
 
 .deck {
   width: 140px;
-  height: 80px;
+  height: 200px;
   margin: 40px;
   padding: 60px 0;
   background: rgb(240, 240, 240);
