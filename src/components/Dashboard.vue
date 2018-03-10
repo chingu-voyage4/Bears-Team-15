@@ -5,7 +5,7 @@
     <div v-for="(deck, index) in collections" :key="index" v-if="collections[index]">
       <router-link :to="{ name: 'collection', params: { id: index } }">
         <div class="deck">
-          <h3>{{ collections[index].collectionName }}</h3>
+          <h3 class="ellipsis">{{ collections[index].collectionName }}</h3>
         </div>
       </router-link>
     </div>
@@ -44,7 +44,7 @@ export default {
 
 .deck {
   width: 140px;
-  height: 80px;
+  height: 200px;
   margin: 40px;
   padding: 60px 0;
   background: rgb(240, 240, 240);
