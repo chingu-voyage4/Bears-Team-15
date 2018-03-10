@@ -28,7 +28,7 @@ header{
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 0 30px;
+  padding: 0 3vw;
 }
 
 a{

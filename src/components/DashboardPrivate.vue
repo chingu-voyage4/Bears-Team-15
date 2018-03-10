@@ -4,7 +4,7 @@
   >
     <router-link :to="{ name: 'collection', params: { id: deck.id } }">
       <div class="deck">
-        <h3>{{ deck.collectionName }}</h3>
+        <h3 class="ellipsis">{{ deck.collectionName }}</h3>
       </div>
     </router-link>
   </div>
