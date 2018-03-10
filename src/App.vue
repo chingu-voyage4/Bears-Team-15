@@ -44,13 +44,6 @@ footer .content {
   text-overflow: ellipsis;
 }
 
-.pull-left {
-  float: left;
-}
-
-.pull-right {
-  float: right;
-}
 
 a {
   text-decoration: none;
