@@ -19,10 +19,9 @@ export default {
   color: #2c3e50;
 }
 
-body, .homepage {
-  height: 100vh;
-  min-height: 600px;
+body, #app, .homepage {
   margin: 0;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
