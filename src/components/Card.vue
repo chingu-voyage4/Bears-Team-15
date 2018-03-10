@@ -60,8 +60,9 @@ export default {
 
 .flip-container, .front, .back {
   border-radius: 20px;
-	width: 200px;
-	height: 250px;
+  width: 200px;
+  height: 16rem;
+  line-height: 2rem;
 }
 
 .flipper {
@@ -77,18 +78,15 @@ export default {
 }
 
 .front, .back {
-  padding: 0 15px;
+  padding: 1rem;
   display: flex;
-  height: 100%;
   flex-direction: column;
   justify-content: center;
 
   text-align: center;
   margin: auto;
-  width: 170px;
-  height: 250px;
+
   border: none;
-  border-radius: 20px;
   box-shadow: 2px 2px 15px rgb(140, 140, 140);
 
   backface-visibility: hidden;
