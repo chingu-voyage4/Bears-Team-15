@@ -31,6 +31,7 @@ footer {
   display: flex;
   justify-content: space-between;
   height: 3rem;
+  line-height: 3rem;
   width: 100%;
   background: #ddd;
   margin: auto auto 0 0;
