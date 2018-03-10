@@ -83,11 +83,6 @@ export default {
   flex-direction: column;
   justify-content: center;
 
-  text-overflow: ellipsis;
-  /* Required for text-overflow to do anything */
-  white-space: wrap;
-  overflow: hidden;
-
   text-align: center;
   margin: auto;
   width: 170px;
@@ -107,6 +102,13 @@ export default {
   -ms-user-select: none; /* IE10+ */
   -o-user-select: none;
   user-select: none;
+}
+
+.front p, .back p {
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: pre-line;
 }
 
 /* front pane, placed above back */
