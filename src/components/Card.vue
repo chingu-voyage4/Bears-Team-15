@@ -2,10 +2,10 @@
 <div class="flip-container pointer" @click="flip" :class="flipClass">
   <div class="flipper">
     <div class="front">
-      {{ card.q }}
+      <p>{{ card.q }}</p>
     </div>
     <div class="back">
-      {{ card.a }}
+      <p>{{ card.a }}</p>
     </div>
   </div>
 </div>
