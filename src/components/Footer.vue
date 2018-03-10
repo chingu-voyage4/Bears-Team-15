@@ -4,7 +4,7 @@
       © {{ currentYear }}
       <a href="https://github.com/chingu-voyage4/Bears-Team-15#readme" target="_blank">Chingu Voyage-4 Team Bears-15</a>
     </div>
-    <div class="content">
+    <div class="content version">
       <a href="https://github.com/chingu-voyage4/Bears-Team-15/wiki/What's-new" target="_blank">
         v {{ version }}
       </a>

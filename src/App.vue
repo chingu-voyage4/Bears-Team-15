@@ -29,7 +29,7 @@ body, .homepage {
 
 footer {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   height: 3rem;
   line-height: 3rem;
   width: 100%;
@@ -44,6 +44,19 @@ footer .content {
   text-overflow: ellipsis;
 }
 
+footer .version {
+  display: none;
+}
+
+@media (min-width: 480px) {
+  footer {
+    justify-content: space-between;
+  }
+
+  footer .version {
+   display: block;
+  }
+}
 
 a {
   text-decoration: none;
