@@ -1,5 +1,7 @@
 import express from 'express'
 import path from 'path'
+import routes from './routes'
+import connect from './mongoose'
 const app = express()
 const NODE_ENV = process.env.NODE_ENV || 'development'
 
@@ -13,18 +15,13 @@ if (NODE_ENV !== 'production') {
 }
 
 app.use(express.static(path.resolve(__dirname, '..')))
-
-const {PORT, MONGODB_URI} = process.env
-
-// connect to database:
-import connect from './mongoose'
-connect(MONGODB_URI)
-
-// routes:
-import routes from './routes'
 app.use('/', routes)
 
 // fire application:
-app.listen(PORT, () => console.log(`Your app is running in ${NODE_ENV} mode`))
+if (NODE_ENV !== 'test') {
+  const {PORT, MONGODB_URI} = process.env
+  connect(MONGODB_URI)
+  app.listen(PORT, () => console.log(`Your app is running in ${NODE_ENV} mode`))
+}
 
 export default app
