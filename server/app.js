@@ -1,10 +1,10 @@
-const express = require('express')
+import express from 'express'
+import path from 'path'
 const app = express()
-const path = require('path')
 const NODE_ENV = process.env.NODE_ENV || 'development'
 
 // application-level middleware:
-const bodyParser = require('body-parser')
+import bodyParser from 'body-parser'
 app.use(bodyParser.json())
 if (NODE_ENV !== 'production') {
   const cors = require('cors')
@@ -17,11 +17,14 @@ app.use(express.static(path.resolve(__dirname, '..')))
 const {PORT, MONGODB_URI} = process.env
 
 // connect to database:
-require('./mongoose')(MONGODB_URI)
+import connect from './mongoose'
+connect(MONGODB_URI)
 
 // routes:
-const routes = require('./routes')
+import routes from './routes'
 app.use('/', routes)
 
 // fire application:
 app.listen(PORT, () => console.log(`Your app is running in ${NODE_ENV} mode`))
+
+export default app
