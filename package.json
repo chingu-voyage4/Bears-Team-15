@@ -12,7 +12,7 @@
   "private": true,
   "scripts": {
     "dev:client": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
-    "dev:server:babel": "babel-node server/app.js --presets env",
+    "dev:server:babel": "babel-node server/app.js",
     "dev:server": "nodemon --exec npm run dev:server:babel",
     "start": "node dist/server/app.js",
     "build:client": "node build/build.js",

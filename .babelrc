@@ -12,6 +12,9 @@
   "env": {
     "test": {
       "presets": [ ["env"], "stage-2" ]
+    },
+    "development": {
+      "presets": [ ["env"], "stage-2" ]
     }
   }
 }
