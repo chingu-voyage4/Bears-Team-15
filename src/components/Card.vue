@@ -2,10 +2,10 @@
 <div class="flip-container pointer" @click="flip" :class="flipClass">
   <div class="flipper">
     <div class="front">
-      {{ card.q }}
+      <p class="ellipsis">{{ card.q }}</p>
     </div>
     <div class="back">
-      {{ card.a }}
+      <p class="ellipsis">{{ card.a }}</p>
     </div>
   </div>
 </div>
@@ -60,8 +60,9 @@ export default {
 
 .flip-container, .front, .back {
   border-radius: 20px;
-	width: 200px;
-	height: 250px;
+  width: 200px;
+  height: 16rem;
+  line-height: 2rem;
 }
 
 .flipper {
@@ -77,17 +78,15 @@ export default {
 }
 
 .front, .back {
+  padding: 1rem;
   display: flex;
-  height: 100%;
   flex-direction: column;
   justify-content: center;
 
   text-align: center;
   margin: auto;
-  width: 200px;
-  height: 250px;
+
   border: none;
-  border-radius: 20px;
   box-shadow: 2px 2px 15px rgb(140, 140, 140);
 
   backface-visibility: hidden;
@@ -103,10 +102,14 @@ export default {
   user-select: none;
 }
 
+.front p, .back p {
+  margin: 0;
+}
+
 /* front pane, placed above back */
 .front {
   background-color: #f1f7fa;
-  font-size: 2rem;
+  font-size: 1.75rem;
   font-weight: 700;
 
 	z-index: 2;
