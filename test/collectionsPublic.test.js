@@ -1,10 +1,12 @@
-jest.mock('../server/app')
-import app from '../server/app'
+import { app, server } from '../server/app'
 
 import chai from 'chai'
 import chaiHttp from 'chai-http'
 
 chai.use(chaiHttp)
+
+
+afterAll(server.close())
 
 describe('GET `/collections/public`', () => {
   beforeEach(() => {

@@ -30,4 +30,7 @@ const server = app.listen(PORT, () =>
   console.log(`Your app is running in ${NODE_ENV} mode`)
 )
 
-export default app
+export {
+  app,
+  server,
+}
