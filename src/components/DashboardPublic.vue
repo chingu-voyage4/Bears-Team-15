@@ -17,8 +17,10 @@ import { mapState } from 'vuex'
 export default {
   name: "DashboardPublic",
   computed: mapState(['publicCollections']),
-  beforeCreate () {
-    this.$store.dispatch('fetchRemoteCollections')
+  methods: {
+    refresh () {
+      this.$store.dispatch('fetchRemoteCollections')
+    }
   },
 }
 </script>
