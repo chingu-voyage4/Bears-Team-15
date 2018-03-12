@@ -14,10 +14,5 @@ beforeAll(async () => {
 afterAll(server.close())
 
 describe('GET `/collections/public`', () => {
-  beforeEach(() => {
-  })
-  it('should respond with object', () => {
-    expect(1).toBe(1)
-  })
 
 })
