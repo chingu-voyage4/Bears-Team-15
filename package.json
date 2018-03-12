@@ -14,7 +14,8 @@
     "dev:client": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "dev:server": "nodemon",
     "start": "node server/app.js",
-    "build": "node build/build.js"
+    "build": "node build/build.js",
+    "seed": "node server/seed"
   },
   "repository": {
     "type": "git",
@@ -25,8 +26,10 @@
   },
   "homepage": "https://github.com/chingu-voyage4/Bears-Team-15/#readme",
   "dependencies": {
+    "axios": "^0.18.0",
     "body-parser": "^1.18.2",
     "express": "^4.16.2",
+    "mongoose": "^5.0.6",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"

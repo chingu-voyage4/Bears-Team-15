@@ -1,39 +1,40 @@
 <template>
 <div>
   <h1>{{ greeting }}</h1>
-  <div class="dashboard">
-    <div v-for="(deck, index) in collections" :key="index"
-    >
-      <router-link :to="{ name: 'collection', params: { id: deck.id } }">
-        <div class="deck">
-          <h3 class="ellipsis">{{ deck.collectionName }}</h3>
-        </div>
-      </router-link>
-    </div>
-    <div>
-      <router-link :to="{ name: 'collectionNew' }">
-        <div class="deck">
-          <h3>+</h3>
-        </div>
-      </router-link>
-    </div>
+  <app-nav-tabs :navItems="navItems"></app-nav-tabs>
+  <div>
+    <router-view/>
   </div>
 </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
+import NavTabs from '@/components/NavTabs'
 
 export default {
   name: "Dashboard",
+  components: {
+    appNavTabs: NavTabs,
+  },
   data: () => ({
     greeting: 'Welcome to Bears-15 Cards!',
+    navItems: [
+      {
+        display: 'My decks',
+        route: { name: 'home' }
+      },
+      {
+        display: 'Discover',
+        route: { name: 'public' }
+      },
+    ]
   }),
   computed: mapState(['collections']),
 }
 </script>
 
-<style scoped>
+<style>
 .dashboard {
   width: 80%;
   min-height: 400px;

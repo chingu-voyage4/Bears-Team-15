@@ -2,16 +2,17 @@
 <header>
   <div class="content">
     <img src="../assets/logo-placeholder.png" />
+    <p v-if="loadingMode">Loading...</p>
     <router-link to="/">Home</router-link>
   </div>
 </header>
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
-  data: () => ({
-    
-  })
+  computed: mapState(['loadingMode']),
 }
 </script>
 
