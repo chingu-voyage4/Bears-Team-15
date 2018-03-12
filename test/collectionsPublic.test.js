@@ -46,6 +46,9 @@ describe('GET `/collections/public`', () => {
           .toBeTruthy()
         expect(ObjectId.isValid(received.collections[0].items[0]._id))
           .toBeTruthy()
+
+        // collections contain the original data from .json files
+        expect(received.collections).toMatchObject(seed.collections)
       })
   )
 })
