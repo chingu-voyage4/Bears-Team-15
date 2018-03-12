@@ -3,6 +3,7 @@ import * as seed from '../server/seed/modules'
 
 import chai from 'chai'
 import chaiHttp from 'chai-http'
+import { ObjectId } from 'mongodb'
 
 chai.use(chaiHttp)
 
@@ -39,6 +40,12 @@ describe('GET `/collections/public`', () => {
             })
           ])
         )
+
+        // id's are valid mongodb ObjectId
+        expect(ObjectId.isValid(received.collections[0].id))
+          .toBeTruthy()
+        expect(ObjectId.isValid(received.collections[0].items[0]._id))
+          .toBeTruthy()
       })
   )
 })
