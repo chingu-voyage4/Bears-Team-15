@@ -6,6 +6,10 @@ const CollectionSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
+  locked: {
+    type: Boolean,
+    required: true
+  },
   items: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Card',

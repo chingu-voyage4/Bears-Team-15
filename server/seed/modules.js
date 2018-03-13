@@ -23,11 +23,12 @@ const populateCollections = async () => {
   }
 }
 
-const populateCollection = async ({ collectionName, items }) => {
+const populateCollection = async ({ collectionName, locked, items }) => {
   try {
     const savedItems = await populateCards(items)
     const saved = await Collection({
       collectionName,
+	  locked,
       items: savedItems,
     }).save()
     return Promise.resolve(saved)
