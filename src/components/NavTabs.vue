@@ -28,6 +28,7 @@ nav ul {
 nav li {
   display: inline;
   margin: 0 20px;
+  white-space: nowrap;
 }
 
 nav li a {
