@@ -17,6 +17,11 @@ export default {
 </script>
 
 <style scoped>
+nav * {
+  margin: 0;
+  padding: 0;
+}
+
 nav {
   margin-bottom: 40px;
 }
@@ -26,17 +31,29 @@ nav ul {
 }
 
 nav li {
-  display: inline;
-  margin: 0 20px;
+  display: block;
+  height: 2.2rem;
+  line-height: 2.2rem;
   white-space: nowrap;
-}
-
-nav li a {
   font-size: 1.2rem;
-  padding: 10px;
 }
 
-nav .router-link-exact-active {
+nav a {
+  display: block;
+}
+
+nav a.router-link-exact-active {
   background: #0bf;
+}
+
+@media (min-width: 360px) {
+  nav li, nav a {
+    display: inline;
+  }
+
+  nav a {
+    padding: 10px;
+    margin: 0 10px;
+  }
 }
 </style>
