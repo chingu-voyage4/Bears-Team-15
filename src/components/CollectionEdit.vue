@@ -104,12 +104,14 @@ export default {
     },
     readyToSave () {
       return this.errors.q.length === 0
-        && this.errors.a.length === 0 ? true : false
+        && this.errors.a.length === 0
+        && !this.titleError
+    },
+    titleError () {
+      return this.collection.collectionName === ''
     },
     titleClass () {
-      return { error:  this.collection.collectionName === ''
-        && this.focused.qa !== 'title'
-      }
+      return { error:  this.titleError && this.focused.qa !== 'title' }
     }
   },
   methods: {
