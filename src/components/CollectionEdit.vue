@@ -24,8 +24,10 @@
       type="text" placeholder="Collection name"
       :class="titleClass"
       :autofocus="createMode"
+      @focus="focus(null, 'title')"
+      @blur="onBlur(null, 'title')"
       @keyup.enter="focusNext($event.target, 'title')"
-    >   
+    >
     <router-link
       v-if="createMode"
       :to="homeRoute"
@@ -39,6 +41,7 @@
   >
     <input
       type="text" v-model.trim="card.q" placeholder="Question"
+      @focus="focus(index, 'q')"
       @blur="blur(index, 'q')"
       ref="q"
       :class="inputClass(index, 'q')"
@@ -46,6 +49,7 @@
     >
     <input
       type="text" v-model.trim="card.a" placeholder="Answer"
+      @focus="focus(index, 'a')"
       @blur="blur(index, 'a')"
       ref="a"
       :class="inputClass(index, 'a')"
@@ -74,6 +78,7 @@ export default {
     homeRoute: { name: 'home' },
     emptyCard: { q: '', a: '' },
     errors: { q: [], a: [] },
+    focused: { qa: '', index: null }
   }),
   beforeRouteLeave (to, from, next) {
     if (this.collection) {
@@ -109,10 +114,14 @@ export default {
     },
     readyToSave () {
       return this.errors.q.length === 0
-        && this.errors.a.length === 0 ? true : false
+        && this.errors.a.length === 0
+        && !this.titleError
+    },
+    titleError () {
+      return this.collection.collectionName === ''
     },
     titleClass () {
-      return { error:  this.collection.collectionName === '' }
+      return { error:  this.titleError && this.focused.qa !== 'title' }
     }
   },
   methods: {
@@ -162,6 +171,9 @@ export default {
         this.$router.push(this.homeRoute)
       }
     },
+    focus (index, qa) {
+      this.focused = { index, qa }
+    },
     blur (index, qa) {
       //check if there was an error before
       const errorIndex = this.errors[qa]
@@ -176,6 +188,11 @@ export default {
         // if there wasn't an error and now it is – push it
         this.errors[qa].push(index)
       }
+
+      this.onBlur(index, qa)
+    },
+    onBlur (index, qa) {
+      this.focused = { index: null, qa: ''}
     },
     focusNext (target, type, index) {
       if (target.value.trim() !== '') {
@@ -202,16 +219,16 @@ export default {
       }
     },
     inputClass (index, qa) {
-      return {
-        error: this.errors[qa]
+      const err = this.errors[qa]
           .filter( x => x === index).length > 0 ? true : false
-      }
+      const focused = this.focused.qa === qa
+        && this.focused.index === index
+      return { error: err && !focused }
     },
-	fork(){
-	  //this.collection.public = false
-	  this.$store.dispatch('fork', this.collection)
-	  this.$router.push(this.homeRoute)
-	}
+	  fork(){	  
+	    this.$store.dispatch('fork', this.collection)
+	    this.$router.push(this.homeRoute)
+	  }
   }
 }
 </script>
