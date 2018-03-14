@@ -99,12 +99,12 @@ export default new Vuex.Store({
           console.log(err.response ? err.response.statusText : err.message )
         })
     },
-    deleteCollection (context, id) {
-      context.commit('deleteCollection', id)
-      context.commit('saveLocally')
+    deleteCollection ({ commit }, id) {
+      commit('deleteCollection', id)
+      commit('saveLocally')
     },
-    saveState (context) {
-      context.commit('saveLocally')
+    saveState ({ commit }) {
+      commit('saveLocally')
     },
     createCollection ({ state, commit }, id) {
       const collection = {
@@ -119,15 +119,15 @@ export default new Vuex.Store({
       commit('saveNewCollection', id)
       commit('saveLocally')
     },
-    removeDuplicates (context, id) {
-      context.commit('removeDuplicates', id)
+    removeDuplicates ({ commit }, id) {
+      commit('removeDuplicates', id)
     },
 	fork ({ commit }, collection) {
-	  const collectionCopy = Object.assign({}, collection)
-	  collectionCopy.locked = false
+	  let collectionCopy = Object.assign({}, collection)
+	  collectionCopy.public = false
 	  commit('pushCollection', collectionCopy)
 	  commit('saveNewCollection', collectionCopy.id)
-      commit('saveLocally')
+    commit('saveLocally')
 	}
   }
 })

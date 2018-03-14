@@ -16,12 +16,12 @@ router.get('/collections/public', (req, res) => {
     .populate('items')
     .then(collections => {
       const toSend = []
-      collections.forEach(({ _id, collectionName, locked, items }) => {
+      collections.forEach(({ _id, collectionName, public, items }) => {
         const cards = []
         items.forEach(({ _id, q, a }) => {
           cards.push({ _id, q, a })
         })
-        toSend.push({ id: _id, collectionName, locked, items: cards })
+        toSend.push({ id: _id, collectionName, public, items: cards })
       })
       res.status(200).send({ collections: toSend })
     })

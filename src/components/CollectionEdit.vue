@@ -1,6 +1,6 @@
 <template>
 <div class="container">
-  <div v-if="collection.locked">
+  <div v-if="collection.public">
 	This collection is locked! To edit it fork it to your decks.
 	<div>
 	  <button class="btn btn-delete"
@@ -8,7 +8,7 @@
       >Fork</button>
 	</div>
   </div>
-  <div v-if="!collection.locked">
+  <div v-if="!collection.public">
   <div>
     <button class="btn btn-delete"
       v-if="!createMode"
@@ -208,7 +208,7 @@ export default {
       }
     },
 	fork(){
-	  //this.collection.locked = false
+	  //this.collection.public = false
 	  this.$store.dispatch('fork', this.collection)
 	  this.$router.push(this.homeRoute)
 	}
