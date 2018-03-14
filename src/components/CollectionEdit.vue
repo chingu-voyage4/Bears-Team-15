@@ -1,7 +1,12 @@
 <template>
 <div class="container">
   <div v-if="collection.locked">
-	This collection is locked! You cannot edit it.
+	This collection is locked! To edit it fork it to your decks.
+	<div>
+	  <button class="btn btn-delete"
+        @click="fork"
+      >Fork</button>
+	</div>
   </div>
   <div v-if="!collection.locked">
   <div>
@@ -201,7 +206,12 @@ export default {
         error: this.errors[qa]
           .filter( x => x === index).length > 0 ? true : false
       }
-    }
+    },
+	fork(){
+	  this.collection.locked = false
+	  this.$store.dispatch('fork')
+	  this.$router.push(this.homeRoute)
+	}
   }
 }
 </script>
