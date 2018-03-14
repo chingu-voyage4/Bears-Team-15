@@ -1,9 +1,9 @@
 <template>
 <div class="container">
-  <div v-if="collection.locked">
+  <div v-if="collection.public">
 	This collection is locked! You cannot edit it.
   </div>
-  <div v-if="!collection.locked">
+  <div v-if="!collection.public">
   <div>
     <button class="btn btn-delete"
       v-if="!createMode"

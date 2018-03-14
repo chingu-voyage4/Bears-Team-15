@@ -1,7 +1,7 @@
 {
   "collectionName": "European Capital Cities",
   "id": "remote2",
-  "locked": true,
+  "public": true,
   "items": [
     { "q": "England", "a": "London" },
     { "q": "France", "a": "Paris" },
