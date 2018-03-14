@@ -68,6 +68,9 @@ export default new Vuex.Store({
       })
       collection.items = [...newDeck]
     },
+	pushCollection(state, collection){
+		state.collections.push(collection)
+	}
   },
   actions: {
     fetchLocalCollections ({ commit }) {
@@ -119,5 +122,12 @@ export default new Vuex.Store({
     removeDuplicates (context, id) {
       context.commit('removeDuplicates', id)
     },
+	fork ({ commit }, collection) {
+	  const collectionCopy = Object.assign({}, collection)
+	  collectionCopy.locked = false
+	  commit('pushCollection', collectionCopy)
+	  commit('saveNewCollection', collectionCopy.id)
+      commit('saveLocally')
+	}
   }
 })

@@ -208,8 +208,8 @@ export default {
       }
     },
 	fork(){
-	  this.collection.locked = false
-	  this.$store.dispatch('fork')
+	  //this.collection.locked = false
+	  this.$store.dispatch('fork', this.collection)
 	  this.$router.push(this.homeRoute)
 	}
   }
