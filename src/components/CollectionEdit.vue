@@ -211,9 +211,9 @@ export default {
     inputClass (index, qa) {
       const err = this.errors[qa]
           .filter( x => x === index).length > 0 ? true : false
-      const notFocused = this.focused.qa !== qa
-        && this.focused.index !== index
-      return { error: err && notFocused }
+      const focused = this.focused.qa === qa
+        && this.focused.index === index
+      return { error: err && !focused }
     }
   }
 }
