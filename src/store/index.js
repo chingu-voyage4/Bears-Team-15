@@ -106,14 +106,14 @@ export default new Vuex.Store({
     saveState ({ commit }) {
       commit('saveLocally')
     },
-    createCollection ({ state, commit }, id) {
+    createCollection ({ commit }, id) {
       const collection = {
         collectionName: '',
         id,
         items: [{ q: '', a: '' }]
       }
       commit('deleteCollection', id)
-      state.collections.push(collection)
+      commit('pushCollection', collection)
     },
     saveNewCollection ({ commit }, id) {
       commit('saveNewCollection', id)
