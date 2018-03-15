@@ -1,7 +1,6 @@
 {
   "collectionName": "Italian words",
-  "id": "remote1",
-  "public": true,
+  "shared": true,
   "items": [
     { "q": "ciotola", "a": "bowl" },
     { "q": "tazza", "a": "cup" },

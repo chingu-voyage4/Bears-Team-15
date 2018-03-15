@@ -6,7 +6,7 @@ const CollectionSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
-  public: {
+  shared: {
     type: Boolean,
     required: false
   },
