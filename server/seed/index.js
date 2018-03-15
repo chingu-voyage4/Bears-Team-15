@@ -1,5 +1,7 @@
-require('dotenv').config()
+import dotenv from 'dotenv'
+import connect from '../mongoose'
+import { seed } from './modules'
 
-require('../mongoose')(process.env.MONGODB_URI)
-
-require('./modules').seed()
+dotenv.config()
+connect(process.env.MONGODB_URI)
+seed()

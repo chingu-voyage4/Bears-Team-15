@@ -1,5 +1,6 @@
 {
   "collectionName": "Italian words",
+  "shared": true,
   "items": [
     { "q": "ciotola", "a": "bowl" },
     { "q": "tazza", "a": "cup" },

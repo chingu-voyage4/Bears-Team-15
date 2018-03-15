@@ -6,6 +6,10 @@ const CollectionSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
+  shared: {
+    type: Boolean,
+    required: false
+  },
   items: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Card',

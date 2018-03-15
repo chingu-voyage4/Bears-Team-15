@@ -1,5 +1,9 @@
 <template>
 <div class="container">
+  <div v-if="collection.shared">
+	This collection is locked! You cannot edit it.
+  </div>
+  <div v-if="!collection.shared">
   <div>
     <button class="btn btn-delete"
       v-if="!createMode"
@@ -58,6 +62,7 @@
     class="btn btn-save"
     @click="save">
   Save</button>
+</div>
 </div>
 </template>
 
