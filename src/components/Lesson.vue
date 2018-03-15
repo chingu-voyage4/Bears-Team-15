@@ -1,11 +1,9 @@
 <template>
-<div>
-  <div>
-    <app-card
-      :card="card"
-      @nextCard="nextCard"
-    ></app-card>
-  </div>
+<div class="cards-container">
+  <app-card
+    :card="card"
+    @nextCard="nextCard"
+  ></app-card>
 </div>
 </template>
 
@@ -28,7 +26,7 @@ export default {
   },
   computed: {
     collection () {
-      return this.$store.state.collections[this.id]
+      return this.$store.getters.collection(this.id)
     },
     card () {
       return this.collection.items[this.index]

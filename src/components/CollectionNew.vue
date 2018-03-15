@@ -17,21 +17,17 @@ export default {
     appCollectionEdit: CollectionEdit,
   },
   data: () => ({
-    id: null,
-    newCollection: {
-      collectionName: '',
-      items: [{ q: '', a: '' }]
-    },
+    id: 'temporary',
     saved: false,
   }),
   created () {
-    const collection = { ...this.newCollection }
-    this.$store.commit('createCollection', { collection })
-    this.id = this.$store.getters.collectionQuantity - 1
+    this.$store.dispatch('createCollection', this.id)
   },
   beforeRouteLeave (to, from, next) {
-    if (!this.saved) {
-      this.$store.commit('removeCollection', this.id)
+    if (this.saved) {
+      this.$store.dispatch('saveNewCollection', this.id)
+    } else {
+      this.$store.commit('deleteCollection', this.id)
     }
     next()
   },

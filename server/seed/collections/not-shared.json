@@ -1,0 +1,8 @@
+{
+  "collectionName": "Foobar",
+  "items": [
+    { "q": "foo", "a": "bar" },
+    { "q": "fuzz", "a": "buzz" },
+    { "q": "humpty", "a": "dumpty" }
+  ]
+}

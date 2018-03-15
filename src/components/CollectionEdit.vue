@@ -1,17 +1,33 @@
 <template>
 <div class="container">
+<div v-if="collection.shared">
+	This collection is locked! To edit it fork it to your decks.
+	<div>
+	  <button class="btn btn-delete"
+        @click="fork"
+      >Fork</button>
+	</div>
+</div>
+<div v-if="!collection.shared">
+  <div>
+    <button class="btn btn-delete"
+      v-if="!createMode"
+      @click="deleteCollection"
+    >Delete Collection</button>
+    <button class="btn btn-delete"
+      @click="removeDuplicates"
+    >Remove Duplicates</button>
+  </div>
   <div>
     <input
       v-model.trim="collection.collectionName"
       type="text" placeholder="Collection name"
       :class="titleClass"
       :autofocus="createMode"
+      @focus="focus(null, 'title')"
+      @blur="onBlur(null, 'title')"
       @keyup.enter="focusNext($event.target, 'title')"
     >
-    <button
-      v-if="!createMode"
-      @click="deleteCollection"
-    >Delete Collection</button>
     <router-link
       v-if="createMode"
       :to="homeRoute"
@@ -25,6 +41,7 @@
   >
     <input
       type="text" v-model.trim="card.q" placeholder="Question"
+      @focus="focus(index, 'q')"
       @blur="blur(index, 'q')"
       ref="q"
       :class="inputClass(index, 'q')"
@@ -32,6 +49,7 @@
     >
     <input
       type="text" v-model.trim="card.a" placeholder="Answer"
+      @focus="focus(index, 'a')"
       @blur="blur(index, 'a')"
       ref="a"
       :class="inputClass(index, 'a')"
@@ -47,9 +65,9 @@
   >Add</button>
   <button
     class="btn btn-save"
-    v-if="createMode"
     @click="save">
   Save</button>
+</div>
 </div>
 </template>
 
@@ -60,18 +78,23 @@ export default {
     homeRoute: { name: 'home' },
     emptyCard: { q: '', a: '' },
     errors: { q: [], a: [] },
+    focused: { qa: '', index: null }
   }),
   beforeRouteLeave (to, from, next) {
-    if (this.readyToSave) {
-      if (this.lastCardIsNotFilled === 'both') {
-        this.remove(this.lastIndex, 1)
+    if (this.collection) {
+      if (this.readyToSave) {
+        if (this.lastCardIsNotFilled === 'both') {
+          this.remove(this.lastIndex, 1)
+        }
+        next()
       }
+    } else {
       next()
     }
   },
   computed: {
     collection () {
-      return this.$store.state.collections[this.id]
+      return this.$store.getters.collection(this.id)
     },
     lastIndex () {
       return this.collection.items.length - 1;
@@ -91,10 +114,14 @@ export default {
     },
     readyToSave () {
       return this.errors.q.length === 0
-        && this.errors.a.length === 0 ? true : false
+        && this.errors.a.length === 0
+        && !this.titleError
+    },
+    titleError () {
+      return this.collection.collectionName === ''
     },
     titleClass () {
-      return { error:  this.collection.collectionName === '' }
+      return { error:  this.titleError && this.focused.qa !== 'title' }
     }
   },
   methods: {
@@ -115,6 +142,9 @@ export default {
       this.$store.dispatch('deleteCollection', this.id)
       this.$router.push(this.homeRoute)
     },
+    removeDuplicates () {
+      this.$store.dispatch('removeDuplicates', this.id)
+    },
     remove (index) {
       const id = this.id
       this.$store.commit('removeCard', { id, index })
@@ -133,9 +163,16 @@ export default {
     },
     save () {
       if (this.checkLastCard()) {
-        this.$emit('save')
+        if (this.createMode) {
+          this.$emit('save')
+        } else {
+          this.$store.dispatch('saveState')
+        }
         this.$router.push(this.homeRoute)
       }
+    },
+    focus (index, qa) {
+      this.focused = { index, qa }
     },
     blur (index, qa) {
       //check if there was an error before
@@ -151,6 +188,11 @@ export default {
         // if there wasn't an error and now it is – push it
         this.errors[qa].push(index)
       }
+
+      this.onBlur(index, qa)
+    },
+    onBlur (index, qa) {
+      this.focused = { index: null, qa: ''}
     },
     focusNext (target, type, index) {
       if (target.value.trim() !== '') {
@@ -177,11 +219,16 @@ export default {
       }
     },
     inputClass (index, qa) {
-      return {
-        error: this.errors[qa]
+      const err = this.errors[qa]
           .filter( x => x === index).length > 0 ? true : false
-      }
-    }
+      const focused = this.focused.qa === qa
+        && this.focused.index === index
+      return { error: err && !focused }
+    },
+	  fork(){
+	    this.$store.dispatch('fork', this.collection)
+	    this.$router.push(this.homeRoute)
+	  }
   }
 }
 </script>
@@ -203,6 +250,9 @@ export default {
   border-radius: 1em/50%;
 }
 
+.btn-delete{
+  background-color: #ff4d4d;
+}
 
 .btn-add {
   background-color: #7db85e;

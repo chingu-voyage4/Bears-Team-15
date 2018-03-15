@@ -7,19 +7,13 @@
 <script>
 export default {
   name: 'App',
-  created() {
-    //subscribe to store
-    // so we can  save to local storage on every mutation
-    this.$store.subscribe((mutation, state) => {
-
-      localStorage.setItem('store', JSON.stringify(state));
-
-    })
-  }
 }
 </script>
 
 <style>
+* {
+  box-sizing: border-box;
+}
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -28,40 +22,31 @@ export default {
   color: #2c3e50;
 }
 
-body, .homepage {
-  height: 100vh;
-  min-height: 600px;
+body, #app, .homepage {
   margin: 0;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-}
-
-footer {
-  min-height: 50px;
-  height: 10vh;
-  width: 100%;
-  background: #ddd;
-  margin-top: auto;
-  display: table;
-}
-
-footer .content {
-  display: table-cell;
-  vertical-align: middle;
-  line-height: 50px;
-  padding: 0 30px;
-}
-
-.pull-left {
-  float: left;
-}
-
-.pull-right {
-  float: right;
 }
 
 a {
   text-decoration: none;
   color: black;
+}
+
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: pre-line;
+}
+
+.cards-container{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 2000px;
+  margin: 0 auto;
+  padding: 3vh;
 }
 </style>

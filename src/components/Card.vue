@@ -2,10 +2,10 @@
 <div class="flip-container pointer" @click="flip" :class="flipClass">
   <div class="flipper">
     <div class="front">
-      {{ card.q }}
+      <p class="ellipsis">{{ card.q }}</p>
     </div>
     <div class="back">
-      {{ card.a }}
+      <p class="ellipsis">{{ card.a }}</p>
     </div>
   </div>
 </div>
@@ -18,15 +18,6 @@ export default {
     question: true,
   }),
   computed: {
-    cardState () {
-      return {
-        question: this.question,
-        answer: !this.question
-      }
-    },
-    cardSide () {
-      return this.question ? this.card.q : this.card.a
-    },
     flipClass () {
       return {
         flip: !this.question,
@@ -47,54 +38,55 @@ export default {
 </script>
 
 <style scoped>
+
+/* *******************
+*   just  styling
+* ******************* */
+
 .flip-container {
-  perspective: 1000px;
   margin: 15px;
 }
 
-/* flip the pane*/
-.flip {
-		transform: rotateY(180deg);
-    transform-origin: 50%;
-	}
-
 .flip-container, .front, .back {
   border-radius: 20px;
-	width: 200px;
-	height: 250px;
+  width: 200px;
+  height: 16rem;
+  line-height: 2rem;
 }
 
-.flipper {
-  transition: 0.6s;
-  transform-style: preserve-3d;
-  position: relative;
-}
-
-.flipperFast {
-  transition: 0;
-  transform-style: preserve-3d;
-  position: relative;
+p {
+  margin: 0;
 }
 
 .front, .back {
+  padding: 1rem;
   display: flex;
-  height: 100%;
   flex-direction: column;
   justify-content: center;
 
   text-align: center;
   margin: auto;
-  width: 200px;
-  height: 250px;
-  border: none;
-  border-radius: 20px;
-  box-shadow: 2px 2px 15px rgb(140, 140, 140);
 
-  backface-visibility: hidden;
-  background-color: grey;
-	position: absolute;
-	top: 0;
-	left: 0;
+  border: none;
+  box-shadow: 2px 2px 15px rgb(140, 140, 140);
+}
+
+.front {
+  background-color: #f1f7fa;
+  font-size: 1.75rem;
+  font-weight: 700;
+}
+
+.back {
+  background-color: #fff;
+  font-size: 1.4rem;
+}
+
+/* ***********************************
+*  don't  select  text  on  double-click
+* ************************************* */
+.pointer {
+  cursor: pointer;
 
   -webkit-user-select: none; /* Chrome/Safari */
   -moz-user-select: none; /* Firefox */
@@ -103,27 +95,48 @@ export default {
   user-select: none;
 }
 
-/* front pane, placed above back */
+
+
+/* *******************
+*    flipping logic:
+* ******************* */
+
+.flip-container {
+  position: relative;
+  /*perspective: 1000px;*/
+}
+
+.flip {
+  transform: rotateY(180deg);
+  /*transform-origin: 50%;*/
+}
+
+.flipper, .flipperFast {
+  transform-style: preserve-3d;
+  position: relative;
+}
+
+.flipper {
+  transition: 0.6s;
+}
+
+.flipperFast {
+  transition: 0;
+}
+
+.front, .back {
+  backface-visibility: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
 .front {
-  background-color: #f1f7fa;
-  font-size: 2rem;
-  font-weight: 700;
-
-	z-index: 2;
-	/* for firefox 31 */
-	transform: rotateY(0deg);
+  /*z-index: 2;*/
+  transform: rotateY(0deg);
 }
 
-/* back, initially hidden pane */
 .back {
-  background-color: #fff;
-  font-size: 1.4rem;
-
-	transform: rotateY(180deg);
-}
-
-.pointer {
-  display: inline-block;
-  cursor: pointer;
+  transform: rotateY(180deg);
 }
 </style>

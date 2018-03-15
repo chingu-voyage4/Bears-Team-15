@@ -1,63 +1,25 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import axios from 'axios'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    collections: [
-      {
-        collectionName: 'Italian words',
-        items: [
-          {q: 'ciotola', a: 'bowl'},
-          {q: 'tazza', a: 'cup'},
-          {q: 'forchetta', a: 'fork'},
-          {q: 'piatto', a: 'plate'},
-          {q: 'scrivania', a: 'desk'},
-          {q: 'tavola', a: 'table'},
-          {q: 'matita', a: 'pencil'},
-          {q: 'penna', a: 'pen'},
-          {q: 'quaderno', a: 'exercise book'},
-          {q: 'diario', a: 'diary'},
-        ]
-      },
-      {
-        collectionName: 'European Capital Cities',
-        items: [
-          {q: 'England', a: 'London'},
-          {q: 'France', a: 'Paris'},
-          {q: 'Germany', a: 'Berlin'},
-          {q: 'Spain', a: 'Madrid'},
-          {q: 'Italy', a: 'Rome'},
-          {q: 'Scotland', a: 'Edinburgh'},
-          {q: 'Wales', a: 'Cardiff'},
-          {q: 'Northern Ireland', a: 'Belfast'},
-          {q: 'Portugal', a: 'Lisbon'},
-          {q: 'Greece', a: 'Athens'},
-          {q: 'Austria', a: 'Vienna'},
-          {q: 'Switzerland', a: 'Bern'},
-          {q: 'Belgium', a: 'Brussels'},
-          {q: 'Ireland', a: 'Dublin'},
-          {q: 'Netherlands', a: 'Amsterdam'},
-          {q: 'Denmark', a: 'Copenhagen'},
-          {q: 'Poland', a: 'Warsaw'},
-          {q: 'Russia', a: 'Moscow'},
-          {q: 'Ukraine', a: 'Kyiv'},
-          {q: 'Norway', a: 'Oslo'},
-          {q: 'Sweden', a: 'Stockholm'},
-          {q: 'Turkey', a: 'Ankara'},
-          {q: 'Cyprus', a: 'Nicosia'},
-          {q: 'Bulgaria', a: 'Sofia'},
-          {q: 'Romania', a: 'Bucharest'},
-          {q: 'Iceland', a: 'Reykjavík'},
-          {q: 'Luxembourg', a: 'Luxembourg City'},
-        ]
-      }
-    ],
+    collections: [],
+    publicCollections: [],
+    counter: 1,
+    loadingMode: false,
   },
   getters: {
-    alphabeticalDeck: state => index => {
-      const deck = [...state.collections[index].items]
+    collection: state => id => {
+      return state.collections.find(x => x.id == id) ||
+        state.publicCollections.find(x => x.id == id)
+    },
+    alphabeticalDeck: state => id => {
+      const collection = state.collections.find(x => x.id == id) ||
+        state.publicCollections.find(x => x.id == id)
+      const deck = [...collection.items]
       deck.sort((prev, next) => {
         if (prev.q.toLowerCase() > next.q.toLowerCase()) return 1
         else if (prev.q.toLowerCase() < next.q.toLowerCase()) return -1
@@ -65,37 +27,107 @@ export default new Vuex.Store({
       })
       return deck
     },
-    collectionQuantity: state => {
-      return state.collections.length
-    },
   },
   mutations: {
     addCard (state, { id, card }) {
-      state.collections[id].items.push(card)
+      state.collections.find(x => x.id == id).items.push(card)
     },
     removeCard (state, { id, index }) {
-      state.collections[id].items.splice(index, 1)
+      state.collections.find(x => x.id == id).items.splice(index, 1)
     },
-    createCollection (state, { collection }) {
-      state.collections.push(collection)
+    saveNewCollection (state, id) {
+      const toSave = state.collections.find(x => x.id == id)
+      toSave.id = state.counter
+      state.counter += 1
     },
     deleteCollection (state, id){
-      state.collections[id] = null
+      state.collections = state.collections.filter(x => x.id != id)
     },
-    removeCollection (state, id) {
-      state.collections.splice(id, 1)
+    setLoadingMode (state, status) {
+      state.loadingMode = status
     },
-    initialiseStore (state) {
-      // load from local storage
-      const loc = localStorage.getItem('store')
-      if (loc) {
-        this.replaceState(Object.assign(state, JSON.parse(loc)))
-      }
+    readCollections (state, { collections, counter }) {
+      state.collections = collections
+      state.counter = counter
+    },
+    readPublicCollections (state, { collections }) {
+      state.publicCollections = collections
+    },
+    saveLocally (state) {
+      localStorage.setItem('store', JSON.stringify(state));
+    },
+    removeDuplicates (state, id){
+      const collection = state.collections.find(x => x.id == id)
+      const deck = collection.items
+      const arrQ = deck.map((item) => item.q)
+      const setQ = new Set(arrQ)
+      if(setQ.length == arrQ.length){return}
+      let newDeck = []
+      setQ.forEach(function(q){
+        newDeck.push(deck[arrQ.indexOf(q)])
+      })
+      collection.items = [...newDeck]
+    },
+    pushCollection(state, collection){
+      state.collections.push(collection)
     },
   },
   actions: {
-    deleteCollection (context, id) {
-      context.commit('deleteCollection', id)
+    fetchLocalCollections ({ commit }) {
+      commit('setLoadingMode', true)
+      const loc = localStorage.getItem('store')
+      if (loc) {
+        commit('readCollections', JSON.parse(loc))
+      }
+      commit('setLoadingMode', false)
+    },
+    fetchRemoteCollections ({ commit }) {
+      commit('setLoadingMode', true)
+      axios({
+        method: 'get',
+        url: '/collections/public',
+        headers: {'x-auth': 'im-the-user'},
+      })
+        .then(res => {
+          if (res) {
+            commit('readPublicCollections', res.data)
+            commit('setLoadingMode', false)
+          } else throw new Error('No response')
+        })
+        .catch(err => {
+          commit('setLoadingMode', false)
+          console.log(err.response ? err.response.statusText : err.message )
+        })
+    },
+    deleteCollection ({ commit }, id) {
+      commit('deleteCollection', id)
+      commit('saveLocally')
+    },
+    saveState ({ commit }) {
+      commit('saveLocally')
+    },
+    createCollection ({ commit }, id) {
+      const collection = {
+        collectionName: '',
+        id,
+        items: [{ q: '', a: '' }]
+      }
+      commit('deleteCollection', id)
+      commit('pushCollection', collection)
+    },
+    saveNewCollection ({ commit }, id) {
+      commit('saveNewCollection', id)
+      commit('saveLocally')
+    },
+    removeDuplicates ({ commit }, id) {
+      commit('removeDuplicates', id)
+    },
+    fork ({ commit }, collection) {
+      const collectionCopy = {...collection}
+      collectionCopy.shared = false
+      commit('pushCollection', collectionCopy)
+      commit('saveNewCollection', collectionCopy.id)
+      commit('saveLocally')
     }
   }
 })
