@@ -48,7 +48,8 @@ describe('GET `/collections/public`', () => {
           .toBeTruthy()
 
         // collections contain the original data from .json files
-        expect(received.collections).toMatchObject(seed.collections)
+        const shared = seed.collections.filter(x => x.shared === true)
+        expect(received.collections).toMatchObject(shared)
       })
   )
 })
