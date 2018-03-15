@@ -81,7 +81,6 @@ export default new Vuex.Store({
         const parsed = JSON.parse(loc)
         const ver = parsed.appVersion
         if (ver && ver >= state.appVersion) {
-          console.log(ver)
           commit('readCollections', parsed)
         }
       }
