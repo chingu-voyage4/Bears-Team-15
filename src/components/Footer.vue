@@ -6,7 +6,7 @@
     </div>
     <div class="content version">
       <a href="https://github.com/chingu-voyage4/Bears-Team-15/wiki/What's-new" target="_blank">
-        v {{ version }}
+        v{{ version }}
       </a>
     </div>
 </footer>
@@ -15,7 +15,7 @@
 <script>
 export default {
   data: () => ({
-    version: '0.3'
+    version: '0.4'
   }),
   computed: {
     currentYear () {
