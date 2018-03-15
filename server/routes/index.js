@@ -12,7 +12,7 @@ router.get('/collection', (req, res) => {
 })
 
 router.get('/collections/public', (req, res) => {
-  Collection.find({})
+  Collection.find({ shared: true })
     .populate('items')
     .then(collections => {
       const toSend = []
