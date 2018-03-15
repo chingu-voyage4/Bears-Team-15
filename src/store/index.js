@@ -68,6 +68,9 @@ export default new Vuex.Store({
       })
       collection.items = [...newDeck]
     },
+    pushCollection(state, collection){
+      state.collections.push(collection)
+    },
   },
   actions: {
     fetchLocalCollections ({ commit }) {
@@ -96,28 +99,35 @@ export default new Vuex.Store({
           console.log(err.response ? err.response.statusText : err.message )
         })
     },
-    deleteCollection (context, id) {
-      context.commit('deleteCollection', id)
-      context.commit('saveLocally')
+    deleteCollection ({ commit }, id) {
+      commit('deleteCollection', id)
+      commit('saveLocally')
     },
-    saveState (context) {
-      context.commit('saveLocally')
+    saveState ({ commit }) {
+      commit('saveLocally')
     },
-    createCollection ({ state, commit }, id) {
+    createCollection ({ commit }, id) {
       const collection = {
         collectionName: '',
         id,
         items: [{ q: '', a: '' }]
       }
       commit('deleteCollection', id)
-      state.collections.push(collection)
+      commit('pushCollection', collection)
     },
     saveNewCollection ({ commit }, id) {
       commit('saveNewCollection', id)
       commit('saveLocally')
     },
-    removeDuplicates (context, id) {
-      context.commit('removeDuplicates', id)
+    removeDuplicates ({ commit }, id) {
+      commit('removeDuplicates', id)
     },
+    fork ({ commit }, collection) {
+      const collectionCopy = {...collection}
+      collectionCopy.shared = false
+      commit('pushCollection', collectionCopy)
+      commit('saveNewCollection', collectionCopy.id)
+      commit('saveLocally')
+    }
   }
 })
