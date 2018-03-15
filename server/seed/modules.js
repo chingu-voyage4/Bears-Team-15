@@ -4,6 +4,7 @@ const { Collection, Card } = require('../models')
 const resetAllCollections = async () => {
   try {
     await Collection.remove({})
+    await Card.remove({})
     return Promise.resolve()
   } catch (err) {
     console.error(err)
