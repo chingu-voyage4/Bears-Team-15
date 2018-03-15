@@ -14,12 +14,12 @@
 
 <script>
 export default {
-  data: () => ({
-    version: '0.4'
-  }),
   computed: {
     currentYear () {
       return (new Date()).getFullYear()
+    },
+    version () {
+      return this.$store.state.appVersion
     }
   }
 }
