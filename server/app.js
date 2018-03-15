@@ -1,27 +1,36 @@
-const express = require('express')
+import express from 'express'
+import path from 'path'
+import routes from './routes'
+import connect from './mongoose'
 const app = express()
-const path = require('path')
+
+// configuration:
 const NODE_ENV = process.env.NODE_ENV || 'development'
+if (NODE_ENV !== 'production') require('dotenv').config()
+const { PORT } = process.env
+const MONGODB_URI = NODE_ENV === 'test'
+  ? process.env.MONGODB_URI + '-test'
+  : process.env.MONGODB_URI
 
 // application-level middleware:
-const bodyParser = require('body-parser')
+import bodyParser from 'body-parser'
 app.use(bodyParser.json())
 if (NODE_ENV !== 'production') {
   const cors = require('cors')
   app.use(cors({ exposedHeaders: ['x-auth'] }))
-  require('dotenv').config()
 }
 
-app.use(express.static(path.resolve(__dirname, '../dist')))
-
-const {PORT, MONGODB_URI} = process.env
-
-// connect to database:
-require('./mongoose')(MONGODB_URI)
-
-// routes:
-const routes = require('./routes')
+app.use(express.static(path.resolve(__dirname, '..')))
 app.use('/', routes)
 
+
 // fire application:
-app.listen(PORT, () => console.log(`Your app is running in ${NODE_ENV} mode`))
+connect(MONGODB_URI)
+const server = app.listen(PORT, () =>
+  console.log(`Your app is running in ${NODE_ENV} mode`)
+)
+
+export {
+  app,
+  server,
+}

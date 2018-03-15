@@ -35,7 +35,7 @@ npm install
 npm run dev:client
 
 # run back-end with hot reload at localhost:8081
-# Attention! You'll need `nodemon` and `.env`. Details are below.
+# Attention! You'll need to configure `.env` file. Details are below.
 npm run dev:server
 
 # build for production with minification
@@ -52,8 +52,6 @@ PORT=8081
 MONGODB_URI="mongodb://localhost:27017/cards"
 JWT_SECRET=someSuperSecret
 ```
-
-And you'll need a `nodemon` npm package to be installed globally. See [guide](https://github.com/remy/nodemon#installation).
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
 
