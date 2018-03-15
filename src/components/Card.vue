@@ -18,15 +18,6 @@ export default {
     question: true,
   }),
   computed: {
-    cardState () {
-      return {
-        question: this.question,
-        answer: !this.question
-      }
-    },
-    cardSide () {
-      return this.question ? this.card.q : this.card.a
-    },
     flipClass () {
       return {
         flip: !this.question,
