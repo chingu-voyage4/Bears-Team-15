@@ -1,12 +1,10 @@
 <template>
-<div>
 <div class="cards-container">
   <app-card
     v-for="item in deck" :key="item.id"
     :card="item"
     :endlessFlip="true"
   ></app-card>
-</div>
 </div>
 </template>
 
@@ -30,13 +28,4 @@ export default {
 </script>
 
 <style scoped>
-.cards-container{
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-  padding: 30px;
-  max-width:2000px;
-  margin: 0 auto;
-}
 </style>
