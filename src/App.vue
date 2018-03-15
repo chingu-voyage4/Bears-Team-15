@@ -39,4 +39,14 @@ a {
   text-overflow: ellipsis;
   white-space: pre-line;
 }
+
+.cards-container{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 2000px;
+  margin: 0 auto;
+  padding: 3vh;
+}
 </style>

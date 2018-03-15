@@ -1,11 +1,9 @@
 <template>
-<div>
-  <div>
-    <app-card
-      :card="card"
-      @nextCard="nextCard"
-    ></app-card>
-  </div>
+<div class="cards-container">
+  <app-card
+    :card="card"
+    @nextCard="nextCard"
+  ></app-card>
 </div>
 </template>
 
