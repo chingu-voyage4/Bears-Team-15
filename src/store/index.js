@@ -6,6 +6,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    appVersion: '0.4',
     collections: [],
     publicCollections: [],
     counter: 1,
@@ -73,11 +74,15 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    fetchLocalCollections ({ commit }) {
+    fetchLocalCollections ({ commit, state }) {
       commit('setLoadingMode', true)
       const loc = localStorage.getItem('store')
       if (loc) {
-        commit('readCollections', JSON.parse(loc))
+        const parsed = JSON.parse(loc)
+        const ver = parsed.appVersion
+        if (ver && ver >= state.appVersion) {
+          commit('readCollections', parsed)
+        }
       }
       commit('setLoadingMode', false)
     },

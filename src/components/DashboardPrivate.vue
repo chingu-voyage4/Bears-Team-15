@@ -24,8 +24,5 @@ import { mapState } from 'vuex'
 export default {
   name: "DashboardPrivate",
   computed: mapState(['collections']),
-  beforeCreate () {
-    this.$store.dispatch('fetchLocalCollections')
-  },
 }
 </script>
