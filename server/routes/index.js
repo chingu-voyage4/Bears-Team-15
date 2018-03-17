@@ -9,6 +9,8 @@ router.get('/', (req, res) => {
 
 const { User, Collection, Card } = require('../models')
 
+// USER routes: --------------------------------------------------------
+
 router.post('/register', (req, res) => {
   const { login, password } = req.body
   User.create({ login, password })
@@ -57,8 +59,58 @@ router.post('/login', async (req, res) => {
   }
 })
 
-router.get('/collection', (req, res) => {
-  res.status(200).send('Collection API route')
+// COLLECTION ROUTES: --------------------------------------------------
+
+// CREATE collection
+router.post('/collection/create', async (req, res) => {
+  const { collectionName, items } = req.body
+  let statusCode = 400
+  let msg = errors.collection.badRequest
+
+  try {
+    if (!collectionName
+      || !items
+      || ! typeof collectionName === String
+      || ! Array.isArray(items)
+    ) throw 'bad'
+    const itemsId = await Promise.all(
+      items.map(async item => await Card.create(item))
+    )
+    const collection = await Collection.create({
+      collectionName,
+      items: itemsId,
+    })
+    res.status(200).send({ _id: collection._id })
+  } catch (err) {
+    if (err !== 'bad') {
+      statusCode = 500
+      msg = errors.collection.create.common
+      console.log(err)
+    }
+    res.status(statusCode).send(msg)
+  }
+})
+
+// READ collection
+router.get('/collection/:id', (req, res) => {
+  const { id } = req.params
+  let statusCode = 404
+  let msg = errors.collection.notFound
+
+  Collection.findById(id)
+    .populate('items')
+    .then(doc => {
+      if (!doc) throw 'notFound'
+      res.status(200).send(doc)
+    })
+    .catch(err => {
+      if (err !== 'notFound') {
+        statusCode = 500
+        msg = errors.collection.read.common
+        console.log(err)
+      }
+      res.status(statusCode).send(msg)
+    })
 })
 
 // INDEX public
@@ -88,6 +140,10 @@ router.get('/collections/public', (req, res) => {
       res.status(statusCode).send(msg)
     })
 })
+
+// UPDATE collection
+
+// DESTROY collection
 
 router.get('*', (req, res) => {
   res.status(404).send('Not found')
