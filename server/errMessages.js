@@ -11,5 +11,22 @@ export default {
     common: 'Login error. Access denied',
     wrongCredentials: 'Wrong credentials. Access denied',
   },
+  collection: {
+    create: {
+      common: 'Failed to create a new collection',
+    },
+    read: {
+      common: 'Failed to read a collection',
+    },
+    update: {
+      common: 'Failed to update a collection',
+    },
+    destroy: {
+      common: 'Failed to destory a collection',
+    },
+    notFound: 'Collection not found',
+    badRequest: 'Bad request. Check your object\'s structure',
+  },
+  noPublicFound: 'No public collections found',
   worstScenario: 'Server error'
 }
