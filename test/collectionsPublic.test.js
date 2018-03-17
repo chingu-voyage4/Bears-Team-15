@@ -22,7 +22,6 @@ describe('GET `/collections/public`', () => {
         const received = res.body
 
         // to have proper structure:
-        expect(received).toBeDefined()
         expect(received).toHaveProperty('collections')
         expect(received.collections).toEqual(
           expect.arrayContaining([
@@ -47,9 +46,16 @@ describe('GET `/collections/public`', () => {
         expect(ObjectId.isValid(received.collections[0].items[0]._id))
           .toBeTruthy()
 
-        // collections contain the original data from .json files
-        const shared = seed.collections.filter(x => x.shared === true)
-        expect(received.collections).toMatchObject(shared)
+        // only collections with property "shared" === ture
+        const expectedNames = seed.collections
+          .filter(x => x.shared === true)
+          .map(x => x.collectionName)
+        const receivedNames = received.collections
+          .map(x => x.collectionName)
+        expect(receivedNames).toEqual(
+          expect.arrayContaining(expectedNames)
+        )
+        expect(receivedNames.length).toEqual(expectedNames.length)
       })
   )
 })
