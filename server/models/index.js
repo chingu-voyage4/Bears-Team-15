@@ -1,4 +1,6 @@
 const mongoose = require('mongoose')
+import bcrypt from 'bcryptjs'
+
 
 const CollectionSchema = new mongoose.Schema({
   collectionName: {
