@@ -1,6 +1,8 @@
 const express = require('express')
 const router = express.Router()
 
+import errors from '../errMessages'
+
 router.get('/', (req, res) => {
   res.status(200).sendFile(path.resolve(__dirname, '../../index.html'))
 })
