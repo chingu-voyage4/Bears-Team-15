@@ -3,7 +3,10 @@
   <div class="content">
     <img src="../assets/logo-placeholder.png" />
     <p v-if="loadingMode">Loading...</p>
-    <router-link to="/">Home</router-link>
+    <span>
+      <router-link to="/">Home</router-link>  
+      <router-link to="/login">Login</router-link>
+    </span>
   </div>
 </header>
 </template>
