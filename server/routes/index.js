@@ -7,7 +7,7 @@ router.get('/', (req, res) => {
   res.status(200).sendFile(path.resolve(__dirname, '../../index.html'))
 })
 
-const { Collection, Card } = require('../models')
+const { User, Collection, Card } = require('../models')
 
 router.get('/collection', (req, res) => {
   res.status(200).send('Collection API route')
