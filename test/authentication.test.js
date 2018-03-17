@@ -47,36 +47,36 @@ describe('POST `/register`', () => {
     password: 'doesntmatter',
   }
 
-  it('should not create duplicate `login`', done =>
+  it('should not create duplicate `login`', () =>
     chai.request(app)
       .post(route)
       .send(doppelganger)
-      .end((err, res) => {
+      .catch(err => {
+        const res = err.response
         expect(res).toHaveProperty('status', 400)
         expect(res).toHaveProperty('text', errors.registration.duplicate)
-        done()
       })
   )
 
-  it('should not register user without login', done =>
+  it('should not register user without login', () =>
     chai.request(app)
       .post(route)
       .send({ login: '', password: 'onlyPassword' })
-      .end((err, res) => {
+      .catch(err => {
+        const res = err.response
         expect(res).toHaveProperty('status', 400)
         expect(res).toHaveProperty('text', errors.registration.empty.login)
-        done()
       })
   )
 
-  it('should not register user without password', done =>
+  it('should not register user without password', () =>
     chai.request(app)
       .post(route)
       .send({ login: 'anylogin', password: '' })
-      .end((err, res) => {
+      .catch(err => {
+        const res = err.response
         expect(res).toHaveProperty('status', 400)
         expect(res).toHaveProperty('text', errors.registration.empty.password)
-        done()
       })
   )
 
@@ -112,58 +112,58 @@ describe('POST `/login`', () => {
       })
   )
 
-  it('should respond 403 to empty request', done =>
+  it('should respond 403 to empty request', () =>
     chai.request(app)
       .post(route)
       .send({})
-      .end((err, res) => {
+      .catch(err => {
+        const res = err.response
         expect(res).toHaveProperty('status', 403)
         expect(res).toHaveProperty('text', errors.login.common)
-        done()
       })
   )
 
-  it('should respond 403 to empty login', done =>
+  it('should respond 403 to empty login', () =>
     chai.request(app)
       .post(route)
       .send({ password: 'anything' })
-      .end((err, res) => {
+      .catch(err => {
+        const res = err.response
         expect(res).toHaveProperty('status', 403)
         expect(res).toHaveProperty('text', errors.login.common)
-        done()
       })
   )
 
-  it('should respond 403 to empty password', done =>
+  it('should respond 403 to empty password', () =>
     chai.request(app)
       .post(route)
       .send({ login: 'any' })
-      .end((err, res) => {
+      .catch(err => {
+        const res = err.response
         expect(res).toHaveProperty('status', 403)
         expect(res).toHaveProperty('text', errors.login.common)
-        done()
       })
   )
 
-  it('should not login if wrong `login`', done =>
+  it('should not login if wrong `login`', () =>
     chai.request(app)
       .post(route)
       .send({ login: 'wronglogin', password: 'anypassword' })
-      .end((err, res) => {
+      .catch(err => {
+        const res = err.response
         expect(res).toHaveProperty('status', 403)
         expect(res).toHaveProperty('text', errors.login.wrongCredentials)
-        done()
       })
   )
 
-  it('should not login if wrong `password`', done =>
+  it('should not login if wrong `password`', () =>
     chai.request(app)
       .post(route)
       .send({ login: quaker.login, password: 'wrongpassword' })
-      .end((err, res) => {
+      .catch(err => {
+        const res = err.response
         expect(res).toHaveProperty('status', 403)
         expect(res).toHaveProperty('text', errors.login.wrongCredentials)
-        done()
       })
   )
 })
