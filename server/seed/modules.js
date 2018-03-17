@@ -15,9 +15,9 @@ const resetAllCollections = async () => {
 
 const populateCollections = async () => {
   try {
-    for (let collection of collections) {
-      await populateCollection(collection)
-    }
+    await Promise.all(
+      collections.map(async x => await populateCollection(x))
+    )
     return Promise.resolve()
   } catch (err) {
     console.error(err)
@@ -41,13 +41,11 @@ const populateCollection = async ({ collectionName, shared, items }) => {
 }
 
 const populateCards = async deck => {
-  const list = []
   try {
-    for (let card of deck) {
-      const saved = await Card(card).save()
-      list.push(saved._id)
-    }
-    return Promise.resolve(list)
+    const itemsId = await Promise.all(
+      deck.map(async item => await Card.create(item))
+    )
+    return Promise.resolve(itemsId)
   } catch (err) {
     console.error(err)
     return Promise.reject(err)
