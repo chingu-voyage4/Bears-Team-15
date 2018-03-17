@@ -1,5 +1,6 @@
 import { app, server } from '../server/app'
 import * as seed from '../server/seed/modules'
+import errors from '../server/errMessages'
 
 import chai from 'chai'
 import chaiHttp from 'chai-http'
@@ -9,15 +10,28 @@ chai.use(chaiHttp)
 
 beforeAll(async () => {
   await seed.resetAllCollections()
-  await seed.populateCollections()
 })
 
 afterAll(server.close())
 
 describe('GET `/collections/public`', () => {
+  const path = '/collections/public'
+  it('should find no collections in empty DB', () =>
+    seed.populateCollection({
+      collectionName: 'notShared',
+      items: []
+    })
+      .then(() => chai.request(app).get(path))
+      .catch(err => {
+        const res = err.response
+        expect(res).toHaveProperty('status', 404)
+        expect(res).toHaveProperty('text', errors.noPublicFound)
+      })
+  )
+
   it('should respond with collections', () =>
-    chai.request(app)
-      .get('/collections/public')
+    seed.populateCollections()
+      .then(() => chai.request(app).get(path))
       .then(res => {
         const received = res.body
 

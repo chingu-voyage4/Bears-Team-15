@@ -61,10 +61,14 @@ router.get('/collection', (req, res) => {
   res.status(200).send('Collection API route')
 })
 
+// INDEX public
 router.get('/collections/public', (req, res) => {
+  let statusCode = 404
+  let msg = errors.noPublicFound
   Collection.find({ shared: true })
     .populate('items')
     .then(collections => {
+      if (collections.length == 0) return Promise.reject('notFound')
       const toSend = []
       collections.forEach(({ _id, collectionName, shared, items }) => {
         const cards = []
@@ -75,7 +79,14 @@ router.get('/collections/public', (req, res) => {
       })
       res.status(200).send({ collections: toSend })
     })
-    .catch(err => res.status(404).send('Not found'))
+    .catch(err => {
+      if (err !== 'notFound') {
+        statusCode = 500
+        msg = errors.worstScenario
+        console.log(err)
+      }
+      res.status(statusCode).send(msg)
+    })
 })
 
 router.get('*', (req, res) => {
