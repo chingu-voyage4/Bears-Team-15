@@ -49,4 +49,16 @@ a {
   margin: 0 auto;
   padding: 3vh;
 }
+
+.form{
+  display: flex;
+  flex-direction: column;
+  max-width: 200px;
+  margin: 0 auto;
+}
+
+.form input{
+  margin-bottom: 20px;
+  text-align: center;
+}
 </style>
