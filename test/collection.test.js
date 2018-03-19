@@ -112,20 +112,18 @@ describe('GET `/collection/:id`', () => {
 // UPDATE
 describe('PUT `/collection/:id`', () => {
   let path = ''
-  const card = {
+
+  const deck = {
     collectionName: 'collection to update',
     items: [{ 'q': 'update', 'a': 'me' }]
   }
 
   beforeAll(() => chai.request(app)
     .post('/collection/create')
-    .send(card)
-    .then(res => {
-      card._id = res.body._id
-      path = `/collection/${card._id}`
-    })
+    .send(deck)
+    .then(res => path = `/collection/${res.body._id}`)
     .then(() => chai.request(app).get(path))
-    .then(res => card.items = res.body.items)
+    .then(res => saved = res.body)
   )
 
   it('should update `name`, `shared`, not change items', () => chai.request(app)
@@ -147,26 +145,26 @@ describe('PUT `/collection/:id`', () => {
 // DESTROY
 describe('DELETE `/collection/:id`', () => {
   let path = ''
-  const card = {
+  const deck = {
     collectionName: 'collection to delete',
     items: [{ 'q': 'delete', 'a': 'me' }]
   }
 
   beforeAll(() => chai.request(app)
     .post('/collection/create')
-    .send(card)
+    .send(deck)
     .then(res => {
-      card._id = res.body._id
-      path = `/collection/${card._id}`
+      deck._id = res.body._id
+      path = `/collection/${deck._id}`
     })
     .then(() => chai.request(app).get(path))
-    .then(res => card.items = res.body.items)
+    .then(res => deck.items = res.body.items)
   )
 
   it('should destroy colleciton and cards', () => chai.request(app)
     .delete(path)
     .then(res => {
-      expect(res.body._id).toEqual(card._id)
+      expect(res.body._id).toEqual(deck._id)
     })
     .then(() => chai.request(app).get(path))
     .then(res => expect(res).toEqual(undefined))
@@ -174,7 +172,7 @@ describe('DELETE `/collection/:id`', () => {
       const res = err.response
       expect(res).toHaveProperty('status', 404)
       expect(res).toHaveProperty('text', errors.collection.notFound)
-      return Promise.resolve(card.items[0]._id)
+      return Promise.resolve(deck.items[0]._id)
     })
     .then(id => chai.request(app).get(`/card/${id}`))
     .then(res => expect(res).toEqual(undefined))
