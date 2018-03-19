@@ -175,6 +175,28 @@ router.delete('/collection/:id', async (req, res) => {
   }
 })
 
+// CARD routes: --------------------------------------------------------
+
+// CREATE card
+
+// READ card
+router.get('/card/:id', (req, res) => {
+  const { id } = req.params
+  let statusCode = 404
+  let msg = errors.card.common('read')
+
+  Card.findById(id)
+    .then(doc => {
+      if (!doc) throw 'notFound'
+      res.status(200).send(doc)
+    })
+    .catch(err => handleSearch(err, res, statusCode, msg, 'card', 'read'))
+})
+
+// UPDATE card
+
+// DESTROY card
+
 router.get('*', (req, res) => {
   res.status(404).send('Not found')
 })
