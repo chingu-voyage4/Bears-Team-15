@@ -131,8 +131,8 @@ describe('PUT `/collection/:id`', () => {
         { q: 'first added', a: 'card' },
         { q: 'second added', a: 'card' },
       ],
-      delete: [{}],
-      modify: [
+      del: [],
+      mod: [
         { q: 'updated', a: 'updated' }
       ]
     }
