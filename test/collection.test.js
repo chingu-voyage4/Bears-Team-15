@@ -134,11 +134,6 @@ describe('PUT `/collection/:id`', () => {
       expect(res.body).toHaveProperty('shared', true)
       expect(res.body).toHaveProperty('items', [card.items[0]._id])
     })
-    .then(() => chai.request(app).get(`/card/${card.items[0]._id}`))
-    .then(res => {
-      expect(res.body).toHaveProperty('q', card.items[0].q)
-      expect(res.body).toHaveProperty('a', card.items[0].a)
-    })
   )
 })
 
