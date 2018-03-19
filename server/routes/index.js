@@ -153,7 +153,7 @@ router.put('/collection/:id', async (req, res) => {
   let statusCode = 200
   let msg = errors.worstScenario
   const { id }  = req.params
-  const { collectionName, shared } = req.body
+  const { collectionName, shared, items } = req.body
   try {
     const collection = await Collection.findById(id).populate('items')
     if (collectionName) {
@@ -161,6 +161,44 @@ router.put('/collection/:id', async (req, res) => {
     }
     if (shared !== undefined) {
       collection.shared = shared
+    }
+
+    if (items) {
+      const { del, mod, add } = items
+
+      collection.items.forEach((card, index) => {
+        const id = card._id.toString()
+
+        if (del && del.length > 0) {
+          const i = del.findIndex(x => x === id)
+          if (i !== -1) {
+            Card.findByIdAndRemove(id)
+              .then(() => {
+                del.splice(i, 1)
+                collection.items.splice(index, 1)
+                return
+              })
+          }
+        }
+
+        if (mod && mod.length > 0) {
+          const i = mod.findIndex(x => x._id === id)
+          if (i !== -1) {
+            const { _id, ...upd } = mod[i]
+            Card.findByIdAndUpdate(id, upd, {new: true})
+              .then(doc => {
+                mod.splice(i, 1)
+                collection.items[index] = doc
+              })
+          }
+        }
+      })
+
+      if (add && add.length > 0) {
+        await Promise.all(
+          add.map(async card => collection.items.push(await Card.create(card)))
+        )
+      }
     }
 
     const saved = await collection.save()
