@@ -111,8 +111,37 @@ describe('GET `/collection/:id`', () => {
 
 // UPDATE
 describe('PUT `/collection/:id`', () => {
-  it('should update')
-  // .findByIdAndUpdate()
+  let path = ''
+  const card = {
+    collectionName: 'collection to update',
+    items: [{ 'q': 'update', 'a': 'me' }]
+  }
+
+  beforeAll(() => chai.request(app)
+    .post('/collection/create')
+    .send(card)
+    .then(res => {
+      card._id = res.body._id
+      path = `/collection/${card._id}`
+    })
+    .then(() => chai.request(app).get(path))
+    .then(res => card.items = res.body.items)
+  )
+
+  it('should update `name`, `shared`, not change items', () => chai.request(app)
+    .put(path)
+    .send({ collectionName: 'Updated name', shared: true })
+    .then(res => {
+      expect(res.body).toHaveProperty('collectionName', 'Updated name')
+      expect(res.body).toHaveProperty('shared', true)
+      expect(res.body).toHaveProperty('items', [card.items[0]._id])
+    })
+    .then(() => chai.request(app).get(`/card/${card.items[0]._id}`))
+    .then(res => {
+      expect(res.body).toHaveProperty('q', card.items[0].q)
+      expect(res.body).toHaveProperty('a', card.items[0].a)
+    })
+  )
 })
 
 // DESTROY
