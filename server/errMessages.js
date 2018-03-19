@@ -12,20 +12,18 @@ export default {
     wrongCredentials: 'Wrong credentials. Access denied',
   },
   collection: {
-    create: {
-      common: 'Failed to create a new collection',
-    },
-    read: {
-      common: 'Failed to read a collection',
-    },
-    update: {
-      common: 'Failed to update a collection',
-    },
-    destroy: {
-      common: 'Failed to destory a collection',
+    common (crud) {
+      return `Failed to ${crud} a collection`
     },
     notFound: 'Collection not found',
-    badRequest: 'Bad request. Check your object\'s structure',
+    badRequest: 'Bad request. Check your collection object\'s structure',
+  },
+  card: {
+    common (crud) {
+      return `Failed to ${crud} a card`
+    },
+    notFound: 'Card not found',
+    badRequest: 'Bad request. Check your card object\'s structure',
   },
   noPublicFound: 'No public collections found',
   worstScenario: 'Server error'
