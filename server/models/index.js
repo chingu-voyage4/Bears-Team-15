@@ -64,6 +64,11 @@ const CollectionSchema = new mongoose.Schema({
   }],
 })
 
+CollectionSchema.methods.toJSON = function () {
+  const { collectionName, shared, items, _id } = this
+  return { collectionName, shared, items, _id }
+}
+
 const CardSchema = new mongoose.Schema({
   q: {
     type: String,
@@ -76,6 +81,11 @@ const CardSchema = new mongoose.Schema({
     trim: true,
   },
 })
+
+CardSchema.methods.toJSON = function () {
+  const { q, a, _id } = this
+  return { q, a, _id }
+}
 
 module.exports = {
   User: mongoose.model('User', UserSchema),
