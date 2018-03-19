@@ -50,14 +50,14 @@ a {
   padding: 3vh;
 }
 
-.form{
+form{
   display: flex;
   flex-direction: column;
   max-width: 200px;
   margin: 0 auto;
 }
 
-.form input{
+form input{
   margin-bottom: 20px;
   text-align: center;
 }
