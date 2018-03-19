@@ -117,6 +117,60 @@ describe('PUT `/collection/:id`', () => {
 
 // DESTROY
 describe('DELETE `/collection/:id`', () => {
-  it('should update')
-  // .findByIdAndRemove()
+  let path = ''
+  const card = {
+    collectionName: 'collection to delete',
+    items: [{ 'q': 'delete', 'a': 'me' }]
+  }
+
+  beforeAll(() => chai.request(app)
+    .post('/collection/create')
+    .send(card)
+    .then(res => {
+      card._id = res.body._id
+      path = `/collection/${card._id}`
+    })
+    .then(() => chai.request(app).get(path))
+    .then(res => card.items = res.body.items)
+  )
+
+  it('should destroy colleciton and cards', () => chai.request(app)
+    .delete(path)
+    .then(res => {
+      expect(res.body._id).toEqual(card._id)
+    })
+    .then(() => chai.request(app).get(path))
+    .then(res => expect(res).toEqual(undefined))
+    .catch(err => {
+      const res = err.response
+      expect(res).toHaveProperty('status', 404)
+      expect(res).toHaveProperty('text', errors.collection.notFound)
+      return Promise.resolve(card.items[0]._id)
+    })
+    .then(id => chai.request(app).get(`/card/${id}`))
+    .then(res => expect(res).toEqual(undefined))
+    .catch(err => {
+      const res = err.response
+      expect(res).toHaveProperty('status', 404)
+      expect(res).toHaveProperty('text', errors.card.notFound)
+    })
+  )
+
+  it('should respond with 404 if wrong ID', () => chai.request(app)
+    .delete(`/collection/${new ObjectId}`)
+    .catch(err => {
+      const res = err.response
+      expect(res).toHaveProperty('status', 404)
+      expect(res).toHaveProperty('text', errors.collection.notFound)
+    })
+  )
+
+  it('should respond with 400 if invalid ID', () => chai.request(app)
+    .delete('/collection/23920215a87687f87')
+    .catch(err => {
+      const res = err.response
+      expect(res).toHaveProperty('status', 400)
+      expect(res).toHaveProperty('text', errors.collection.badRequest)
+    })
+  )
 })
