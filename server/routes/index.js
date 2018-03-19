@@ -151,6 +151,29 @@ router.get('/collections/public', (req, res) => {
 // UPDATE collection
 
 // DESTROY collection
+router.delete('/collection/:id', async (req, res) => {
+  let statusCode = 200
+  let msg = errors.worstScenario
+  const { id }  = req.params
+  try {
+    const collection = await Collection.findById(id)
+    if (!collection) throw 'notFound'
+    const deletedCards = await Promise.all(
+      collection.items.map(cardId =>
+        Card.findByIdAndRemove(cardId)
+          .then(deletedCard => Promise.resolve(deletedCard._id))
+      )
+    )
+    if (deletedCards.length !== collection.items.length)
+      throw 'undeleted cards'
+    const deletedCollection = await collection.remove()
+    if (deletedCollection._id.toString !== collection._id.toString)
+      throw 'undeleted collection'
+    res.status(200).send({ _id: deletedCollection._id })
+  } catch (err) {
+    handleSearch(err, res, statusCode, msg, 'collection', 'destroy')
+  }
+})
 
 router.get('*', (req, res) => {
   res.status(404).send('Not found')
