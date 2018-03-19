@@ -62,15 +62,14 @@ describe('GET `/collection/:id`', () => {
       items: [expectedCard]
   }
 
-  beforeAll( done => {
+  beforeAll(() =>
     chai.request(app).post('/collection/create')
       .send(expected)
       .then(res => {
         expected._id = res.body._id
         path = `/collection/${expected._id}`
-        done()
       })
-  })
+  )
 
   it('should respond with proper collection', () =>
     chai.request(app)
