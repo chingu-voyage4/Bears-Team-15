@@ -89,6 +89,24 @@ describe('GET `/collection/:id`', () => {
         )
       })
   )
+
+  it('should respond with 404 if wrong ID', () => chai.request(app)
+    .get(`/collection/${new ObjectId}`)
+    .catch(err => {
+      const res = err.response
+      expect(res).toHaveProperty('status', 404)
+      expect(res).toHaveProperty('text', errors.collection.notFound)
+    })
+  )
+
+  it('should respond with 400 if invalid ID', () => chai.request(app)
+    .get('/collection/239b25a87687f87')
+    .catch(err => {
+      const res = err.response
+      expect(res).toHaveProperty('status', 400)
+      expect(res).toHaveProperty('text', errors.collection.badRequest)
+    })
+  )
 })
 
 // UPDATE
