@@ -115,7 +115,37 @@ describe('PUT `/collection/:id`', () => {
 
   const deck = {
     collectionName: 'collection to update',
-    items: [{ 'q': 'update', 'a': 'me' }]
+    items: [
+      { 'q': 'dont touch', 'a': 'me' },
+      { 'q': 'update', 'a': 'me' },
+      { 'q': 'delete', 'a': 'me' },
+    ]
+  }
+
+  let saved = {}
+
+  const changes = {
+    collectionName: 'collection with modified deck',
+    items: {
+      add: [
+        { q: 'first added', a: 'card' },
+        { q: 'second added', a: 'card' },
+      ],
+      delete: [{}],
+      modify: [
+        { q: 'updated', a: 'updated' }
+      ]
+    }
+  }
+
+  const expected = {
+    collectionName: 'collection with modified deck',
+    items: [
+      { q: 'dont touch', a: 'me' },
+      { q: 'updated', a: 'updated' },
+      { q: 'first added', a: 'card' },
+      { q: 'second added', a: 'card' },
+    ]
   }
 
   beforeAll(() => chai.request(app)
