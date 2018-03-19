@@ -126,7 +126,7 @@ describe('PUT `/collection/:id`', () => {
     .then(res => saved = res.body)
   )
 
-  it('should update `name`, `shared`, not change items', () => chai.request(app)
+  it('should only update `name`, `shared`', () => chai.request(app)
     .put(path)
     .send({ collectionName: 'Updated name', shared: true })
     .then(res => {
