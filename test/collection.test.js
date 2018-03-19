@@ -132,7 +132,9 @@ describe('PUT `/collection/:id`', () => {
     .then(res => {
       expect(res.body).toHaveProperty('collectionName', 'Updated name')
       expect(res.body).toHaveProperty('shared', true)
-      expect(res.body).toHaveProperty('items', [card.items[0]._id])
+      expect(res.body).toHaveProperty(
+        'items', saved.items.map(x => x._id)
+      )
     })
   )
 })
