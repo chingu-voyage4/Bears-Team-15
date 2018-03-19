@@ -70,7 +70,7 @@ const handleSearch = (err, res, statusCode, msg, type, crud) => {
   } else {
     statusCode = 500
     msg = errors[type].common(crud)
-    console.log(err)
+    console.error(err)
   }
   res.status(statusCode).send(msg)
 }
@@ -99,7 +99,7 @@ router.post('/collection/create', async (req, res) => {
     if (err !== 'bad') {
       statusCode = 500
       msg = errors.collection.common('create')
-      console.log(err)
+      console.error(err)
     }
     res.status(statusCode).send(msg)
   }
@@ -142,7 +142,7 @@ router.get('/collections/public', (req, res) => {
       if (err !== 'notFound') {
         statusCode = 500
         msg = errors.worstScenario
-        console.log(err)
+        console.error(err)
       }
       res.status(statusCode).send(msg)
     })
