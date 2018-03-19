@@ -179,6 +179,18 @@ describe('PUT `/collection/:id`', () => {
       )
     })
   )
+
+  it('should modify items', () => chai.request(app)
+    .put(path)
+    .send(changes)
+    .then(res => {
+      expect(res.body).toHaveProperty('collectionName', expected.collectionName)
+      const received = res.body.items.map(x => ({ q: x.q, a: x.a }))
+      expect(received).toEqual(
+        expect.arrayContaining(expected.items)
+      )
+    })
+  )
 })
 
 // DESTROY
