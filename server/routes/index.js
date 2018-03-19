@@ -60,6 +60,20 @@ router.post('/login', async (req, res) => {
 })
 
 // COLLECTION ROUTES: --------------------------------------------------
+const handleSearch = (err, res, statusCode, msg, type, crud) => {
+  if (err === 'notFound') {
+    statusCode = 404
+    msg = errors[type].notFound
+  } else if (err.kind === 'ObjectId') {
+    statusCode = 400
+    msg = errors[type].badRequest
+  } else {
+    statusCode = 500
+    msg = errors[type].common(crud)
+    console.log(err)
+  }
+  res.status(statusCode).send(msg)
+}
 
 // CREATE collection
 router.post('/collection/create', async (req, res) => {
@@ -103,14 +117,7 @@ router.get('/collection/:id', (req, res) => {
       if (!doc) throw 'notFound'
       res.status(200).send(doc)
     })
-    .catch(err => {
-      if (err !== 'notFound') {
-        statusCode = 500
-        msg = errors.collection.read.common
-        console.log(err)
-      }
-      res.status(statusCode).send(msg)
-    })
+    .catch(err => handleSearch(err, res, statusCode, msg, 'collection', 'read'))
 })
 
 // INDEX public
