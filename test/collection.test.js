@@ -116,9 +116,11 @@ describe('PUT `/collection/:id`', () => {
   const deck = {
     collectionName: 'collection to update',
     items: [
-      { 'q': 'dont touch', 'a': 'me' },
-      { 'q': 'update', 'a': 'me' },
-      { 'q': 'delete', 'a': 'me' },
+      { q: 'dont touch', a: 'me' },
+      { q: 'update', a: 'me' },
+      { q: 'delete', a: 'me' },
+      { q: 'update', a: 'me too' },
+      { q: 'delete', a: 'me too' },
     ]
   }
 
@@ -133,7 +135,8 @@ describe('PUT `/collection/:id`', () => {
       ],
       del: [],
       mod: [
-        { q: 'updated', a: 'updated' }
+        { q: 'updated', a: 'updated1' },
+        { q: 'updated', a: 'updated2' },
       ]
     }
   }
@@ -142,7 +145,8 @@ describe('PUT `/collection/:id`', () => {
     collectionName: 'collection with modified deck',
     items: [
       { q: 'dont touch', a: 'me' },
-      { q: 'updated', a: 'updated' },
+      { q: 'updated', a: 'updated1' },
+      { q: 'updated', a: 'updated2' },
       { q: 'first added', a: 'card' },
       { q: 'second added', a: 'card' },
     ]
@@ -155,10 +159,14 @@ describe('PUT `/collection/:id`', () => {
     .then(() => chai.request(app).get(path))
     .then(res => {
       saved = res.body
-      const cardToDelete = saved.items.find(x => x.q === 'delete')._id
-      changes.items.del.push(cardToDelete.toString())
-      const cardToUpdate = saved.items.find(x => x.q === 'update')._id
-      changes.items.mod[0]._id = cardToUpdate.toString()
+      const cardsToDelete = saved.items
+        .filter(x => x.q === 'delete')
+        .map(x => x._id.toString())
+      changes.items.del = cardsToDelete
+      const cardsToUpdate = saved.items
+        .filter(x => x.q === 'update')
+        .map(x => x._id.toString())
+      changes.items.mod.forEach((x, i) => x._id = cardsToUpdate[i])
     })
   )
 
