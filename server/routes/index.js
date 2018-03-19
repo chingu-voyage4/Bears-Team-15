@@ -149,6 +149,21 @@ router.get('/collections/public', (req, res) => {
 })
 
 // UPDATE collection
+router.put('/collection/:id', async (req, res) => {
+  let statusCode = 200
+  let msg = errors.worstScenario
+  const { id }  = req.params
+  const { collectionName, shared } = req.body
+  try {
+    const collection = await Collection.findById(id)
+    collection.collectionName = collectionName
+    collection.shared = shared
+    const toSend = await collection.save()
+    res.status(200).send(toSend)
+  } catch (err) {
+    handleSearch(err, res, statusCode, msg, 'collection', 'update')
+  }
+})
 
 // DESTROY collection
 router.delete('/collection/:id', async (req, res) => {
