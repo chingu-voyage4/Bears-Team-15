@@ -153,7 +153,13 @@ describe('PUT `/collection/:id`', () => {
     .send(deck)
     .then(res => path = `/collection/${res.body._id}`)
     .then(() => chai.request(app).get(path))
-    .then(res => saved = res.body)
+    .then(res => {
+      saved = res.body
+      const cardToDelete = saved.items.find(x => x.q === 'delete')._id
+      changes.items.del.push(cardToDelete.toString())
+      const cardToUpdate = saved.items.find(x => x.q === 'update')._id
+      changes.items.mod[0]._id = cardToUpdate.toString()
+    })
   )
 
   it('should only update `name`, `shared`', () => chai.request(app)
