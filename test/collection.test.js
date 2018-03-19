@@ -168,8 +168,14 @@ describe('PUT `/collection/:id`', () => {
     .then(res => {
       expect(res.body).toHaveProperty('collectionName', 'Updated name')
       expect(res.body).toHaveProperty('shared', true)
-      expect(res.body).toHaveProperty(
-        'items', saved.items.map(x => x._id)
+      const expected = saved.items.map(x => ({
+         _id: x._id,
+         q: x.q,
+         a: x.a,
+      }))
+      const received = res.body.items.map(({ _id, q, a }) => ({ _id, q, a}))
+      expect(received).toEqual(
+        expect.arrayContaining(expected)
       )
     })
   )
