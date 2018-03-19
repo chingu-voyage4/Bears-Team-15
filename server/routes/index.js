@@ -98,7 +98,7 @@ router.post('/collection/create', async (req, res) => {
   } catch (err) {
     if (err !== 'bad') {
       statusCode = 500
-      msg = errors.collection.create.common
+      msg = errors.collection.common('create')
       console.log(err)
     }
     res.status(statusCode).send(msg)
@@ -109,7 +109,7 @@ router.post('/collection/create', async (req, res) => {
 router.get('/collection/:id', (req, res) => {
   const { id } = req.params
   let statusCode = 404
-  let msg = errors.collection.notFound
+  let msg = errors.collection.common('read')
 
   Collection.findById(id)
     .populate('items')
