@@ -156,12 +156,16 @@ router.put('/collection/:id', async (req, res) => {
   const { collectionName, shared } = req.body
   try {
     const collection = await Collection.findById(id).populate('items')
-    collection.collectionName = collectionName
-    collection.shared = shared
-    const toSend = await collection.save()
-    // TODO: update itmes
+    if (collectionName) {
+      collection.collectionName = collectionName
+    }
+    if (shared !== undefined) {
+      collection.shared = shared
+    }
 
-    res.status(200).send(toSend)
+    const saved = await collection.save()
+
+    res.status(200).send(saved)
   } catch (err) {
     handleSearch(err, res, statusCode, msg, 'collection', 'update')
   }
