@@ -197,6 +197,13 @@ describe('PUT `/collection/:id`', () => {
       expect(received).toEqual(
         expect.arrayContaining(expected.items)
       )
+      expect(received).not.toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            q: 'delete'
+          })
+        ])
+      )
     })
   )
 })
