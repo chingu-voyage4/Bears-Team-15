@@ -165,6 +165,7 @@ router.put('/collection/:id', async (req, res) => {
 
     if (items) {
       const { del, mod, add } = items
+      const toDel = []
 
       collection.items.forEach((card, index) => {
         const id = card._id.toString()
@@ -172,12 +173,9 @@ router.put('/collection/:id', async (req, res) => {
         if (del && del.length > 0) {
           const i = del.findIndex(x => x === id)
           if (i !== -1) {
-            Card.findByIdAndRemove(id)
-              .then(() => {
-                del.splice(i, 1)
-                collection.items.splice(index, 1)
-                return
-              })
+            toDel.push({ index, id })
+            del.splice(i, 1)
+            return
           }
         }
 
@@ -193,6 +191,14 @@ router.put('/collection/:id', async (req, res) => {
           }
         }
       })
+
+
+      let shift = 0
+      for (let { index, id } of toDel) {
+        await Card.findByIdAndRemove(id)
+        collection.items.splice(index - shift, 1)
+        shift += 1
+      }
 
       if (add && add.length > 0) {
         await Promise.all(
