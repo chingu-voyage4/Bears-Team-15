@@ -11,5 +11,20 @@ export default {
     common: 'Login error. Access denied',
     wrongCredentials: 'Wrong credentials. Access denied',
   },
+  collection: {
+    common (crud) {
+      return `Failed to ${crud} a collection`
+    },
+    notFound: 'Collection not found',
+    badRequest: 'Bad request. Check your collection object\'s structure',
+  },
+  card: {
+    common (crud) {
+      return `Failed to ${crud} a card`
+    },
+    notFound: 'Card not found',
+    badRequest: 'Bad request. Check your card object\'s structure',
+  },
+  noPublicFound: 'No public collections found',
   worstScenario: 'Server error'
 }
