@@ -1,9 +1,12 @@
 <template>
 <header>
   <div class="content">
-    <img src="../assets/logo-placeholder.png" />
-    <p v-if="loadingMode">Loading...</p>
-    <router-link to="/">Home</router-link>
+    <span>
+      <img src="../assets/logo-placeholder.png" />
+      <router-link to="/">Home</router-link>
+    </span>
+    <p v-if="loadingMode">Loading...</p>       
+    <router-link to="/login">Login</router-link>    
   </div>
 </header>
 </template>
@@ -31,6 +34,11 @@ header{
   padding: 0 3vw;
 }
 
+.content span{
+  display: flex;
+  align-items: center;
+}
+
 a{
   color: white;
   font-size: 2em;
@@ -38,6 +46,6 @@ a{
 
 img{
   height: 50px;
-  margin: 10px 0;
+  margin: 10px 10px 10px 0;
 }
 </style>

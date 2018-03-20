@@ -9,6 +9,9 @@ import Homepage from '@/components/Homepage'
 import Dashboard from '@/components/Dashboard'
 import DashboardPrivate from '@/components/DashboardPrivate'
 import DashboardPublic from '@/components/DashboardPublic'
+import Form from '@/components/Form'
+import FormLogin from '@/components/FormLogin'
+import FormRegister from '@/components/FormRegister'
 
 Vue.use(Router)
 
@@ -64,6 +67,22 @@ export default new Router({
             },
           ]
         },
+        {
+          path: 'login',
+          component: Form,
+          children: [
+            {
+              path: '/login',
+              name: 'login',
+              component: FormLogin,
+            },
+            {
+              path: '/register',
+              name: 'register',
+              component: FormRegister,
+            }
+          ]
+        }
       ]
     }
   ]
