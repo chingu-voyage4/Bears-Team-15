@@ -77,7 +77,7 @@ export default new Router({
               component: FormLogin,
             },
             {
-              path: 'register',
+              path: '/register',
               name: 'register',
               component: FormRegister,
             }
