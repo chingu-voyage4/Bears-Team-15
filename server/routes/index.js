@@ -166,6 +166,7 @@ router.put('/collection/:id', async (req, res) => {
     if (items) {
       const { del, mod, add } = items
       const toDel = []
+      const toMod = []
 
       collection.items.forEach((card, index) => {
         const id = card._id.toString()
@@ -182,16 +183,17 @@ router.put('/collection/:id', async (req, res) => {
         if (mod && mod.length > 0) {
           const i = mod.findIndex(x => x._id === id)
           if (i !== -1) {
-            const { _id, ...upd } = mod[i]
-            Card.findByIdAndUpdate(id, upd, {new: true})
-              .then(doc => {
-                mod.splice(i, 1)
-                collection.items[index] = doc
-              })
+            const { _id, ...body } = mod[i]
+            toMod.push({ index, id, body })
+            mod.splice(i, 1)
           }
         }
       })
 
+      for (let { index, id, body } of toMod) {
+        const doc = await Card.findByIdAndUpdate(id, body, {new: true})
+        collection.items.splice(index, 1, doc)
+      }
 
       let shift = 0
       for (let { index, id } of toDel) {
