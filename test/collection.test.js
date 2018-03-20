@@ -193,15 +193,14 @@ describe('PUT `/collection/:id`', () => {
     .send(changes)
     .then(res => {
       expect(res.body).toHaveProperty('collectionName', expected.collectionName)
-      const received = res.body.items.map(x => ({ q: x.q, a: x.a }))
-      expect(received).toEqual(
+      const receivedQA = res.body.items.map(({ q, a }) => ({ q, a }))
+      expect(receivedQA).toEqual(
         expect.arrayContaining(expected.items)
       )
-      expect(received).not.toEqual(
+      const receivedID = res.body.items.map(({ _id }) => ({ _id }))
+      expect(receivedID).not.toEqual(
         expect.arrayContaining([
-          expect.objectContaining({
-            q: 'delete'
-          })
+          changes.items.del.map(x => ({ _id: x }))
         ])
       )
     })
