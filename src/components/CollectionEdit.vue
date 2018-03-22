@@ -20,14 +20,20 @@
   </div>
   <div>
     <input
-      v-model.trim="collection.collectionName"
+		  v-if="inputMode"
+      v-model.trim="inputValue"
+			ref="title"
       type="text" placeholder="Collection name"
       :class="titleClass"
       :autofocus="createMode"
-      @focus="focus(null, 'title')"
-      @blur="onBlur(null, 'title')"
-      @keyup.enter="focusNext($event.target, 'title')"
+      @focus="focusTitle"
+      @blur="blurTitle"
+      @keyup.enter="focusNext(-1)"
     >
+		<p
+			v-else
+			@click="inputTitle"
+		>{{ displayedTitle }}</p>
     <router-link
       v-if="createMode"
       :to="homeRoute"
@@ -65,6 +71,8 @@ export default {
     emptyCard: { q: '', a: '' },
 		errorCount: 0,
 		titleError: false,
+		inputMode: false,
+		inputValue: '',
     focusedTitle: false,
   }),
   beforeRouteLeave (to, from, next) {
@@ -83,6 +91,16 @@ export default {
     collection () {
       return this.$store.getters.collection(this.id)
     },
+		receivedTitle () {
+			return this.collection.collectionName
+		},
+		displayedTitle () {
+			if (this.toSend.collectionName) {
+				return this.toSend.collectionName
+			} else {
+				return this.receivedTitle
+			}
+		},
     lastIndex () {
       return this.collection.items.length - 1;
     },
@@ -150,9 +168,26 @@ export default {
         this.$router.push(this.homeRoute)
       }
     },
-    focus (index, qa) {
-      this.focused = { index, qa }
+		inputTitle () {
+			this.inputMode = true
+			this.inputValue = this.displayedTitle
+      this.$nextTick(() => this.$refs.title.focus())
+		},
+    focusTitle (index, qa) {
+      this.focusedTitle = true
     },
+    blurTitle () {
+			if (this.inputValue !== '') {
+				this.inputMode = false
+				this.titleError = false
+				// direct mutation, change it:
+				this.collection.collectionName = this.inputValue
+				this.toSend.collectionName = this.inputValue
+			} else {
+				this.titleError = true
+			}
+      this.focusedTitle = false
+		},
 		addError() {
 			this.errorCount += 1
 		},
