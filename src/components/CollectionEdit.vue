@@ -102,11 +102,8 @@ export default {
 			return this.collection.collectionName
 		},
 		displayedTitle () {
-			if (this.toSend.collectionName) {
-				return this.toSend.collectionName
-			} else {
-				return this.receivedTitle
-			}
+			const changed = this.toSend.collectionName
+			return changed ? changed : this.receivedTitle
 		},
     lastIndex () {
       return this.collection.items.length - 1;
