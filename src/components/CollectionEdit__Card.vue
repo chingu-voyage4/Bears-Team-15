@@ -53,6 +53,36 @@ export default {
 			this.inputs = this.received
       this.$nextTick(() => this.$refs[qa][0].focus())
 		},
+    focus (qa) {
+			this.focused[qa] = true
+      this.$emit('focusCard')
+    },
+    blur (qa) {
+			if (this.inputs[qa] === '') {
+        if (!this.errors[qa]) {
+  	      this.errors[qa] = true
+  				this.$emit('addError')
+        }
+			} else {
+				if (this.errors[qa]) {
+					this.errors[qa] = false
+					this.$emit('removeError')
+				}
+				const body = this.inputs[qa]
+				this.$emit('change', { index: this.index, qa, body })
+				this.inputMode[qa] = false
+			}
+      this.focused[qa] = false
+      this.$emit('blurCard')
+    },
+    focusNext (qa) {
+      this.blur(qa)
+      if (qa === 'a') {
+        this.$emit('focusNext', this.index)
+      } else if (qa === 'q'){
+        this.$nextTick(() => this.input('a'))
+      }
+    },
     inputClass (qa) {
       const err = this.errors[qa]
       const focused = this.focused[qa]
