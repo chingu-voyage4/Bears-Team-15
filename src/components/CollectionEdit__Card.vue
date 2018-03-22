@@ -58,6 +58,16 @@ export default {
       const focused = this.focused[qa]
       return { error: err && !focused }
     },
+    remove () {
+      let count = 0
+      if (this.errors.q) count += 1
+      if (this.errors.a) count += 1
+  		this.inputMode = { q: false, a: false },
+  		this.focused = { q: false, a: false },
+  		this.errors = { q: false, a: false },
+  		this.inputs = { q: '', a: '' },
+      this.$emit('remove', count)
+    }
   }
 }
 </script>
