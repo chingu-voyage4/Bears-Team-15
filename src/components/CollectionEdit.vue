@@ -227,7 +227,7 @@ export default {
 	  fork(){
 	    this.$store.dispatch('fork', this.collection)
 	    this.$router.push(this.homeRoute)
-	  }
+	  },
   }
 }
 </script>
