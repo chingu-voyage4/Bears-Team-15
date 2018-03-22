@@ -123,6 +123,18 @@ export default {
     removeDuplicates () {
       this.$store.dispatch('removeDuplicates', this.id)
     },
+    save () {
+        if (this.createMode) {
+          this.$emit('save')
+        } else {
+          this.$store.dispatch('saveState')
+        }
+        this.$router.push(this.homeRoute)
+    },
+	  fork(){
+	    this.$store.dispatch('fork', this.collection)
+	    this.$router.push(this.homeRoute)
+	  },
 		change ({ index, qa, body }) {
 			const card = this.collection.items[index]
 			if (card._id) {
@@ -176,14 +188,6 @@ export default {
 
         if (typeof cb === 'function') cb()
     },
-    save () {
-        if (this.createMode) {
-          this.$emit('save')
-        } else {
-          this.$store.dispatch('saveState')
-        }
-        this.$router.push(this.homeRoute)
-    },
 		inputTitle () {
 			this.inputMode = true
 			this.inputValue = this.displayedTitle
@@ -224,10 +228,6 @@ export default {
 			}
 			else this.$refs.card[index +1].$refs.pq[0].click()
     },
-	  fork(){
-	    this.$store.dispatch('fork', this.collection)
-	    this.$router.push(this.homeRoute)
-	  },
   }
 }
 </script>
