@@ -35,30 +35,9 @@
       <button>Discard</button>
     </router-link>
   </div>
-  <div
-    class="card"
+	<app-card-input
     v-for="(card, index) in collection.items" :key="index"
-  >
-    <input
-      type="text" v-model.trim="card.q" placeholder="Question"
-      @focus="focus(index, 'q')"
-      @blur="blur(index, 'q')"
-      ref="q"
-      :class="inputClass(index, 'q')"
-      @keyup.enter="focusNext($event.target, 'q', index)"
-    >
-    <input
-      type="text" v-model.trim="card.a" placeholder="Answer"
-      @focus="focus(index, 'a')"
-      @blur="blur(index, 'a')"
-      ref="a"
-      :class="inputClass(index, 'a')"
-      @keyup.enter="focusNext($event.target, 'a', index)"
-    >
-    <button
-      @click="remove(index)"
-    >X</button>
-  </div>
+	></app-card-input>
   <button
     class="btn btn-add newCard"
     @click="add"
@@ -72,8 +51,13 @@
 </template>
 
 <script>
+import CardInput from '@/components/CollectionEdit__Card'
+
 export default {
   props: ['id', 'createMode'],
+	components: {
+		appCardInput: CardInput,
+	},
   data: () => ({
     homeRoute: { name: 'home' },
     emptyCard: { q: '', a: '' },
@@ -174,57 +158,7 @@ export default {
     focus (index, qa) {
       this.focused = { index, qa }
     },
-    blur (index, qa) {
-      //check if there was an error before
-      const errorIndex = this.errors[qa]
-        .findIndex(x => x === index)
-      if (errorIndex !== -1) {
-        // if there was an error – remove it from error list
-        // if on blur value is not empty
-        if (this.collection.items[index][qa] !== ''){
-          this.errors[qa].splice(errorIndex, 1)
-        }
-      } else if (this.collection.items[index][qa] === ''){
-        // if there wasn't an error and now it is – push it
-        this.errors[qa].push(index)
-      }
 
-      this.onBlur(index, qa)
-    },
-    onBlur (index, qa) {
-      this.focused = { index: null, qa: ''}
-    },
-    focusNext (target, type, index) {
-      if (target.value.trim() !== '') {
-        const focus = (qa, i) => {
-          this.$nextTick(() => {
-            const column = this.$refs[qa]
-            if (column && column[i]) column[i].focus()
-            else if (qa !== 'a') {
-              this.add(() => this.focusNext(target, type, index))
-            }
-          })
-        }
-        switch (type) {
-          case 'title':
-            focus('q', 0)
-            break;
-          case 'q':
-            focus('a', index)
-            break;
-          case 'a':
-            focus('q', index + 1)
-            break;
-        }
-      }
-    },
-    inputClass (index, qa) {
-      const err = this.errors[qa]
-          .filter( x => x === index).length > 0 ? true : false
-      const focused = this.focused.qa === qa
-        && this.focused.index === index
-      return { error: err && !focused }
-    },
 	  fork(){
 	    this.$store.dispatch('fork', this.collection)
 	    this.$router.push(this.homeRoute)
@@ -234,7 +168,4 @@ export default {
 </script>
 
 <style scoped>
-.error {
-  border: 1px solid red;
-}
 </style>
