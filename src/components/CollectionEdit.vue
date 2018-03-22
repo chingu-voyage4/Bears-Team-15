@@ -37,6 +37,8 @@
   </div>
 	<app-card-input
     v-for="(card, index) in collection.items" :key="index"
+		@addError="addError"
+		@removeError="removeError"
 	></app-card-input>
   <button
     class="btn btn-add newCard"
@@ -61,8 +63,9 @@ export default {
   data: () => ({
     homeRoute: { name: 'home' },
     emptyCard: { q: '', a: '' },
-    errors: { q: [], a: [] },
-    focused: { qa: '', index: null }
+		errorCount: 0,
+		titleError: false,
+    focusedTitle: false,
   }),
   beforeRouteLeave (to, from, next) {
     if (this.collection) {
@@ -97,15 +100,10 @@ export default {
       return null
     },
     readyToSave () {
-      return this.errors.q.length === 0
-        && this.errors.a.length === 0
-        && !this.titleError
-    },
-    titleError () {
-      return this.collection.collectionName === ''
+			return this.errorCount === 0 && !this.titleError
     },
     titleClass () {
-      return { error:  this.titleError && this.focused.qa !== 'title' }
+      return { error:  this.titleError && !this.focusedTitle }
     }
   },
   methods: {
@@ -132,10 +130,7 @@ export default {
     remove (index) {
       const id = this.id
       this.$store.commit('removeCard', { id, index })
-      const helper = a => a.filter(x => x !== index)
-        .map(x => x > index ? x - 1 : x)
-      this.errors.q = helper(this.errors.q)
-      this.errors.a = helper(this.errors.a)
+			this.removeError(errCount)
     },
     add (cb) {
       if (this.checkLastCard()) {
@@ -158,6 +153,13 @@ export default {
     focus (index, qa) {
       this.focused = { index, qa }
     },
+		addError() {
+			this.errorCount += 1
+		},
+		removeError(count) {
+			this.errorCount -= count ? count : 1
+			this.errorCount = Math.max(this.errorCount, 0)
+		},
 
 	  fork(){
 	    this.$store.dispatch('fork', this.collection)
