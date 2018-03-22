@@ -195,7 +195,19 @@ export default {
 			this.errorCount -= count ? count : 1
 			this.errorCount = Math.max(this.errorCount, 0)
 		},
+    focusNext (index) {
+			if (index == -1) this.blurTitle()
 
+			const nextCard = this.collection.items[index+1]
+			if (!nextCard) {
+				this.add(() => {
+					this.$nextTick(() =>
+					  this.$refs.card[index+1].$refs.q[0].focus()
+				  )
+				})
+			}
+			else this.$refs.card[index +1].$refs.pq[0].click()
+    },
 	  fork(){
 	    this.$store.dispatch('fork', this.collection)
 	    this.$router.push(this.homeRoute)
