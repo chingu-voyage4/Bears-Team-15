@@ -80,6 +80,14 @@ export default {
 		inputMode: false,
 		inputValue: '',
     focusedTitle: false,
+		toSend: {
+			collectionName: '',
+			items: {
+			  add: [],
+				del: [],
+				mod: [],
+			}
+		},
   }),
   beforeRouteLeave (to, from, next) {
     if (this.collection) {
@@ -151,7 +159,37 @@ export default {
     removeDuplicates () {
       this.$store.dispatch('removeDuplicates', this.id)
     },
-    remove (index) {
+		change ({ index, qa, body }) {
+			this.collection.items[index][qa] = body
+
+			const modifiedCard = { ...this.collection.items[index] }
+			modifiedCard[qa] = body
+			if (modifiedCard._id) {
+				const i = this.toSend.items.mod
+				  .findIndex(x => x._id.toString() === modifiedCard._id.toString())
+				if (i !== -1) {
+					this.toSend.items.mod[i] = modifiedCard
+				} else {
+					this.toSend.items.mod.push(modifiedCard)
+				}
+			} else {
+				const i = this.toSend.items.added
+				  .findIndex(x => x.q === modifiedCard.q && x.a === modifiedCard.a)
+				if (i !== -1) {
+					this.toSend.items.add[i] = modifiedCard
+				}
+			}
+		},
+    remove (index, errCount) {
+			// add to change list
+			const card = this.collection.items[index]
+			if (card._id) {
+				this.toSend.items.del.push(card._id)
+			} else {
+				this.toSend.items.add = this.toSend.items.add
+				  .filter(x => !(x.q === card.q && x.a === card.a))
+			}
+
       const id = this.id
       this.$store.commit('removeCard', { id, index })
 			this.removeError(errCount)
@@ -161,6 +199,8 @@ export default {
         const card = { ...this.emptyCard }
         const id = this.id
         this.$store.commit('addCard', { id, card })
+				this.toSend.items.add.push(this.collection.items[this.lastIndex])
+
         if (typeof cb === 'function') cb()
       }
     },
