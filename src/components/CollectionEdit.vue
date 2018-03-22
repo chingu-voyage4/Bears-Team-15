@@ -43,8 +43,14 @@
   </div>
 	<app-card-input
     v-for="(card, index) in collection.items" :key="index"
+		ref="card"
+		:card="card"
+		:index="index"
+		@change="x => change(x)"
+		@remove="count => remove(index, count)"
 		@addError="addError"
 		@removeError="removeError"
+		@focusNext="index => focusNext(index)"
 	></app-card-input>
   <button
     class="btn btn-add newCard"
