@@ -88,9 +88,6 @@ export default {
   beforeRouteLeave (to, from, next) {
     if (this.collection) {
       if (this.readyToSave) {
-        if (this.lastCardIsNotFilled === 'both') {
-          this.remove(this.lastIndex, 1)
-        }
         next()
       }
     } else {
@@ -114,19 +111,6 @@ export default {
     lastIndex () {
       return this.collection.items.length - 1;
     },
-    lastCardIsNotFilled () {
-      if (this.lastIndex === -1) return null
-      const lastCard = this.collection.items[this.lastIndex]
-      if (lastCard.q === '') {
-        if (lastCard.a === '') {
-          return 'both'
-        }
-        return 'q'
-      } else if (lastCard.a === ''){
-        return 'a'
-      }
-      return null
-    },
     readyToSave () {
 			return this.errorCount === 0 && !this.titleError
     },
@@ -135,19 +119,6 @@ export default {
     }
   },
   methods: {
-    checkLastCard () {
-      if (this.readyToSave ) {
-        if (this.lastCardIsNotFilled === 'both') {
-          this.blur(this.lastIndex, 'q')
-          this.blur(this.lastIndex, 'a')
-        } else if (this.lastCardIsNotFilled) {
-          this.blur(this.lastIndex, this.lastCardIsNotFilled)
-        } else {
-          return true
-        }
-      }
-      return false
-    },
     deleteCollection () {
       this.$store.dispatch('deleteCollection', this.id)
       this.$router.push(this.homeRoute)
@@ -197,7 +168,6 @@ export default {
 			this.removeError(errCount)
     },
     add (cb) {
-      if (this.checkLastCard()) {
         const card = { ...this.emptyCard }
         const id = this.id
         this.$store.commit('addCard', { id, card })
@@ -208,17 +178,14 @@ export default {
 				this.toSend.items.add.push(lastCard)
 
         if (typeof cb === 'function') cb()
-      }
     },
     save () {
-      if (this.checkLastCard()) {
         if (this.createMode) {
           this.$emit('save')
         } else {
           this.$store.dispatch('saveState')
         }
         this.$router.push(this.homeRoute)
-      }
     },
 		inputTitle () {
 			this.inputMode = true
