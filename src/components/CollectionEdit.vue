@@ -44,7 +44,7 @@
 	<app-card-input
     v-for="(card, index) in collection.items" :key="index"
 		ref="card"
-		:card="card"
+		:card="card.temp? card.temp : card"
 		:index="index"
 		@change="x => change(x)"
 		@remove="count => remove(index, count)"
@@ -160,24 +160,27 @@ export default {
       this.$store.dispatch('removeDuplicates', this.id)
     },
 		change ({ index, qa, body }) {
-			this.collection.items[index][qa] = body
-
-			const modifiedCard = { ...this.collection.items[index] }
-			modifiedCard[qa] = body
-			if (modifiedCard._id) {
-				const i = this.toSend.items.mod
-				  .findIndex(x => x._id.toString() === modifiedCard._id.toString())
-				if (i !== -1) {
-					this.toSend.items.mod[i] = modifiedCard
+			const card = this.collection.items[index]
+			if (card._id) {
+				if (!card.temp) card.temp = {...card}
+				card.temp[qa] = body
+				if (card.q === card.temp.q && card.a === card.temp.a) {
+				  this.toSend.items.mod = this.toSend.items.mod.filter(x => {
+						return x._id.toString() != card.temp._id.toString()
+					})
+					delete card.temp
 				} else {
-					this.toSend.items.mod.push(modifiedCard)
+					const i = this.toSend.items.mod
+					  .findIndex(x => x._id.toString() === card.temp._id.toString())
+					if (i !== -1) {
+						this.toSend.items.mod[i] = card.temp
+					} else {
+						this.toSend.items.mod.push(card.temp)
+					}
 				}
 			} else {
-				const i = this.toSend.items.added
-				  .findIndex(x => x.q === modifiedCard.q && x.a === modifiedCard.a)
-				if (i !== -1) {
-					this.toSend.items.add[i] = modifiedCard
-				}
+				card[qa] = body
+				this.toSend.items.add[card.index] = card
 			}
 		},
     remove (index, errCount) {
@@ -186,8 +189,11 @@ export default {
 			if (card._id) {
 				this.toSend.items.del.push(card._id)
 			} else {
-				this.toSend.items.add = this.toSend.items.add
-				  .filter(x => !(x.q === card.q && x.a === card.a))
+				const addList = this.toSend.items.add
+				addList.splice(card.index, 1)
+				addList.map(x => {
+					if (x.index > card.index) x.index -= 1
+				})
 			}
 
       const id = this.id
@@ -199,7 +205,11 @@ export default {
         const card = { ...this.emptyCard }
         const id = this.id
         this.$store.commit('addCard', { id, card })
-				this.toSend.items.add.push(this.collection.items[this.lastIndex])
+				const lastCard = this.collection.items[this.lastIndex]
+				const addListLength = this.toSend.items.add.length
+				const lastAddElement = this.toSend.items.add[addListLength - 1]
+				lastCard.index = lastAddElement ? lastAddElement.index + 1 : 0
+				this.toSend.items.add.push(lastCard)
 
         if (typeof cb === 'function') cb()
       }
