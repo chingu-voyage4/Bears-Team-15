@@ -82,11 +82,7 @@ export default {
     focusedTitle: false,
 		toSend: {
 			collectionName: '',
-			items: {
-			  add: [],
-				del: [],
-				mod: [],
-			}
+			items: { add: [], del: [], mod: [] }
 		},
   }),
   beforeRouteLeave (to, from, next) {
