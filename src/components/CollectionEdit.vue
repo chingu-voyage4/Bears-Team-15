@@ -85,6 +85,9 @@ export default {
       next()
     }
   },
+	created () {
+		if (this.createMode) this.add()
+	},
   computed: {
     collection () {
       return this.$store.getters.collection(this.id)

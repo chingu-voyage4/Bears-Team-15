@@ -27,6 +27,9 @@ export default {
 		inputValue: '',
     focusedTitle: false,
   }),
+  created () {
+		if (this.createMode) this.inputTitle()
+  },
   computed: {
 		displayedTitle () {
 			return this.inputValue ? this.inputValue : this.title
