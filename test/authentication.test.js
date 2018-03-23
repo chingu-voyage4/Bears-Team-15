@@ -20,7 +20,11 @@ const quaker = {
 
 beforeAll(async () => {
   await seed.resetAllCollections()
-  await chai.request(app).post('/register').send(quaker)
+  const res = await chai.request(app).post('/register').send(quaker)
+  quaker._id = res.body._id.toString()
+  quaker.authToken = jwt.sign({
+      _id: quaker._id
+    }, JWT_SECRET, { expiresIn: '5d' })
 })
 
 afterAll(server.close())
