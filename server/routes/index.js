@@ -24,10 +24,18 @@ router.post('/register', (req, res) => {
         msg = errors.registration.duplicate
       } else if (err.errors) {
         const e = err.errors
-        if (e.login && e.login.kind === 'required') {
-          msg = errors.registration.empty.login
-        } else if (e.password && e.password.kind === 'required') {
-          msg = errors.registration.empty.password
+        if (e.login) {
+          if (e.login.kind === 'required') {
+            msg = errors.registration.emptyLogin
+          } else if (e.login.kind === 'invalidLogin') {
+            msg = errors.registration.invalidLogin
+          }
+        } else if (e.password) {
+          if (e.password.kind === 'required') {
+            msg = errors.registration.emptyPwd
+          } else if (e.password.kind === 'invalidPwd') {
+            msg = errors.registration.invalidPwd
+          }
         }
       } else {
         console.error(err)

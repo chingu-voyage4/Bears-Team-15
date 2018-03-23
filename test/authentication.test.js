@@ -65,7 +65,7 @@ describe('POST `/register`', () => {
       .catch(err => {
         const res = err.response
         expect(res).toHaveProperty('status', 400)
-        expect(res).toHaveProperty('text', errors.registration.empty.login)
+        expect(res).toHaveProperty('text', errors.registration.emptyLogin)
       })
   )
 
@@ -76,7 +76,7 @@ describe('POST `/register`', () => {
       .catch(err => {
         const res = err.response
         expect(res).toHaveProperty('status', 400)
-        expect(res).toHaveProperty('text', errors.registration.empty.password)
+        expect(res).toHaveProperty('text', errors.registration.emptyPwd)
       })
   )
 
