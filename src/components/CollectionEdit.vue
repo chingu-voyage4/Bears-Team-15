@@ -197,7 +197,9 @@ export default {
 				  )
 				})
 			}
-			else this.$refs.card[index +1].$refs.pq[0].click()
+			else if (this.$refs.card[index+1].$refs.pq)
+				this.$refs.card[index+1].$refs.pq[0].click()
+			else this.$refs.card[index+1].$refs.q[0].focus()
     },
   }
 }
