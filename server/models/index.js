@@ -1,6 +1,18 @@
 const mongoose = require('mongoose')
 import bcrypt from 'bcryptjs'
 
+const getByteLength = input =>
+  input.split('')
+    .map(char => char.charCodeAt(0))
+    .map(c =>
+      c < (1 <<  7) ? 1 :
+      c < (1 << 11) ? 2 :
+      c < (1 << 16) ? 3 :
+      c < (1 << 21) ? 4 :
+      c < (1 << 26) ? 5 : Number.NaN
+    )
+    .reduce((sum, bytes) => sum + bytes)
+
 const UserSchema = new mongoose.Schema({
   login: {
     type: String,
