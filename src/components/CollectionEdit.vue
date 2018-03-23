@@ -8,7 +8,7 @@
       >Fork</button>
 	</div>
 </div>
-<div v-if="!collection.shared">
+<div v-else>
   <div>
     <button class="btn btn-delete"
       v-if="!createMode"
