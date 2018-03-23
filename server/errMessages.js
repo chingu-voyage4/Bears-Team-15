@@ -10,6 +10,7 @@ export default {
   login: {
     common: 'Login error. Access denied',
     wrongCredentials: 'Wrong credentials. Access denied',
+    invalidToken: 'Invalid authentication token',
   },
   collection: {
     common (crud) {
