@@ -36,12 +36,14 @@ UserSchema.pre('save', function (next) {
   const user = this
 
   if (user.isModified('password')) {
-    const salt = bcrypt.genSaltSync(10)
-    const hash = bcrypt.hashSync(user.password, salt)
-    user.password = hash
+    bcrypt.genSalt(10, (err, salt) => {
+      bcrypt.hash(user.password, salt, (err, hash) => {
+        if (err) throw err
+        user.password = hash
+        next()
+      })
+    })
   }
-
-  next()
 })
 
 UserSchema.statics.findByCredentials = function (login, password) {
