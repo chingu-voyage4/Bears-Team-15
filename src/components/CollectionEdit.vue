@@ -156,7 +156,7 @@ export default {
 			} else {
 				const addList = this.toSend.items.add
 				addList.splice(card.index, 1)
-				addList.map(x => {
+				addList.forEach(x => {
 					if (x.index > card.index) x.index -= 1
 				})
 			}
