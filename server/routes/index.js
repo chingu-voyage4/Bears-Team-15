@@ -2,6 +2,10 @@ const express = require('express')
 const router = express.Router()
 
 import errors from '../errMessages'
+import jwt from 'jsonwebtoken'
+import dotenv from 'dotenv'
+dotenv.config()
+const JWT_SECRET = process.env.JWT_SECRET
 
 router.get('/', (req, res) => {
   res.status(200).sendFile(path.resolve(__dirname, '../../index.html'))

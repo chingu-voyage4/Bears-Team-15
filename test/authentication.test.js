@@ -6,6 +6,11 @@ import chai from 'chai'
 import chaiHttp from 'chai-http'
 import { ObjectId } from 'mongodb'
 
+import jwt from 'jsonwebtoken'
+import dotenv from 'dotenv'
+dotenv.config()
+const JWT_SECRET = process.env.JWT_SECRET
+
 chai.use(chaiHttp)
 
 const quaker = {
