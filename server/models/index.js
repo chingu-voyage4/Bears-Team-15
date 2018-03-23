@@ -23,7 +23,16 @@ const UserSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
-    minLength: 1,
+    validate: {
+      validator: x => {
+        const s = String(x)
+        const l = s.length
+        if (l < 8 || l > 72) return false
+        const bytes = getByteLength(s)
+        return !!bytes && bytes <= 72
+      },
+      type: 'invalidPwd',
+    },
   },
 })
 
