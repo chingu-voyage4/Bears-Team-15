@@ -19,6 +19,10 @@ const UserSchema = new mongoose.Schema({
     required: true,
     minLength: 1,
     unique: true,
+    validate: {
+      validator: x => /^[\w\-\.@]+$/.test(x),
+      type: 'invalidLogin'
+    },
   },
   password: {
     type: String,
