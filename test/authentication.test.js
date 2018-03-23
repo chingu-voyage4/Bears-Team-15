@@ -127,10 +127,18 @@ describe('POST `/login`', () => {
       .send(quaker)
       .then(response => {
         expect(response).toHaveProperty('status', 200)
+
+        expect(response.headers).toHaveProperty('authorization')
+        const token = response.headers.authorization.split(' ')[1]
+        expect(token).toBeDefined()
+
         const received = response.body
         expect(received).toHaveProperty('_id')
         expect(received).toHaveProperty('login', quaker.login)
         expect(received).not.toHaveProperty('password')
+
+        const decoded = jwt.verify(token, JWT_SECRET)
+        expect(received._id).toEqual(decoded._id)
       })
   )
 
