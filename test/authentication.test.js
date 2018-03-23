@@ -15,7 +15,6 @@ const quaker = {
 
 beforeAll(async () => {
   await seed.resetAllCollections()
-  await seed.populateCollections()
   await chai.request(app).post('/register').send(quaker)
 })
 
