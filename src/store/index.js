@@ -108,8 +108,11 @@ export default new Vuex.Store({
       commit('deleteCollection', id)
       commit('saveLocally')
     },
-    saveState ({ commit }) {
-      commit('saveLocally')
+    updateCollection ({ commit }, toSend) {
+      // TODO: should be modified to receive `toSend` and save
+      // accordingly to the data from this object
+      commit('saveLocally') // save locally
+      // save to DB
     },
     createCollection ({ commit }, id) {
       const collection = {
