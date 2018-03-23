@@ -232,5 +232,21 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
+.error {
+  border: 1px solid red;
+}
+.qa {
+	display: inline-block;
+	width: 150px;
+	height: 2em;
+}
+.qa p {
+	text-align: left;
+}
+.qa * {
+	margin: 0;
+	width: inherit;
+	height: inherit;
+}
 </style>
