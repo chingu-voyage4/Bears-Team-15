@@ -24,12 +24,11 @@ describe('POST `/register`', () => {
   const route = '/register'
 
   const newUser = {
-    login: 'foobar',
-    password: 'password',
+    login: '-@-_.235921fkhSH.',
+    password: '72chars max lenght but 72bytes UTF8 лорем іпсум долорем',
   }
 
-  it('should save a user', () =>
-    chai.request(app)
+  it('should register weirdest possible login', () => chai.request(app)
       .post(route)
       .send(newUser)
       .then(response => {
