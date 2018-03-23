@@ -81,17 +81,6 @@ describe('POST `/register`', () => {
   xit('should not register user with invalid login')
 
   xit('should not register user with invalid password')
-
-  it('should register another user with same password', () =>
-    chai.request(app)
-      .post(route)
-      .send({ login: 'goo', password: quaker.password})
-      .then(res => {
-        const received = res.body
-        expect(received).toHaveProperty('_id')
-        expect(received).toHaveProperty('login', 'goo')
-      })
-  )
 })
 
 describe('POST `/login`', () => {
