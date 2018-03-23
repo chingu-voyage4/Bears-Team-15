@@ -142,6 +142,23 @@ describe('POST `/login`', () => {
       })
   )
 
+  it('should login by JWT', () => chai.request(app)
+    .post(route)
+    .send()
+    .set('authorization', `Bearer ${quaker.authToken}`)
+    .then(res => {
+      expect(res).toHaveProperty('status', 200)
+      expect(res.headers).toHaveProperty('authorization')
+      expect(res.body).toHaveProperty('_id', quaker._id)
+
+      const token = res.headers['authorization'].split(' ')[1]
+      expect(token).toBeDefined()
+      expect(token).not.toEqual(quaker.authToken)
+      const decoded = jwt.verify(token, JWT_SECRET)
+      expect(decoded._id).toEqual(quaker._id)
+    })
+  )
+
   it('should respond 403 to empty request', () =>
     chai.request(app)
       .post(route)
