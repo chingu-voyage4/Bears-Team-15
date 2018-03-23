@@ -88,7 +88,25 @@ describe('POST `/register`', () => {
     })
   )
 
-  xit('should not register user with invalid password')
+  it('should not register too short password', () => chai.request(app)
+    .post(route)
+    .send({ login: 'anylogin', password: '1234'})
+    .catch(err => {
+      const res = err.response
+      expect(res).toHaveProperty('status', 400)
+      expect(res).toHaveProperty('text', errors.registration.invalidPwd)
+    })
+  )
+
+  it('should not register too long password', () => chai.request(app)
+    .post(route)
+    .send({ login: 'foobario', password: `Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore ex beatae a deleniti ducimus vitae accusamus repellendus cupiditate sequi itaque consectetur eum saepe, dignissimos vel atque, iste ullam, quod doloribus.`})
+    .catch(err => {
+      const res = err.response
+      expect(res).toHaveProperty('status', 400)
+      expect(res).toHaveProperty('text', errors.registration.invalidPwd)
+    })
+  )
 })
 
 describe('POST `/login`', () => {
