@@ -117,6 +117,13 @@ export default {
 	    this.$store.dispatch('fork', this.collection)
 	    this.$router.push(this.homeRoute)
 	  },
+		changeTitle (title) {
+			if (title === this.collection.collectionName) {
+				delete this.toSend.collectionName
+			} else {
+				this.toSend.collectionName = title
+			}
+		},
 		change ({ index, qa, body }) {
 			const card = this.collection.items[index]
 			if (card._id) {
