@@ -54,14 +54,33 @@ router.post('/login', async (req, res) => {
   let msg = ''
   let statusCode = 403
   try {
-    if (!login || !password) throw 'empty'
-    const user = await User.findByCredentials(login, password)
-    res.status(200).send(user)
+    const authHeader = req.headers['authorization']
+    let user
+
+    if (!authHeader) {
+      if (!login || !password) throw 'empty'
+      user = await User.findByCredentials(login, password)
+    } else {
+      const token = authHeader.split(' ')[1]
+      const decoded = jwt.verify(token, JWT_SECRET)
+      if (!decoded) throw 'invaidToken'
+      user = await User.findById(decoded._id)
+    }
+
+    if (!user) throw 'notFound'
+
+    const newToken = jwt.sign({
+      _id: user._id.toString()
+    }, JWT_SECRET, { expiresIn: '30d' })
+
+    res.status(200).set('authorization', `Bearer ${newToken}`).send(user)
   } catch (err) {
     if (err === 'empty') {
       msg = errors.login.common
-    } else if (err === 'wrong') {
+    } else if (err === 'wrong' || err === 'notFound') {
       msg = errors.login.wrongCredentials
+    } else if (err === 'invalidToken') {
+      msg = errors.login.invalidToken
     } else {
       console.error(err)
       msg = errors.worstScenario
