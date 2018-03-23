@@ -78,7 +78,15 @@ describe('POST `/register`', () => {
       })
   )
 
-  xit('should not register user with invalid login')
+  it('should not register user with invalid login', () => chai.request(app)
+    .post(route)
+    .send({ login: '35&89021sd*afjkhSR', password: 'password' })
+    .catch(err => {
+        const res = err.response
+        expect(res).toHaveProperty('status', 400)
+        expect(res).toHaveProperty('text', errors.registration.invalidLogin)
+    })
+  )
 
   xit('should not register user with invalid password')
 })
