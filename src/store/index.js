@@ -115,7 +115,7 @@ export default new Vuex.Store({
       const collection = {
         collectionName: '',
         id,
-        items: [{ q: '', a: '' }]
+        items: [],
       }
       commit('deleteCollection', id)
       commit('pushCollection', collection)
