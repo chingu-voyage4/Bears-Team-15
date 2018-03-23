@@ -19,21 +19,14 @@
     >Remove Duplicates</button>
   </div>
   <div>
-    <input
-		  v-if="inputMode"
-      v-model.trim="inputValue"
-			ref="title"
-      type="text" placeholder="Collection name"
-      :class="titleClass"
-      :autofocus="createMode"
-      @focus="focusTitle"
-      @blur="blurTitle"
-      @keyup.enter="focusNext(-1)"
-    >
-		<p
-			v-else
-			@click="inputTitle"
-		>{{ displayedTitle }}</p>
+		<app-collection-title
+			:title="title"
+			:createMode="createMode"
+			@changeTitle="title => changeTitle(title)"
+			@addError="addError"
+			@removeError="removeError"
+		  @focusNext="focusNext(-1)"
+		></app-collection-title>
     <router-link
       v-if="createMode"
       :to="homeRoute"
@@ -66,20 +59,18 @@
 
 <script>
 import CardInput from '@/components/CollectionEdit__Card'
+import CollectionTitle from '@/components/CollectionEdit__Title'
 
 export default {
   props: ['id', 'createMode'],
 	components: {
 		appCardInput: CardInput,
+		appCollectionTitle: CollectionTitle,
 	},
   data: () => ({
     homeRoute: { name: 'home' },
     emptyCard: { q: '', a: '' },
 		errorCount: 0,
-		titleError: false,
-		inputMode: false,
-		inputValue: '',
-    focusedTitle: false,
 		toSend: {
 			collectionName: '',
 			items: { add: [], del: [], mod: [] }
@@ -111,9 +102,6 @@ export default {
     readyToSave () {
 			return this.errorCount === 0 && !this.titleError
     },
-    titleClass () {
-      return { error:  this.titleError && !this.focusedTitle }
-    }
   },
   methods: {
     deleteCollection () {
@@ -180,6 +168,7 @@ export default {
         const card = { ...this.emptyCard }
         const id = this.id
         this.$store.commit('addCard', { id, card })
+
 				const lastCard = this.collection.items[this.lastIndex]
 				const addListLength = this.toSend.items.add.length
 				const lastAddElement = this.toSend.items.add[addListLength - 1]
@@ -188,26 +177,6 @@ export default {
 
         if (typeof cb === 'function') cb()
     },
-		inputTitle () {
-			this.inputMode = true
-			this.inputValue = this.displayedTitle
-      this.$nextTick(() => this.$refs.title.focus())
-		},
-    focusTitle (index, qa) {
-      this.focusedTitle = true
-    },
-    blurTitle () {
-			if (this.inputValue !== '') {
-				this.inputMode = false
-				this.titleError = false
-				// direct mutation, change it:
-				this.collection.collectionName = this.inputValue
-				this.toSend.collectionName = this.inputValue
-			} else {
-				this.titleError = true
-			}
-      this.focusedTitle = false
-		},
 		addError() {
 			this.errorCount += 1
 		},
@@ -216,8 +185,6 @@ export default {
 			this.errorCount = Math.max(this.errorCount, 0)
 		},
     focusNext (index) {
-			if (index == -1) this.blurTitle()
-
 			const nextCard = this.collection.items[index+1]
 			if (!nextCard) {
 				this.add(() => {
