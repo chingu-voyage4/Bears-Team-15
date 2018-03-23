@@ -78,7 +78,7 @@ export default {
   }),
   beforeRouteLeave (to, from, next) {
     if (this.collection) {
-      if (this.readyToSave) {
+			if (this.errorCount === 0) {
         next()
       }
     } else {
@@ -89,18 +89,12 @@ export default {
     collection () {
       return this.$store.getters.collection(this.id)
     },
-		receivedTitle () {
-			return this.collection.collectionName
-		},
-		displayedTitle () {
+		title () {
 			const changed = this.toSend.collectionName
-			return changed ? changed : this.receivedTitle
+			return changed ? changed : this.collection.collectionName
 		},
     lastIndex () {
       return this.collection.items.length - 1;
-    },
-    readyToSave () {
-			return this.errorCount === 0 && !this.titleError
     },
   },
   methods: {
