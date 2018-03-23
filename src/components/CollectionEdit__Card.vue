@@ -13,7 +13,7 @@
 	    @keyup.enter="focusNext(qa)"
 	  >
 		<p
-			class="ellipsis"
+			class="ellipsis editable"
 	    :ref="'p'+qa"
 			v-else
 			@click="input(qa)"

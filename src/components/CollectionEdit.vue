@@ -207,6 +207,9 @@ export default {
 .error {
   border: 1px solid red;
 }
+.editable {
+	cursor: text;
+}
 .qa {
 	display: inline-block;
 	width: 150px;

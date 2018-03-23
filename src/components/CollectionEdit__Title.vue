@@ -13,6 +13,7 @@
   >
 	<p
 		v-else
+		class="ellipsis editable"
 		@click="inputTitle"
 	>{{ displayedTitle }}</p>
 </div>
