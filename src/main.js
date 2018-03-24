@@ -7,10 +7,12 @@ import store from './store'
 import axios from 'axios'
 
 if (process.env.NODE_ENV !== 'production') {
-  axios.defaults.baseURL = 'http://localhost:8081'
-  axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*'
+  const localhost = 'http://localhost:8081'
+  axios.defaults.baseURL = localhost
+  axios.defaults.headers.common['Access-Control-Allow-Origin'] = localhost
 }
 axios.defaults.headers.get['Accept'] = 'application/json'
+axios.defaults.headers.post['Content-Type'] = 'application/json'
 axios.defaults.headers.put['Content-Type'] = 'application/json'
 
 Vue.config.productionTip = false
