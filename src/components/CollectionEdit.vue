@@ -8,7 +8,7 @@
       >Fork</button>
 	</div>
 </div>
-<div v-if="!collection.shared">
+<div v-else>
   <div>
     <button class="btn btn-delete"
       v-if="!createMode"
@@ -19,15 +19,14 @@
     >Remove Duplicates</button>
   </div>
   <div>
-    <input
-      v-model.trim="collection.collectionName"
-      type="text" placeholder="Collection name"
-      :class="titleClass"
-      :autofocus="createMode"
-      @focus="focus(null, 'title')"
-      @blur="onBlur(null, 'title')"
-      @keyup.enter="focusNext($event.target, 'title')"
-    >
+		<app-collection-title
+			:title="title"
+			:createMode="createMode"
+			@changeTitle="title => changeTitle(title)"
+			@addError="addError"
+			@removeError="removeError"
+		  @focusNext="focusNext(-1)"
+		></app-collection-title>
     <router-link
       v-if="createMode"
       :to="homeRoute"
@@ -35,30 +34,17 @@
       <button>Discard</button>
     </router-link>
   </div>
-  <div
-    class="card"
+	<app-card-input
     v-for="(card, index) in collection.items" :key="index"
-  >
-    <input
-      type="text" v-model.trim="card.q" placeholder="Question"
-      @focus="focus(index, 'q')"
-      @blur="blur(index, 'q')"
-      ref="q"
-      :class="inputClass(index, 'q')"
-      @keyup.enter="focusNext($event.target, 'q', index)"
-    >
-    <input
-      type="text" v-model.trim="card.a" placeholder="Answer"
-      @focus="focus(index, 'a')"
-      @blur="blur(index, 'a')"
-      ref="a"
-      :class="inputClass(index, 'a')"
-      @keyup.enter="focusNext($event.target, 'a', index)"
-    >
-    <button
-      @click="remove(index)"
-    >X</button>
-  </div>
+		ref="card"
+		:card="card.temp? card.temp : card"
+		:index="index"
+		@change="x => change(x)"
+		@remove="count => remove(index, count)"
+		@addError="addError"
+		@removeError="removeError"
+		@focusNext="index => focusNext(index)"
+	></app-card-input>
   <button
     class="btn btn-add newCard"
     @click="add"
@@ -72,72 +58,49 @@
 </template>
 
 <script>
+import CardInput from '@/components/CollectionEdit__Card'
+import CollectionTitle from '@/components/CollectionEdit__Title'
+
 export default {
   props: ['id', 'createMode'],
+	components: {
+		appCardInput: CardInput,
+		appCollectionTitle: CollectionTitle,
+	},
   data: () => ({
     homeRoute: { name: 'home' },
     emptyCard: { q: '', a: '' },
-    errors: { q: [], a: [] },
-    focused: { qa: '', index: null }
+		errorCount: 0,
+		toSend: {
+			collectionName: '',
+			items: { add: [], del: [], mod: [] }
+		},
   }),
   beforeRouteLeave (to, from, next) {
     if (this.collection) {
-      if (this.readyToSave) {
-        if (this.lastCardIsNotFilled === 'both') {
-          this.remove(this.lastIndex, 1)
-        }
+			if (this.errorCount === 0) {
         next()
       }
     } else {
       next()
     }
   },
+	created () {
+		if (this.createMode) this.add()
+	},
   computed: {
     collection () {
       return this.$store.getters.collection(this.id)
     },
+		title () {
+			const changed = this.toSend.collectionName
+			return changed ? changed : this.collection.collectionName
+		},
     lastIndex () {
       return this.collection.items.length - 1;
     },
-    lastCardIsNotFilled () {
-      if (this.lastIndex === -1) return null
-      const lastCard = this.collection.items[this.lastIndex]
-      if (lastCard.q === '') {
-        if (lastCard.a === '') {
-          return 'both'
-        }
-        return 'q'
-      } else if (lastCard.a === ''){
-        return 'a'
-      }
-      return null
-    },
-    readyToSave () {
-      return this.errors.q.length === 0
-        && this.errors.a.length === 0
-        && !this.titleError
-    },
-    titleError () {
-      return this.collection.collectionName === ''
-    },
-    titleClass () {
-      return { error:  this.titleError && this.focused.qa !== 'title' }
-    }
   },
   methods: {
-    checkLastCard () {
-      if (this.readyToSave ) {
-        if (this.lastCardIsNotFilled === 'both') {
-          this.blur(this.lastIndex, 'q')
-          this.blur(this.lastIndex, 'a')
-        } else if (this.lastCardIsNotFilled) {
-          this.blur(this.lastIndex, this.lastCardIsNotFilled)
-        } else {
-          return true
-        }
-      }
-      return false
-    },
     deleteCollection () {
       this.$store.dispatch('deleteCollection', this.id)
       this.$router.push(this.homeRoute)
@@ -145,96 +108,121 @@ export default {
     removeDuplicates () {
       this.$store.dispatch('removeDuplicates', this.id)
     },
-    remove (index) {
-      const id = this.id
-      this.$store.commit('removeCard', { id, index })
-      const helper = a => a.filter(x => x !== index)
-        .map(x => x > index ? x - 1 : x)
-      this.errors.q = helper(this.errors.q)
-      this.errors.a = helper(this.errors.a)
-    },
-    add (cb) {
-      if (this.checkLastCard()) {
-        const card = { ...this.emptyCard }
-        const id = this.id
-        this.$store.commit('addCard', { id, card })
-        if (typeof cb === 'function') cb()
-      }
-    },
     save () {
-      if (this.checkLastCard()) {
         if (this.createMode) {
           this.$emit('save')
         } else {
-          this.$store.dispatch('saveState')
+          this.$store.dispatch('updateCollection', toSend)
         }
         this.$router.push(this.homeRoute)
-      }
-    },
-    focus (index, qa) {
-      this.focused = { index, qa }
-    },
-    blur (index, qa) {
-      //check if there was an error before
-      const errorIndex = this.errors[qa]
-        .findIndex(x => x === index)
-      if (errorIndex !== -1) {
-        // if there was an error – remove it from error list
-        // if on blur value is not empty
-        if (this.collection.items[index][qa] !== ''){
-          this.errors[qa].splice(errorIndex, 1)
-        }
-      } else if (this.collection.items[index][qa] === ''){
-        // if there wasn't an error and now it is – push it
-        this.errors[qa].push(index)
-      }
-
-      this.onBlur(index, qa)
-    },
-    onBlur (index, qa) {
-      this.focused = { index: null, qa: ''}
-    },
-    focusNext (target, type, index) {
-      if (target.value.trim() !== '') {
-        const focus = (qa, i) => {
-          this.$nextTick(() => {
-            const column = this.$refs[qa]
-            if (column && column[i]) column[i].focus()
-            else if (qa !== 'a') {
-              this.add(() => this.focusNext(target, type, index))
-            }
-          })
-        }
-        switch (type) {
-          case 'title':
-            focus('q', 0)
-            break;
-          case 'q':
-            focus('a', index)
-            break;
-          case 'a':
-            focus('q', index + 1)
-            break;
-        }
-      }
-    },
-    inputClass (index, qa) {
-      const err = this.errors[qa]
-          .filter( x => x === index).length > 0 ? true : false
-      const focused = this.focused.qa === qa
-        && this.focused.index === index
-      return { error: err && !focused }
     },
 	  fork(){
 	    this.$store.dispatch('fork', this.collection)
 	    this.$router.push(this.homeRoute)
-	  }
+	  },
+		changeTitle (title) {
+			if (title === this.collection.collectionName) {
+				delete this.toSend.collectionName
+			} else {
+				this.toSend.collectionName = title
+			}
+		},
+		change ({ index, qa, body }) {
+			const card = this.collection.items[index]
+			if (card._id) {
+				if (!card.temp) card.temp = {...card}
+				card.temp[qa] = body
+				if (card.q === card.temp.q && card.a === card.temp.a) {
+				  this.toSend.items.mod = this.toSend.items.mod.filter(x => {
+						return x._id.toString() != card.temp._id.toString()
+					})
+					delete card.temp
+				} else {
+					const i = this.toSend.items.mod
+					  .findIndex(x => x._id.toString() === card.temp._id.toString())
+					if (i !== -1) {
+						this.toSend.items.mod[i] = card.temp
+					} else {
+						this.toSend.items.mod.push(card.temp)
+					}
+				}
+			} else {
+				card[qa] = body
+				this.toSend.items.add[card.index] = card
+			}
+		},
+    remove (index, errCount) {
+			// add to change list
+			const card = this.collection.items[index]
+			if (card._id) {
+				this.toSend.items.del.push(card._id)
+			} else {
+				const addList = this.toSend.items.add
+				addList.splice(card.index, 1)
+				addList.forEach(x => {
+					if (x.index > card.index) x.index -= 1
+				})
+			}
+
+      const id = this.id
+      this.$store.commit('removeCard', { id, index })
+			this.removeError(errCount)
+    },
+    add (cb) {
+        const card = { ...this.emptyCard }
+        const id = this.id
+        this.$store.commit('addCard', { id, card })
+
+				const lastCard = this.collection.items[this.lastIndex]
+				const addListLength = this.toSend.items.add.length
+				const lastAddElement = this.toSend.items.add[addListLength - 1]
+				lastCard.index = lastAddElement ? lastAddElement.index + 1 : 0
+				this.toSend.items.add.push(lastCard)
+
+        if (typeof cb === 'function') cb()
+    },
+		addError() {
+			this.errorCount += 1
+		},
+		removeError(count) {
+			this.errorCount -= count ? count : 1
+			this.errorCount = Math.max(this.errorCount, 0)
+		},
+    focusNext (index) {
+			const nextCard = this.collection.items[index+1]
+			if (!nextCard) {
+				this.add(() => {
+					this.$nextTick(() =>
+					  this.$refs.card[index+1].$refs.q[0].focus()
+				  )
+				})
+			}
+			else if (this.$refs.card[index+1].$refs.pq)
+				this.$refs.card[index+1].$refs.pq[0].click()
+			else this.$refs.card[index+1].$refs.q[0].focus()
+    },
   }
 }
 </script>
 
-<style scoped>
+<style>
 .error {
   border: 1px solid red;
+}
+.editable {
+	cursor: text;
+}
+.qa {
+	display: inline-block;
+	width: 150px;
+	height: 2em;
+}
+.qa p {
+	text-align: left;
+}
+.qa * {
+	margin: 0;
+	width: inherit;
+	height: inherit;
 }
 </style>
