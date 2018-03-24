@@ -16,12 +16,10 @@ const MONGODB_URI = NODE_ENV === 'test'
 import bodyParser from 'body-parser'
 app.use(bodyParser.json())
 
-//     this seems to be pretty useless:
-
-// if (NODE_ENV !== 'production') {
-//   const cors = require('cors')
-//   app.use(cors({ exposedHeaders: ['authorization'] }))
-// }
+if (NODE_ENV !== 'production') {
+  const cors = require('cors')
+  app.use(cors({ exposedHeaders: ['authorization'] }))
+}
 
 app.use(express.static(path.resolve(__dirname, '..')))
 app.use('/', routes)
