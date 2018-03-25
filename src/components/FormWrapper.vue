@@ -10,7 +10,7 @@
 import NavTabs from '@/components/NavTabs'
 
 export default {
-  name: "Form",
+  name: "FormWrapper",
   components: {
     appNavTabs: NavTabs,
   },
