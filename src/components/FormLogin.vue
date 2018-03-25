@@ -1,6 +1,6 @@
 <template>
 <div>
-  <form-fields v-on:auth="login"></form-fields>
+  <form-fields v-on:auth="login" v-bind:errors="errors"></form-fields>
 </div>
 </template>
 
@@ -14,21 +14,16 @@ export default {
     formFields: FormFields,
   },
   data: () => ({
-    name: '',
-    password: '',
     errors: []
   }),
   methods: {
-    login(){
-      console.log('login')
-      /*
+    login(payload){      
       this.errors = []
-      axios.post('/login', { login: this.name, password: this.password })
+      axios.post('/login', payload)
         .then(response => { })
       .catch(e => {
-        this.errors.push(e.response.data)
+        if(e.response){this.errors.push(e.response.data)}        
       })
-      */
     }
   }
 }

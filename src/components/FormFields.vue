@@ -17,14 +17,14 @@
 
 <script>
 export default {
+  props: ['errors'],
   data: () => ({
     name: '',
-    password: '',
-    errors: []
+    password: ''
   }),
   methods: {
     auth(){
-      this.$emit('auth', {name: this.name, password: this.password})
+      this.$emit('auth', {login: this.name, password: this.password})
     }
   }
 }
