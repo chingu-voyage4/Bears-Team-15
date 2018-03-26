@@ -15,9 +15,10 @@ const MONGODB_URI = NODE_ENV === 'test'
 // application-level middleware:
 import bodyParser from 'body-parser'
 app.use(bodyParser.json())
+
 if (NODE_ENV !== 'production') {
   const cors = require('cors')
-  app.use(cors({ exposedHeaders: ['x-auth'] }))
+  app.use(cors({ exposedHeaders: ['authorization'] }))
 }
 
 app.use(express.static(path.resolve(__dirname, '..')))

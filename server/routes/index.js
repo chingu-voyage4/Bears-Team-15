@@ -2,6 +2,10 @@ const express = require('express')
 const router = express.Router()
 
 import errors from '../errMessages'
+import jwt from 'jsonwebtoken'
+import dotenv from 'dotenv'
+dotenv.config()
+const JWT_SECRET = process.env.JWT_SECRET
 
 router.get('/', (req, res) => {
   res.status(200).sendFile(path.resolve(__dirname, '../../index.html'))
@@ -24,10 +28,18 @@ router.post('/register', (req, res) => {
         msg = errors.registration.duplicate
       } else if (err.errors) {
         const e = err.errors
-        if (e.login && e.login.kind === 'required') {
-          msg = errors.registration.empty.login
-        } else if (e.password && e.password.kind === 'required') {
-          msg = errors.registration.empty.password
+        if (e.login) {
+          if (e.login.kind === 'required') {
+            msg = errors.registration.emptyLogin
+          } else if (e.login.kind === 'invalidLogin') {
+            msg = errors.registration.invalidLogin
+          }
+        } else if (e.password) {
+          if (e.password.kind === 'required') {
+            msg = errors.registration.emptyPwd
+          } else if (e.password.kind === 'invalidPwd') {
+            msg = errors.registration.invalidPwd
+          }
         }
       } else {
         console.error(err)
@@ -42,14 +54,33 @@ router.post('/login', async (req, res) => {
   let msg = ''
   let statusCode = 403
   try {
-    if (!login || !password) throw 'empty'
-    const user = await User.findByCredentials(login, password)
-    res.status(200).send(user)
+    const authHeader = req.headers['authorization']
+    let user
+
+    if (!authHeader) {
+      if (!login || !password) throw 'empty'
+      user = await User.findByCredentials(login, password)
+    } else {
+      const token = authHeader.split(' ')[1]
+      const decoded = jwt.verify(token, JWT_SECRET)
+      if (!decoded) throw 'invaidToken'
+      user = await User.findById(decoded._id)
+    }
+
+    if (!user) throw 'notFound'
+
+    const newToken = jwt.sign({
+      _id: user._id.toString()
+    }, JWT_SECRET, { expiresIn: '30d' })
+
+    res.status(200).set('authorization', `Bearer ${newToken}`).send(user)
   } catch (err) {
     if (err === 'empty') {
       msg = errors.login.common
-    } else if (err === 'wrong') {
+    } else if (err === 'wrong' || err === 'notFound') {
       msg = errors.login.wrongCredentials
+    } else if (err === 'invalidToken') {
+      msg = errors.login.invalidToken
     } else {
       console.error(err)
       msg = errors.worstScenario

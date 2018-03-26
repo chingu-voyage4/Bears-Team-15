@@ -1,17 +1,42 @@
 const mongoose = require('mongoose')
 import bcrypt from 'bcryptjs'
 
+const getByteLength = input =>
+  input.split('')
+    .map(char => char.charCodeAt(0))
+    .map(c =>
+      c < (1 <<  7) ? 1 :
+      c < (1 << 11) ? 2 :
+      c < (1 << 16) ? 3 :
+      c < (1 << 21) ? 4 :
+      c < (1 << 26) ? 5 : Number.NaN
+    )
+    .reduce((sum, bytes) => sum + bytes)
+
 const UserSchema = new mongoose.Schema({
   login: {
     type: String,
     required: true,
     minLength: 1,
     unique: true,
+    validate: {
+      validator: x => /^[\w\-\.@]+$/.test(x),
+      type: 'invalidLogin'
+    },
   },
   password: {
     type: String,
     required: true,
-    minLength: 1,
+    validate: {
+      validator: x => {
+        const s = String(x)
+        const l = s.length
+        if (l < 8 || l > 72) return false
+        const bytes = getByteLength(s)
+        return !!bytes && bytes <= 72
+      },
+      type: 'invalidPwd',
+    },
   },
 })
 
@@ -24,12 +49,14 @@ UserSchema.pre('save', function (next) {
   const user = this
 
   if (user.isModified('password')) {
-    const salt = bcrypt.genSaltSync(10)
-    const hash = bcrypt.hashSync(user.password, salt)
-    user.password = hash
+    bcrypt.genSalt(10, (err, salt) => {
+      bcrypt.hash(user.password, salt, (err, hash) => {
+        if (err) throw err
+        user.password = hash
+        next()
+      })
+    })
   }
-
-  next()
 })
 
 UserSchema.statics.findByCredentials = function (login, password) {

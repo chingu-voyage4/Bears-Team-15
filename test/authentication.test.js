@@ -6,6 +6,11 @@ import chai from 'chai'
 import chaiHttp from 'chai-http'
 import { ObjectId } from 'mongodb'
 
+import jwt from 'jsonwebtoken'
+import dotenv from 'dotenv'
+dotenv.config()
+const JWT_SECRET = process.env.JWT_SECRET
+
 chai.use(chaiHttp)
 
 const quaker = {
@@ -15,8 +20,11 @@ const quaker = {
 
 beforeAll(async () => {
   await seed.resetAllCollections()
-  await seed.populateCollections()
-  await chai.request(app).post('/register').send(quaker)
+  const res = await chai.request(app).post('/register').send(quaker)
+  quaker._id = res.body._id.toString()
+  quaker.authToken = jwt.sign({
+      _id: quaker._id
+    }, JWT_SECRET, { expiresIn: '5d' })
 })
 
 afterAll(server.close())
@@ -25,12 +33,11 @@ describe('POST `/register`', () => {
   const route = '/register'
 
   const newUser = {
-    login: 'foobar',
-    password: 'password',
+    login: '-@-_.235921fkhSH.',
+    password: '72chars max lenght but 72bytes UTF8 лорем іпсум долорем',
   }
 
-  it('should save a user', () =>
-    chai.request(app)
+  it('should register weirdest possible login', () => chai.request(app)
       .post(route)
       .send(newUser)
       .then(response => {
@@ -65,7 +72,7 @@ describe('POST `/register`', () => {
       .catch(err => {
         const res = err.response
         expect(res).toHaveProperty('status', 400)
-        expect(res).toHaveProperty('text', errors.registration.empty.login)
+        expect(res).toHaveProperty('text', errors.registration.emptyLogin)
       })
   )
 
@@ -76,23 +83,38 @@ describe('POST `/register`', () => {
       .catch(err => {
         const res = err.response
         expect(res).toHaveProperty('status', 400)
-        expect(res).toHaveProperty('text', errors.registration.empty.password)
+        expect(res).toHaveProperty('text', errors.registration.emptyPwd)
       })
   )
 
-  xit('should not register user with invalid login')
+  it('should not register user with invalid login', () => chai.request(app)
+    .post(route)
+    .send({ login: '35&89021sd*afjkhSR', password: 'password' })
+    .catch(err => {
+        const res = err.response
+        expect(res).toHaveProperty('status', 400)
+        expect(res).toHaveProperty('text', errors.registration.invalidLogin)
+    })
+  )
 
-  xit('should not register user with invalid password')
+  it('should not register too short password', () => chai.request(app)
+    .post(route)
+    .send({ login: 'anylogin', password: '1234'})
+    .catch(err => {
+      const res = err.response
+      expect(res).toHaveProperty('status', 400)
+      expect(res).toHaveProperty('text', errors.registration.invalidPwd)
+    })
+  )
 
-  it('should register another user with same password', () =>
-    chai.request(app)
-      .post(route)
-      .send({ login: 'goo', password: quaker.password})
-      .then(res => {
-        const received = res.body
-        expect(received).toHaveProperty('_id')
-        expect(received).toHaveProperty('login', 'goo')
-      })
+  it('should not register too long password', () => chai.request(app)
+    .post(route)
+    .send({ login: 'foobario', password: `Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore ex beatae a deleniti ducimus vitae accusamus repellendus cupiditate sequi itaque consectetur eum saepe, dignissimos vel atque, iste ullam, quod doloribus.`})
+    .catch(err => {
+      const res = err.response
+      expect(res).toHaveProperty('status', 400)
+      expect(res).toHaveProperty('text', errors.registration.invalidPwd)
+    })
   )
 })
 
@@ -105,11 +127,36 @@ describe('POST `/login`', () => {
       .send(quaker)
       .then(response => {
         expect(response).toHaveProperty('status', 200)
+
+        expect(response.headers).toHaveProperty('authorization')
+        const token = response.headers.authorization.split(' ')[1]
+        expect(token).toBeDefined()
+
         const received = response.body
         expect(received).toHaveProperty('_id')
         expect(received).toHaveProperty('login', quaker.login)
         expect(received).not.toHaveProperty('password')
+
+        const decoded = jwt.verify(token, JWT_SECRET)
+        expect(received._id).toEqual(decoded._id)
       })
+  )
+
+  it('should login by JWT', () => chai.request(app)
+    .post(route)
+    .send()
+    .set('authorization', `Bearer ${quaker.authToken}`)
+    .then(res => {
+      expect(res).toHaveProperty('status', 200)
+      expect(res.headers).toHaveProperty('authorization')
+      expect(res.body).toHaveProperty('_id', quaker._id)
+
+      const token = res.headers['authorization'].split(' ')[1]
+      expect(token).toBeDefined()
+      expect(token).not.toEqual(quaker.authToken)
+      const decoded = jwt.verify(token, JWT_SECRET)
+      expect(decoded._id).toEqual(quaker._id)
+    })
   )
 
   it('should respond 403 to empty request', () =>
