@@ -1,6 +1,6 @@
 <template>
 <div>
-  <form-fields v-on:auth="register" v-bind:errors="errors"><template slot="btnName">Register</template></form-fields>
+  <form-fields v-on:auth="register"><template slot="btnName">Register</template></form-fields>
 </div>
 </template>
 
@@ -13,15 +13,13 @@ export default {
     formFields: FormFields,
   },
   data: () => ({
-    errors: []
   }),
   methods: {
     register(payload){
-      this.errors = []
       axios.post('/register', payload)
         .then(response => { })
       .catch(e => {
-        if(e.response){this.errors.push(e.response.data)}   
+        console.log(e.response.data)   
       })
     }
   }
