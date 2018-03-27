@@ -1,6 +1,6 @@
 <template>
 <div>
-  <form-fields v-on:auth="login" v-bind:errors="errors"></form-fields>
+  <form-fields v-on:auth="login" v-bind:errors="errors"><template slot="btnName">Login</template></form-fields>
 </div>
 </template>
 

@@ -10,7 +10,7 @@
     <input type="text" placeholder="Your login name" v-model="name">
     <label>Password</label>
     <input type="password" placeholder="Your password" v-model="password">
-    <button class="btn btn-add" type="submit">Login</button>
+    <button class="btn btn-add" type="submit"><slot name="btnName"></slot></button>
   </form>
 </div>
 </template>
