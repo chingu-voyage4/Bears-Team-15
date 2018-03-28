@@ -1,7 +1,5 @@
 <template>
-<div>
   <form-fields v-on:auth="login"><template slot="btnName">Login</template></form-fields>
-</div>
 </template>
 
 

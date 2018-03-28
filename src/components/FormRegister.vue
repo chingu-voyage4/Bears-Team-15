@@ -1,7 +1,5 @@
 <template>
-<div>
   <form-fields v-on:auth="register"><template slot="btnName">Register</template></form-fields>
-</div>
 </template>
 
 <script>
