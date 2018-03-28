@@ -11,6 +11,7 @@ export default new Vuex.Store({
     publicCollections: [],
     counter: 1,
     loadingMode: false,
+    notifications: [],
   },
   getters: {
     collection: state => id => {
@@ -71,6 +72,13 @@ export default new Vuex.Store({
     },
     pushCollection(state, collection){
       state.collections.push(collection)
+    },
+    /* ***     notifications     ***  */
+    dismissNotification(state, { iat, delay }) {
+      const delayMs = delay*1000 || 0
+      setTimeout(() => {
+        state.notifications = state.notifications.filter(x => x.iat !== iat)
+      }, delayMs)
     },
   },
   actions: {
@@ -136,6 +144,17 @@ export default new Vuex.Store({
       commit('pushCollection', collectionCopy)
       commit('saveNewCollection', collectionCopy.id)
       commit('saveLocally')
-    }
+    },
+    /* ***     notifications     ***  */
+    pushNotification({ commit, state }, { type, msg }) {
+      let iat = Date.now()
+      const notificationsLength = state.notifications.length
+      if (notificationsLength) {
+        const lastIssuedAt = state.notifications[notificationsLength - 1].iat
+        while (iat <= lastIssuedAt) iat++
+      }
+      state.notifications.push({ type, msg, iat })
+      commit('dismissNotification', { iat, delay: 5 })
+    },
   }
 })

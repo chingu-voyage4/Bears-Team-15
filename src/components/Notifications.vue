@@ -1,0 +1,60 @@
+<template>
+<div class="notifications-container">
+  <div
+    class="notif"
+    :class="notificationClass(item)"
+    v-for="(item, index) in notifications" :key="index"
+    @click="dismiss(item.iat)"
+  >
+    {{ item.msg }}
+  </div>
+</div>
+</template>
+
+<script>
+export default {
+  name: 'Notifications',
+  computed: {
+    notifications() {
+      return this.$store.state.notifications.reverse()
+    },
+  },
+  methods: {
+    notificationClass(item, index) {
+      return {
+        'notif-succ': item.type == 'succ',
+        'notif-err': item.type == 'err',
+      }
+    },
+    dismiss(iat) {
+      this.$store.commit('dismissNotification', { iat })
+    }
+  },
+}
+</script>
+
+<style scoped>
+.notifications-container {
+  width: 100%;
+  padding: 1rem;
+  position: absolute;
+}
+.notif {
+  position: relative;
+  padding: .75rem 1.25rem;
+  margin-bottom: 1rem;
+  border-radius: .25rem;
+  border: 1px solid transparent;
+}
+.notif-err {
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+}
+.notif-succ {
+  background-color: #d4edda;
+  border-color: #c3e6cb;
+}
+.hidden {
+  display: none;
+}
+</style>
