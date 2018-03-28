@@ -9,7 +9,7 @@ import Homepage from '@/components/Homepage'
 import Dashboard from '@/components/Dashboard'
 import DashboardPrivate from '@/components/DashboardPrivate'
 import DashboardPublic from '@/components/DashboardPublic'
-import Form from '@/components/Form'
+import FormWrapper from '@/components/FormWrapper'
 import FormLogin from '@/components/FormLogin'
 import FormRegister from '@/components/FormRegister'
 
@@ -69,7 +69,7 @@ export default new Router({
         },
         {
           path: 'login',
-          component: Form,
+          component: FormWrapper,
           children: [
             {
               path: '/login',

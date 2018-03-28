@@ -1,22 +1,26 @@
 <template>
-<form @submit.prevent="login">
-  <label>Name</label>
-  <input type="text" placeholder="Your login name" v-model="name">
-  <label>Password</label>
-  <input type="password" placeholder="Your password" v-model="password">
-  <button class="btn btn-add" type="submit">Login</button>
-</form>
+  <form-fields v-on:auth="login">
+    <template slot="btnName">Login</template>
+  </form-fields>
 </template>
 
 <script>
+import FormFields from '@/components/FormFields'
+import axios from 'axios'
+
 export default {
+  components: {
+    formFields: FormFields,
+  },
   data: () => ({
-    name: '',
-    password: ''
   }),
   methods: {
-    login(){
-      console.log(this.name, this.password)
+    login(payload) {
+      axios.post('/login', payload)
+        .then(response => { })
+        .catch(e => {
+          console.log(e.response.data)
+        })
     }
   }
 }

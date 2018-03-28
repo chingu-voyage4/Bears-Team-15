@@ -93,4 +93,9 @@ form input{
 .btn-save:active {
   background-color:  #1a69a4;
 }
+
+.loginError{
+  margin-bottom: 10px;
+  color:#ff4d4d;
+}
 </style>

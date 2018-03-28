@@ -2,7 +2,7 @@
 <div>
   <h1>{{ greeting }}</h1>
   <app-nav-tabs :navItems="navItems"></app-nav-tabs>
-  <div><router-view/></div>
+  <router-view/>
 </div>
 </template>
 
@@ -10,7 +10,7 @@
 import NavTabs from '@/components/NavTabs'
 
 export default {
-  name: "Form",
+  name: "FormWrapper",
   components: {
     appNavTabs: NavTabs,
   },
