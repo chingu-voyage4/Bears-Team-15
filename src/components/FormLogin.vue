@@ -1,7 +1,8 @@
 <template>
-  <form-fields v-on:auth="login"><template slot="btnName">Login</template></form-fields>
+  <form-fields v-on:auth="login">
+    <template slot="btnName">Login</template>
+  </form-fields>
 </template>
-
 
 <script>
 import FormFields from '@/components/FormFields'
@@ -14,12 +15,12 @@ export default {
   data: () => ({
   }),
   methods: {
-    login(payload){    
+    login(payload) {
       axios.post('/login', payload)
         .then(response => { })
-      .catch(e => {
-        console.log(e.response.data)        
-      })
+        .catch(e => {
+          console.log(e.response.data)
+        })
     }
   }
 }

@@ -1,5 +1,7 @@
 <template>
-  <form-fields v-on:auth="register"><template slot="btnName">Register</template></form-fields>
+  <form-fields v-on:auth="register">
+    <template slot="btnName">Register</template>
+  </form-fields>
 </template>
 
 <script>
@@ -13,12 +15,12 @@ export default {
   data: () => ({
   }),
   methods: {
-    register(payload){
+    register(payload) {
       axios.post('/register', payload)
         .then(response => { })
-      .catch(e => {
-        console.log(e.response.data)   
-      })
+        .catch(e => {
+          console.log(e.response.data)
+        })
     }
   }
 }
