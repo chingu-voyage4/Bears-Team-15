@@ -101,7 +101,7 @@ export default new Vuex.Store({
         })
         .catch(err => {
           commit('setLoadingMode', false)
-          console.log(err.response ? err.response.statusText : err.message )
+          console.error(err.response ? err.response.statusText : err.message )
         })
     },
     deleteCollection ({ commit }, id) {
