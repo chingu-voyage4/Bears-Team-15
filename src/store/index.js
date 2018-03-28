@@ -156,5 +156,11 @@ export default new Vuex.Store({
       state.notifications.push({ type, msg, iat })
       commit('dismissNotification', { iat, delay: 5 })
     },
+    pushNotificationSucc({ dispatch, commit }, msg) {
+      dispatch('pushNotification', { msg, type: 'succ' })
+    },
+    pushNotificationErr({ dispatch, commit }, msg) {
+      dispatch('pushNotification', { msg, type: 'err' })
+    }
   }
 })
