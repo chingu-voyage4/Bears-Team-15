@@ -58,7 +58,6 @@ export default {
 		},
     focus (qa) {
 			this.focused[qa] = true
-      this.$emit('focusCard')
     },
     blur (qa) {
 			if (this.inputs[qa] === '') {
@@ -76,7 +75,6 @@ export default {
 				this.inputMode[qa] = false
 			}
       this.focused[qa] = false
-      this.$emit('blurCard')
     },
     focusNext (qa) {
       this.blur(qa)
