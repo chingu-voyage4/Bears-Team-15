@@ -20,6 +20,7 @@
   </div>
   <div>
 		<app-collection-title
+			ref="title"
 			:title="title"
 			:createMode="createMode"
 			@changeTitle="title => changeTitle(title)"
@@ -78,7 +79,12 @@ export default {
 		},
   }),
 	created () {
-		if (this.createMode) this.add()
+		if (this.createMode) {
+			this.add()
+      this.$nextTick(() => {
+				this.$refs.title.$refs.title.focus()
+			})
+		}
 	},
   computed: {
     collection () {
