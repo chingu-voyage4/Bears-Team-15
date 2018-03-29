@@ -97,8 +97,7 @@ export default {
     inputClass (qa) {
       const err = this.errors[qa]
 
-			const neighbor = qa == 'q'? 'a' : 'q'
-			const focusedNeighbor = this.focused[neighbor]
+			const focusedNeighbor = this.focused.q
       const focusedCard = this.focused[qa] || focusedNeighbor
 
       return { error: err && !focusedCard && !this.thisIsLastEmpty }
