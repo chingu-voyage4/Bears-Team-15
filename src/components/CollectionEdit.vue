@@ -1,5 +1,5 @@
 <template>
-<div class="container">
+<div class="container collection-edit">
 <div v-if="collection.shared">
 	This collection is locked! To edit it fork it to your decks.
 	<div>
@@ -249,47 +249,66 @@ export default {
 </script>
 
 <style>
+.container {
+	text-align: center;
+	max-width: 400px;
+	width: 100%;
+	margin: 0 auto;
+}
 .error {
   border: 1px solid red;
+	border-radius: 3px;
 }
 .editable {
 	cursor: text;
 }
 .card {
-	padding: 0.3rem 0;
+	padding: 0.5rem;
 }
-.qa {
-	display: inline-block;
-  vertical-align: top;
-	width: 150px;
-	height: 2em;
-}
-.qa input {
+.card * {
 	margin: 0;
-	height: 2em;
-	font-size: inherit;
-	font-family: inherit;
-}
-.qa p {
-	text-align: left;
 	height: 2em;
 	line-height: 2em;
 }
+.card button {
+	padding: 0 1rem;
+}
+.qa {
+	display: inline-block;
+	float: left;
+	width: 150px;
+	margin-right: 1rem;
+}
+.qa p {
+	text-align: left;
+}
 .qa * {
-	margin: 0;
 	width: inherit;
+	padding: 0 0.5rem;
+}
+.title {
+	width: 100%;
+	padding: 2rem 0.5rem;
+}
+.title * {
+	width: inherit;
+}
+.title-label {
+	font-size: 1em;
+	line-height: 1em;
+	height: 1em;
+	display: block;
+	text-align: left;
+}
+.title input, .title p {
+	display: block;
+	margin: 0;
+	font-size: 1.8rem;
+	text-align: center;
+}
+.collection-edit input {
+	font-family: inherit;
+	color: inherit;
 	height: inherit;
-}
-.btn-x {
-	height: 2em;
-  vertical-align: top;
-  margin: 0;
-  color: inherit;
-  background-color: #f4f4f4;
-}
-.btn-x:hover, .btn-x:active {
-  color: #fff;
-  font-weight: bold;
-  background-color: #ff4d4d;
 }
 </style>
