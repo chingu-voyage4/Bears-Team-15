@@ -218,17 +218,19 @@ export default {
 			this.errorCount = Math.max(this.errorCount, 0)
 		},
     focusNext (index) {
-			const nextCard = this.collection.items[index+1]
-			if (!nextCard) {
-				this.add(() => {
-					this.$nextTick(() =>
-					  this.$refs.card[index+1].$refs.q[0].focus()
-				  )
-				})
-			}
-			else if (this.$refs.card[index+1].$refs.pq)
-				this.$refs.card[index+1].$refs.pq[0].click()
-			else this.$refs.card[index+1].$refs.q[0].focus()
+			if (this.$refs.title.inputValue !== '') {
+				const thisIsLastEmpty = index === this.lastIndex && this.lastCardIsEmpty
+				if (!thisIsLastEmpty) {
+					if (!this.notReadyToSave) {
+						const nextCard = this.collection.items[index+1]
+						if (!nextCard) {
+							this.add(() => this.$nextTick(() => this.$refs.card[index+1].input('q')))
+						} else this.$refs.card[index+1].input('q')
+
+					} else this.pushMsg('err', 'emptyFields')
+				} else this.pushMsg('err', 'lastEmpty')
+			} else this.pushMsg('err', 'emptyTitle')
+
     },
 		pushMsg(type, msg) {
 			const action = type === 'err' ? 'pushNotificationErr' : 'pushNotificationSucc'
