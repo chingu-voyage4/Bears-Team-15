@@ -1,10 +1,16 @@
 <template>
-<div>
+<div class="title">
+  <label
+    class="title-label"
+    v-if="inputMode"
+    for="collection-name"
+  >Collection name</label>
   <input
+    id="collection-name"
 	  v-if="inputMode"
     v-model.trim="inputValue"
 		ref="title"
-    type="text" placeholder="Collection name"
+    type="text"
     :class="titleClass"
     :autofocus="createMode"
     @focus="focusTitle"
