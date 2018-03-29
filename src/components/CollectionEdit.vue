@@ -76,15 +76,6 @@ export default {
 			items: { add: [], del: [], mod: [] }
 		},
   }),
-  beforeRouteLeave (to, from, next) {
-    if (this.collection) {
-			if (this.errorCount === 0) {
-        next()
-      }
-    } else {
-      next()
-    }
-  },
 	created () {
 		if (this.createMode) this.add()
 	},
@@ -99,6 +90,9 @@ export default {
     lastIndex () {
       return this.collection.items.length - 1;
     },
+		readyToSave() {
+			return this.errorCount === 0
+		}
   },
   methods: {
     deleteCollection () {
@@ -109,12 +103,17 @@ export default {
       this.$store.dispatch('removeDuplicates', this.id)
     },
     save () {
+			if (this.readyToSave) {
         if (this.createMode) {
           this.$emit('save')
         } else {
           this.$store.dispatch('updateCollection', this.toSend)
         }
+
         this.$router.push(this.homeRoute)
+			} else {
+				this.$store.dispatch('pushNotificationErr', 'Error collection edit')
+			}
     },
 	  fork(){
 	    this.$store.dispatch('fork', this.collection)
