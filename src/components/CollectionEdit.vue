@@ -82,7 +82,7 @@ export default {
 		if (this.createMode) {
 			this.add()
       this.$nextTick(() => {
-				this.$refs.title.$refs.title.focus()
+				this.$refs.title.inputTitle()
 			})
 		}
 	},
