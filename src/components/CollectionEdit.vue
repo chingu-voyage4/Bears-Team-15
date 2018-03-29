@@ -254,17 +254,41 @@ export default {
 .editable {
 	cursor: text;
 }
+.card {
+	padding: 0.3rem 0;
+}
 .qa {
 	display: inline-block;
+  vertical-align: top;
 	width: 150px;
 	height: 2em;
 }
+.qa input {
+	margin: 0;
+	height: 2em;
+	font-size: inherit;
+	font-family: inherit;
+}
 .qa p {
 	text-align: left;
+	height: 2em;
+	line-height: 2em;
 }
 .qa * {
 	margin: 0;
 	width: inherit;
 	height: inherit;
+}
+.btn-x {
+	height: 2em;
+  vertical-align: top;
+  margin: 0;
+  color: inherit;
+  background-color: #f4f4f4;
+}
+.btn-x:hover, .btn-x:active {
+  color: #fff;
+  font-weight: bold;
+  background-color: #ff4d4d;
 }
 </style>

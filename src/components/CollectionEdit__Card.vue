@@ -20,8 +20,10 @@
 		>{{ displayed[qa] }}</p>
 	</div>
   <button
+		class="btn btn-x"
+		title="remove card"
 	  @click="remove"
-  >X</button>
+  >✕</button>
 </div>
 </template>
 
