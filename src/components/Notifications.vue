@@ -39,6 +39,7 @@ export default {
   position: absolute;
 }
 .notif {
+  z-index: 100;
   position: relative;
   padding: .75rem 1.25rem;
   margin: 1rem 1rem 0 1rem;
