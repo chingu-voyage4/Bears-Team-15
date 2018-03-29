@@ -17,7 +17,7 @@
 	    :ref="'p'+qa"
 			v-else
 			@click="input(qa)"
-		>{{ received[qa] }}</p>
+		>{{ displayed[qa] }}</p>
 	</div>
   <button
 	  @click="remove"
@@ -36,7 +36,7 @@ export default {
 		inputs: { q: '', a: '' },
   }),
   created () {
-    if (this.card.q === '' && this.card.a === '') {
+    if (this.received.q === '' && this.received.a === '') {
 			this.errors = { q: true, a: true }
 			this.$emit('addError')
 			this.$emit('addError')
@@ -50,14 +50,20 @@ export default {
 			const { q, a } = this.card
 			return { q, a }
 		},
+		displayed() {
+			return {
+				q: this.inputs.q ? this.inputs.q : this.received.q,
+				a: this.inputs.a ? this.inputs.a : this.received.a,
+			}
+		},
 		thisIsLastEmpty() {
-			return this.last && this.received.q === '' && this.received.a === ''
+			return this.last && this.inputs.q === '' && this.inputs.a === ''
 		}
 	},
   methods: {
 		input (qa) {
+			this.inputs[qa] = this.received[qa]
 			this.inputMode[qa] = true
-			this.inputs = this.received
       this.$nextTick(() => this.$refs[qa][0].focus())
 		},
     focus (qa) {
