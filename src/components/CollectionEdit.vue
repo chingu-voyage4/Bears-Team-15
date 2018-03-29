@@ -97,8 +97,25 @@ export default {
     lastIndex () {
       return this.collection.items.length - 1;
     },
-		readyToSave() {
-			return this.errorCount === 0
+		lastCardIsEmpty() {
+			return this.lastIndex > -1
+			  && this.collection.items[this.lastIndex].q === ''
+				&& this.collection.items[this.lastIndex].a === ''
+		},
+		notReadyToSave() {
+			if (this.errorCount === 0) {
+			  return false
+			} else {
+				if (this.lastCardIsEmpty && this.errorCount === 2) {
+					this.remove(this.lastIndex, 2)
+					return false
+				}
+				if (this.$refs.title.inputValue === '') {
+					return 'emptyTitle'
+				}
+
+				return 'emptyFields'
+			}
 		}
   },
   methods: {
@@ -112,7 +129,7 @@ export default {
 			this.pushMsg('succ', 'removedDuplicates')
     },
     save () {
-			if (this.readyToSave) {
+			if (!this.notReadyToSave) {
         if (this.createMode) {
           this.$emit('save')
         } else {
@@ -179,6 +196,7 @@ export default {
 			this.removeError(errCount)
     },
     add (cb) {
+			if (!this.lastCardIsEmpty) {
         const card = { ...this.emptyCard }
         const id = this.id
         this.$store.commit('addCard', { id, card })
@@ -190,6 +208,7 @@ export default {
 				this.toSend.items.add.push(lastCard)
 
         if (typeof cb === 'function') cb()
+			} else this.pushMsg('err', 'lastEmpty')
     },
 		addError() {
 			this.errorCount += 1
