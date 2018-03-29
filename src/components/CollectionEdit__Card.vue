@@ -37,6 +37,10 @@ export default {
   }),
   created () {
     if (this.card.q === '' && this.card.a === '') {
+			this.errors = { q: true, a: true }
+			this.$emit('addError')
+			this.$emit('addError')
+
       this.inputMode = { q: true, a: true }
       this.input('q')
     }
