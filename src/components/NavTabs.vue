@@ -23,6 +23,7 @@ nav * {
 }
 
 nav {
+  text-align: center;
   margin-bottom: 40px;
 }
 
