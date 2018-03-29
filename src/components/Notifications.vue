@@ -36,13 +36,12 @@ export default {
 <style scoped>
 .notifications-container {
   width: 100%;
-  padding: 1rem;
   position: absolute;
 }
 .notif {
   position: relative;
   padding: .75rem 1.25rem;
-  margin-bottom: 1rem;
+  margin: 1rem 1rem 0 1rem;
   border-radius: .25rem;
   border: 1px solid transparent;
   opacity: 0.97;
