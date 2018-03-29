@@ -37,6 +37,7 @@ export default {
 .notifications-container {
   width: 100%;
   position: absolute;
+  text-align: center;
 }
 .notif {
   z-index: 100;
