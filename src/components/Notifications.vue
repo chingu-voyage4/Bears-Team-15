@@ -16,8 +16,8 @@ export default {
   name: 'Notifications',
   computed: {
     notifications() {
-      return this.$store.state.notifications.reverse()
-    },
+      return this.$store.state.notifications
+    }
   },
   methods: {
     notificationClass(item, index) {
