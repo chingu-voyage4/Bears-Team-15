@@ -15,7 +15,7 @@
 		v-else
 		class="ellipsis editable"
 		@click="inputTitle"
-	>{{ displayedTitle }}</p>
+	>{{ inputValue }}</p>
 </div>
 </template>
 
@@ -29,15 +29,17 @@ export default {
     focusedTitle: false,
   }),
   created () {
-		if (this.createMode) this.inputTitle()
+		this.inputValue = this.receivedTitle
+		if (this.createMode) {
+      this.inputTitle()
+      this.titleError = true
+			this.$emit('addError')
+    }
   },
   computed: {
     receivedTitle() {
       return this.title
     },
-		displayedTitle () {
-			return this.inputValue ? this.inputValue : this.receivedTitle
-		},
     titleClass () {
       return { error:  this.titleError && !this.focusedTitle }
     }
@@ -45,7 +47,6 @@ export default {
   methods: {
 		inputTitle () {
 			this.inputMode = true
-			this.inputValue = this.displayedTitle
       this.$nextTick(() => {
 				this.$refs.title.focus()
 				this.focusTitle()
