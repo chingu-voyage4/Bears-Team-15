@@ -93,7 +93,7 @@ export default {
       return this.$store.getters.collection(this.id)
     },
 		title () {
-			const changed = this.toSend.collectionName
+			const changed = this.collection.collectionNameTemp
 			return changed ? changed : this.collection.collectionName
 		},
     lastIndex () {
@@ -123,7 +123,9 @@ export default {
 		changeTitle (title) {
 			if (title === this.collection.collectionName) {
 				delete this.toSend.collectionName
+				delete this.collection.collectionNameTemp
 			} else {
+				this.collection.collectionNameTemp = title
 				this.toSend.collectionName = title
 			}
 		},
