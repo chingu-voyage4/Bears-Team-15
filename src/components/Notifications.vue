@@ -45,6 +45,7 @@ export default {
   margin-bottom: 1rem;
   border-radius: .25rem;
   border: 1px solid transparent;
+  opacity: 0.97;
 }
 .notif-err {
   background-color: #f8d7da;
