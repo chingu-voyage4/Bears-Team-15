@@ -32,8 +32,11 @@ export default {
 		if (this.createMode) this.inputTitle()
   },
   computed: {
+    receivedTitle() {
+      return this.title
+    },
 		displayedTitle () {
-			return this.inputValue ? this.inputValue : this.title
+			return this.inputValue ? this.inputValue : this.receivedTitle
 		},
     titleClass () {
       return { error:  this.titleError && !this.focusedTitle }
@@ -42,7 +45,7 @@ export default {
   methods: {
 		inputTitle () {
 			this.inputMode = true
-			this.inputValue = this.title
+			this.inputValue = this.displayedTitle
       this.$nextTick(() => {
 				this.$refs.title.focus()
 				this.focusTitle()
