@@ -3,9 +3,10 @@
 <div v-if="collection.shared">
 	This collection is locked! To edit it fork it to your decks.
 	<div>
-	  <button class="btn btn-delete"
-        @click="fork"
-      >Fork</button>
+	  <button
+		  class="btn btn-add"
+      @click="fork"
+    >Fork</button>
 	</div>
 </div>
 <div v-else>
@@ -17,6 +18,12 @@
     <button class="btn btn-delete"
       @click="removeDuplicates"
     >Remove Duplicates</button>
+    <router-link
+      v-if="createMode"
+      :to="homeRoute"
+    >
+	    <button class="btn btn-delete">Discard</button>
+    </router-link>
   </div>
   <div>
 		<app-collection-title
@@ -28,12 +35,6 @@
 			@removeError="removeError"
 		  @focusNext="focusNext(-1)"
 		></app-collection-title>
-    <router-link
-      v-if="createMode"
-      :to="homeRoute"
-    >
-      <button>Discard</button>
-    </router-link>
   </div>
 	<app-card-input
     v-for="(card, index) in collection.items" :key="index"
@@ -48,7 +49,7 @@
 		@focusNext="index => focusNext(index)"
 	></app-card-input>
   <button
-    class="btn btn-add newCard"
+    class="btn btn-add"
     @click="add"
   >Add</button>
   <button

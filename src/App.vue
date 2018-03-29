@@ -72,13 +72,21 @@ form input{
   outline: 0;
   display: inline-block;
   border-radius: 1em/50%;
+  transition: background-color 0.1s;
 }
 
-.btn-delete{
+.btn-delete {
+  color: #000;
+  background-color: transparent;
+  border: 1px solid rgba(255, 77, 77, 0.3)
+
+}
+.btn-delete:hover, .btn-delete:active {
+  color: #fff;
   background-color: #ff4d4d;
 }
 
-.btn-add {
+.btn-add, .btn-add:hover, .btn-add:active {
   background-color: #7db85e;
 }
 
