@@ -112,7 +112,7 @@ export default {
         if (this.createMode) {
           this.$emit('save')
         } else {
-          this.$store.dispatch('updateCollection', toSend)
+          this.$store.dispatch('updateCollection', this.toSend)
         }
         this.$router.push(this.homeRoute)
     },
