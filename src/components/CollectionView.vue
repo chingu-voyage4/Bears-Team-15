@@ -1,10 +1,15 @@
 <template>
-<div class="cards-container">
+<div>
+<div v-if="deck.length" class="cards-container">
   <app-card
     v-for="item in deck" :key="item.id"
     :card="item"
     :endlessFlip="true"
   ></app-card>
+</div>
+<div v-else class="cards-container">
+  <p>No cards in this collection</p>
+</div>
 </div>
 </template>
 

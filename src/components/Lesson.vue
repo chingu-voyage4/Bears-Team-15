@@ -1,9 +1,11 @@
 <template>
 <div class="cards-container">
   <app-card
+    v-if="card"
     :card="card"
     @nextCard="nextCard"
   ></app-card>
+  <p v-else>No cards in this collection</p>
 </div>
 </template>
 
