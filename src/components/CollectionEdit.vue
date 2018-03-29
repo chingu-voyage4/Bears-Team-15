@@ -104,10 +104,12 @@ export default {
   methods: {
     deleteCollection () {
       this.$store.dispatch('deleteCollection', this.id)
+			this.pushMsg('succ', 'collectionDeleted')
       this.$router.push(this.homeRoute)
     },
     removeDuplicates () {
       this.$store.dispatch('removeDuplicates', this.id)
+			this.pushMsg('succ', 'removedDuplicates')
     },
     save () {
 			if (this.readyToSave) {
@@ -116,10 +118,10 @@ export default {
         } else {
           this.$store.dispatch('updateCollection', this.toSend)
         }
-
+				this.pushMsg('succ', 'collectionSaved')
         this.$router.push(this.homeRoute)
 			} else {
-				this.$store.dispatch('pushNotificationErr', 'Error collection edit')
+				this.pushMsg('err', this.notReadyToSave)
 			}
     },
 	  fork(){
@@ -209,6 +211,17 @@ export default {
 				this.$refs.card[index+1].$refs.pq[0].click()
 			else this.$refs.card[index+1].$refs.q[0].focus()
     },
+		pushMsg(type, msg) {
+			const action = type === 'err' ? 'pushNotificationErr' : 'pushNotificationSucc'
+			const message = {
+				lastEmpty: 'You already opened empty card',
+				emptyFields: 'Please fill all empty fields',
+				emptyTitle: 'Please fill collection name',
+			  collectionSaved: 'Collection is saved',
+				collectionDeleted: 'Collection is deleted',
+			}
+			this.$store.dispatch(action, message[msg] ? message[msg] : msg)
+		},
   }
 }
 </script>
