@@ -72,7 +72,7 @@ export default {
 		},
     focusNext (index) {
 			this.blurTitle()
-			this.$emit('focusNext', -1)
+			this.$emit('focusNext')
     },
   }
 }
