@@ -39,6 +39,7 @@
 		ref="card"
 		:card="card.temp? card.temp : card"
 		:index="index"
+		:last="index === lastIndex"
 		@change="x => change(x)"
 		@remove="count => remove(index, count)"
 		@addError="addError"

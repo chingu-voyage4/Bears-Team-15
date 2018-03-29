@@ -27,7 +27,7 @@
 
 <script>
 export default {
-  props: [ 'index', 'card' ],
+  props: [ 'index', 'card', 'last' ],
   data: () => ({
 		placeholders: { q: 'Question', a: 'Answer' },
 		inputMode: { q: false, a: false },
@@ -46,6 +46,9 @@ export default {
 			const { q, a } = this.card
 			return { q, a }
 		},
+		thisIsLastEmpty() {
+			return this.last && this.received.q === '' && this.received.a === ''
+		}
 	},
   methods: {
 		input (qa) {
@@ -85,8 +88,12 @@ export default {
     },
     inputClass (qa) {
       const err = this.errors[qa]
-      const focused = this.focused[qa]
-      return { error: err && !focused }
+
+			const neighbor = qa == 'q'? 'a' : 'q'
+			const focusedNeighbor = this.focused[neighbor]
+      const focusedCard = this.focused[qa] || focusedNeighbor
+
+      return { error: err && !focusedCard && !this.thisIsLastEmpty }
     },
     remove () {
       let count = 0
