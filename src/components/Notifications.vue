@@ -1,5 +1,5 @@
 <template>
-<div class="notifications-container">
+<div :class="containerClass">
   <div
     class="notif"
     :class="notificationClass(item)"
@@ -14,12 +14,31 @@
 <script>
 export default {
   name: 'Notifications',
+  data: () => ({
+    scrollPosition: null,
+  }),
+  mounted() {
+    window.addEventListener('scroll', this.updateScrollPosition)
+  },
+  destroy() {
+    window.removeEventListener('scroll', this.updateScrollPosition)
+  },
   computed: {
     notifications() {
       return this.$store.state.notifications
-    }
+    },
+    containerClass() {
+      return {
+        'notifications-container': true,
+        'notifications-container--sticky': this.scrollPosition >= 70
+        // 70 = Header's height
+      }
+    },
   },
   methods: {
+    updateScrollPosition() {
+      this.scrollPosition = window.scrollY
+    },
     notificationClass(item) {
       return {
         'notif-succ': item.type == 'succ',
@@ -38,6 +57,10 @@ export default {
   width: 100%;
   position: absolute;
   text-align: center;
+}
+.notifications-container--sticky {
+  position: fixed;
+  top: 0px;
 }
 .notif {
   z-index: 100;
