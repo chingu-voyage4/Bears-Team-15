@@ -20,7 +20,7 @@ export default {
     }
   },
   methods: {
-    notificationClass(item, index) {
+    notificationClass(item) {
       return {
         'notif-succ': item.type == 'succ',
         'notif-err': item.type == 'err',
