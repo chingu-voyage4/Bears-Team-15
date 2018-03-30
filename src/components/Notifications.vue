@@ -1,5 +1,5 @@
 <template>
-<div class="notifications-container">
+<div :class="containerClass">
   <div
     class="notif"
     :class="notificationClass(item)"
@@ -14,13 +14,32 @@
 <script>
 export default {
   name: 'Notifications',
+  data: () => ({
+    scrollPosition: null,
+  }),
+  mounted() {
+    window.addEventListener('scroll', this.updateScrollPosition)
+  },
+  destroy() {
+    window.removeEventListener('scroll', this.updateScrollPosition)
+  },
   computed: {
     notifications() {
-      return this.$store.state.notifications.reverse()
+      return this.$store.state.notifications
+    },
+    containerClass() {
+      return {
+        'notifications-container': true,
+        'notifications-container--sticky': this.scrollPosition >= 70
+        // 70 = Header's height
+      }
     },
   },
   methods: {
-    notificationClass(item, index) {
+    updateScrollPosition() {
+      this.scrollPosition = window.scrollY
+    },
+    notificationClass(item) {
       return {
         'notif-succ': item.type == 'succ',
         'notif-err': item.type == 'err',
@@ -36,15 +55,21 @@ export default {
 <style scoped>
 .notifications-container {
   width: 100%;
-  padding: 1rem;
   position: absolute;
+  text-align: center;
+}
+.notifications-container--sticky {
+  position: fixed;
+  top: 0px;
 }
 .notif {
+  z-index: 100;
   position: relative;
   padding: .75rem 1.25rem;
-  margin-bottom: 1rem;
+  margin: 1rem 1rem 0 1rem;
   border-radius: .25rem;
   border: 1px solid transparent;
+  opacity: 0.97;
 }
 .notif-err {
   background-color: #f8d7da;

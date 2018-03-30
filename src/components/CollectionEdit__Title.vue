@@ -1,10 +1,16 @@
 <template>
-<div>
+<div class="title">
+  <label
+    class="title-label"
+    v-if="inputMode"
+    for="collection-name"
+  >Collection name</label>
   <input
+    id="collection-name"
 	  v-if="inputMode"
     v-model.trim="inputValue"
 		ref="title"
-    type="text" placeholder="Collection name"
+    type="text"
     :class="titleClass"
     :autofocus="createMode"
     @focus="focusTitle"
@@ -15,7 +21,7 @@
 		v-else
 		class="ellipsis editable"
 		@click="inputTitle"
-	>{{ displayedTitle }}</p>
+	>{{ inputValue }}</p>
 </div>
 </template>
 
@@ -29,12 +35,17 @@ export default {
     focusedTitle: false,
   }),
   created () {
-		if (this.createMode) this.inputTitle()
+		this.inputValue = this.receivedTitle
+		if (this.createMode) {
+      this.inputTitle()
+      this.titleError = true
+			this.$emit('addError')
+    }
   },
   computed: {
-		displayedTitle () {
-			return this.inputValue ? this.inputValue : this.title
-		},
+    receivedTitle() {
+      return this.title
+    },
     titleClass () {
       return { error:  this.titleError && !this.focusedTitle }
     }
@@ -42,7 +53,6 @@ export default {
   methods: {
 		inputTitle () {
 			this.inputMode = true
-			this.inputValue = this.title
       this.$nextTick(() => {
 				this.$refs.title.focus()
 				this.focusTitle()
@@ -69,7 +79,7 @@ export default {
 		},
     focusNext (index) {
 			this.blurTitle()
-			this.$emit('focusNext', -1)
+			this.$emit('focusNext')
     },
   }
 }

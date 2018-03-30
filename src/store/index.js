@@ -153,7 +153,9 @@ export default new Vuex.Store({
         const lastIssuedAt = state.notifications[notificationsLength - 1].iat
         while (iat <= lastIssuedAt) iat++
       }
-      state.notifications.push({ type, msg, iat })
+      state.notifications = state.notifications
+        .filter(x => !(x.msg === msg && x.type === type))
+      state.notifications.unshift({ type, msg, iat })
       commit('dismissNotification', { iat, delay: 5 })
     },
     pushNotificationSucc({ dispatch, commit }, msg) {

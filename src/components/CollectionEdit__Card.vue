@@ -17,17 +17,19 @@
 	    :ref="'p'+qa"
 			v-else
 			@click="input(qa)"
-		>{{ received[qa] }}</p>
+		>{{ displayed[qa] }}</p>
 	</div>
   <button
+		class="btn btn-delete"
+		title="remove card"
 	  @click="remove"
-  >X</button>
+  >✕</button>
 </div>
 </template>
 
 <script>
 export default {
-  props: [ 'index', 'card' ],
+  props: [ 'index', 'card', 'last' ],
   data: () => ({
 		placeholders: { q: 'Question', a: 'Answer' },
 		inputMode: { q: false, a: false },
@@ -36,7 +38,11 @@ export default {
 		inputs: { q: '', a: '' },
   }),
   created () {
-    if (this.card.q === '' && this.card.a === '') {
+    if (this.received.q === '' && this.received.a === '') {
+			this.errors = { q: true, a: true }
+			this.$emit('addError')
+			this.$emit('addError')
+
       this.inputMode = { q: true, a: true }
       this.input('q')
     }
@@ -46,16 +52,24 @@ export default {
 			const { q, a } = this.card
 			return { q, a }
 		},
+		displayed() {
+			return {
+				q: this.inputs.q ? this.inputs.q : this.received.q,
+				a: this.inputs.a ? this.inputs.a : this.received.a,
+			}
+		},
+		thisIsLastEmpty() {
+			return this.last && this.inputs.q === '' && this.inputs.a === ''
+		}
 	},
   methods: {
 		input (qa) {
+			this.inputs[qa] = this.received[qa]
 			this.inputMode[qa] = true
-			this.inputs = this.received
       this.$nextTick(() => this.$refs[qa][0].focus())
 		},
     focus (qa) {
 			this.focused[qa] = true
-      this.$emit('focusCard')
     },
     blur (qa) {
 			if (this.inputs[qa] === '') {
@@ -73,7 +87,6 @@ export default {
 				this.inputMode[qa] = false
 			}
       this.focused[qa] = false
-      this.$emit('blurCard')
     },
     focusNext (qa) {
       this.blur(qa)
@@ -85,8 +98,11 @@ export default {
     },
     inputClass (qa) {
       const err = this.errors[qa]
-      const focused = this.focused[qa]
-      return { error: err && !focused }
+
+			const focusedNeighbor = this.focused.q
+      const focusedCard = this.focused[qa] || focusedNeighbor
+
+      return { error: err && !focusedCard && !this.thisIsLastEmpty }
     },
     remove () {
       let count = 0

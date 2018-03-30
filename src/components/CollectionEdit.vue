@@ -1,11 +1,12 @@
 <template>
-<div class="container">
+<div class="container collection-edit">
 <div v-if="collection.shared">
 	This collection is locked! To edit it fork it to your decks.
 	<div>
-	  <button class="btn btn-delete"
-        @click="fork"
-      >Fork</button>
+	  <button
+		  class="btn btn-add"
+      @click="fork"
+    >Fork</button>
 	</div>
 </div>
 <div v-else>
@@ -17,9 +18,16 @@
     <button class="btn btn-delete"
       @click="removeDuplicates"
     >Remove Duplicates</button>
+    <router-link
+      v-if="createMode"
+      :to="homeRoute"
+    >
+	    <button class="btn btn-delete">Discard</button>
+    </router-link>
   </div>
   <div>
 		<app-collection-title
+			ref="title"
 			:title="title"
 			:createMode="createMode"
 			@changeTitle="title => changeTitle(title)"
@@ -27,18 +35,13 @@
 			@removeError="removeError"
 		  @focusNext="focusNext(-1)"
 		></app-collection-title>
-    <router-link
-      v-if="createMode"
-      :to="homeRoute"
-    >
-      <button>Discard</button>
-    </router-link>
   </div>
 	<app-card-input
     v-for="(card, index) in collection.items" :key="index"
 		ref="card"
 		:card="card.temp? card.temp : card"
 		:index="index"
+		:last="index === lastIndex"
 		@change="x => change(x)"
 		@remove="count => remove(index, count)"
 		@addError="addError"
@@ -46,7 +49,7 @@
 		@focusNext="index => focusNext(index)"
 	></app-card-input>
   <button
-    class="btn btn-add newCard"
+    class="btn btn-add"
     @click="add"
   >Add</button>
   <button
@@ -76,45 +79,68 @@ export default {
 			items: { add: [], del: [], mod: [] }
 		},
   }),
-  beforeRouteLeave (to, from, next) {
-    if (this.collection) {
-			if (this.errorCount === 0) {
-        next()
-      }
-    } else {
-      next()
-    }
-  },
 	created () {
-		if (this.createMode) this.add()
+		if (this.createMode) {
+			this.add()
+      this.$nextTick(() => {
+				this.$refs.title.inputTitle()
+			})
+		}
 	},
   computed: {
     collection () {
       return this.$store.getters.collection(this.id)
     },
 		title () {
-			const changed = this.toSend.collectionName
+			const changed = this.collection.collectionNameTemp
 			return changed ? changed : this.collection.collectionName
 		},
     lastIndex () {
       return this.collection.items.length - 1;
     },
+		lastCardIsEmpty() {
+			return this.lastIndex > -1
+			  && this.collection.items[this.lastIndex].q === ''
+				&& this.collection.items[this.lastIndex].a === ''
+		},
+		notReadyToSave() {
+			if (this.errorCount === 0) {
+			  return false
+			} else {
+				if (this.lastCardIsEmpty && this.errorCount === 2) {
+					this.remove(this.lastIndex, 2)
+					return false
+				}
+				if (this.$refs.title.inputValue === '') {
+					return 'emptyTitle'
+				}
+
+				return 'emptyFields'
+			}
+		}
   },
   methods: {
     deleteCollection () {
       this.$store.dispatch('deleteCollection', this.id)
+			this.pushMsg('succ', 'collectionDeleted')
       this.$router.push(this.homeRoute)
     },
     removeDuplicates () {
       this.$store.dispatch('removeDuplicates', this.id)
+			this.pushMsg('succ', 'removedDuplicates')
     },
     save () {
+			if (!this.notReadyToSave) {
         if (this.createMode) {
           this.$emit('save')
         } else {
-          this.$store.dispatch('updateCollection', toSend)
+          this.$store.dispatch('updateCollection', this.toSend)
         }
+				this.pushMsg('succ', 'collectionSaved')
         this.$router.push(this.homeRoute)
+			} else {
+				this.pushMsg('err', this.notReadyToSave)
+			}
     },
 	  fork(){
 	    this.$store.dispatch('fork', this.collection)
@@ -123,7 +149,9 @@ export default {
 		changeTitle (title) {
 			if (title === this.collection.collectionName) {
 				delete this.toSend.collectionName
+				delete this.collection.collectionNameTemp
 			} else {
+				this.collection.collectionNameTemp = title
 				this.toSend.collectionName = title
 			}
 		},
@@ -169,6 +197,7 @@ export default {
 			this.removeError(errCount)
     },
     add (cb) {
+			if (!this.lastCardIsEmpty) {
         const card = { ...this.emptyCard }
         const id = this.id
         this.$store.commit('addCard', { id, card })
@@ -180,6 +209,7 @@ export default {
 				this.toSend.items.add.push(lastCard)
 
         if (typeof cb === 'function') cb()
+			} else this.pushMsg('err', 'lastEmpty')
     },
 		addError() {
 			this.errorCount += 1
@@ -189,40 +219,96 @@ export default {
 			this.errorCount = Math.max(this.errorCount, 0)
 		},
     focusNext (index) {
-			const nextCard = this.collection.items[index+1]
-			if (!nextCard) {
-				this.add(() => {
-					this.$nextTick(() =>
-					  this.$refs.card[index+1].$refs.q[0].focus()
-				  )
-				})
-			}
-			else if (this.$refs.card[index+1].$refs.pq)
-				this.$refs.card[index+1].$refs.pq[0].click()
-			else this.$refs.card[index+1].$refs.q[0].focus()
+			if (this.$refs.title.inputValue !== '') {
+				const thisIsLastEmpty = index === this.lastIndex && this.lastCardIsEmpty
+				if (!thisIsLastEmpty) {
+					if (!this.notReadyToSave) {
+						const nextCard = this.collection.items[index+1]
+						if (!nextCard) {
+							this.add(() => this.$nextTick(() => this.$refs.card[index+1].input('q')))
+						} else this.$refs.card[index+1].input('q')
+
+					} else this.pushMsg('err', 'emptyFields')
+				} else this.pushMsg('err', 'lastEmpty')
+			} else this.pushMsg('err', 'emptyTitle')
+
     },
+		pushMsg(type, msg) {
+			const action = type === 'err' ? 'pushNotificationErr' : 'pushNotificationSucc'
+			const message = {
+				lastEmpty: 'You already opened empty card',
+				emptyFields: 'Please fill all empty fields',
+				emptyTitle: 'Please fill collection name',
+			  collectionSaved: 'Collection is saved',
+				collectionDeleted: 'Collection is deleted',
+			}
+			this.$store.dispatch(action, message[msg] ? message[msg] : msg)
+		},
   }
 }
 </script>
 
 <style>
+.container {
+	text-align: center;
+	max-width: 400px;
+	width: 100%;
+	margin: 0 auto;
+}
 .error {
   border: 1px solid red;
+	border-radius: 3px;
 }
 .editable {
 	cursor: text;
 }
+.card {
+	padding: 0.5rem;
+}
+.card * {
+	margin: 0;
+	height: 2em;
+	line-height: 2em;
+}
+.card button {
+	padding: 0 1rem;
+}
 .qa {
 	display: inline-block;
+	float: left;
 	width: 150px;
-	height: 2em;
+	margin-right: 1rem;
 }
 .qa p {
 	text-align: left;
 }
 .qa * {
-	margin: 0;
 	width: inherit;
+	padding: 0 0.5rem;
+}
+.title {
+	width: 100%;
+	padding: 2rem 0.5rem;
+}
+.title * {
+	width: inherit;
+}
+.title-label {
+	font-size: 1em;
+	line-height: 1em;
+	height: 1em;
+	display: block;
+	text-align: left;
+}
+.title input, .title p {
+	display: block;
+	margin: 0;
+	font-size: 1.8rem;
+	text-align: center;
+}
+.collection-edit input {
+	font-family: inherit;
+	color: inherit;
 	height: inherit;
 }
 </style>
