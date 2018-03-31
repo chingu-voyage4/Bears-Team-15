@@ -13,6 +13,7 @@ export default {
     formFields: FormFields,
   },
   data: () => ({
+    homeRoute: { name: 'home' },
     authorization: ''
   }),
   methods: {
@@ -20,9 +21,8 @@ export default {
       axios.post('/login', payload)
         .then(response => {
             this.authorization = response.headers.authorization
-            //localStorage.setItem('token', JSON.stringify(this.authorization))
             this.$store.dispatch('saveToken', this.authorization)
-            console.log(this.authorization) 
+            this.$router.push(this.homeRoute)
           })
         .catch(e => {
           console.log(e.response.data)
