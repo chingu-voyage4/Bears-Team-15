@@ -56,6 +56,9 @@ button::-moz-focus-inner {
   text-overflow: ellipsis;
   white-space: pre-line;
 }
+.nowrap {
+  white-space: nowrap;
+}
 
 .cards-container{
   display: flex;
