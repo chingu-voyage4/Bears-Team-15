@@ -248,7 +248,7 @@ nav a {
 }
 
 nav li.router-link-exact-active a {
-  background: #0bf;
+  background: #f1f7fa;
 }
 
 @media (min-width: 360px) {
