@@ -19,7 +19,9 @@ export default {
     login(payload) {
       axios.post('/login', payload)
         .then(response => {
-            this.authorization = response.headers.authorization.split(' ')[1]
+            this.authorization = response.headers.authorization
+            //localStorage.setItem('token', JSON.stringify(this.authorization))
+            this.$store.dispatch('saveToken', this.authorization)
             console.log(this.authorization) 
           })
         .catch(e => {
