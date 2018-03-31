@@ -117,6 +117,38 @@ form input{
 .btn-save:active {
   background-color:  #1a69a4;
 }
+
+/* ************************** HEADER ***************************** */
+
+header{
+  height: 70px;
+  background-color: #0077b3;
+  color: white;
+}
+
+header .content{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 3vw;
+}
+
+header .content span{
+  display: flex;
+  align-items: center;
+}
+
+header a{
+  color: white;
+  font-size: 2em;
+}
+
+header img{
+  height: 50px;
+  margin: 10px 10px 10px 0;
+}
+
 /* *****************   NAVIGATION ******************************* */
 nav {
   text-align: center;
@@ -171,6 +203,8 @@ nav li.router-link-exact-active a {
     border-bottom-color: transparent;
   }
 }
+
+/* ************************** FOOTER ***************************** */
 
 footer {
   display: flex;
