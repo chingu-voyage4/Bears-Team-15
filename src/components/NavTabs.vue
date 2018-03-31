@@ -1,11 +1,11 @@
 <template lang="html">
 <nav>
   <ul>
-    <li
+    <router-link
+      tag="li"
       v-for="(item, index) in navItems" :key="index"
-    >
-      <router-link :to="item.route">{{ item.display }}</router-link>
-    </li>
+      :to="item.route"
+    ><a>{{ item.display }}</a></router-link>
   </ul>
 </nav>
 </template>
