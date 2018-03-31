@@ -122,18 +122,6 @@ button::-moz-focus-inner {
   padding: 3vh;
 }
 
-form{
-  display: flex;
-  flex-direction: column;
-  max-width: 200px;
-  margin: 0 auto;
-}
-
-form input{
-  margin-bottom: 20px;
-  text-align: center;
-}
-
 .btn {
   color: #fff;
   border: none;
@@ -177,6 +165,20 @@ form input{
 /* ********************* EASY MARGINS AND PADDINGS *************** */
 .mb-2 {
   margin-bottom: 2rem;
+}
+
+/* *************************  AUTHENTICATION FORMS   *************** */
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  max-width: 200px;
+  margin: 0 auto;
+}
+
+.auth-form input{
+  margin-bottom: 20px;
+  text-align: center;
 }
 
 
