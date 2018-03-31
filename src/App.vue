@@ -59,6 +59,7 @@ button::-moz-focus-inner {
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
+  width: 100%;
   max-width: 2000px;
   margin: 0 auto;
   padding: 3vh;
