@@ -48,6 +48,7 @@ input[type="button"]::-moz-focus-inner,
 button::-moz-focus-inner {
    border: 0;
 }
+
 .ellipsis {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -115,5 +116,59 @@ form input{
 
 .btn-save:active {
   background-color:  #1a69a4;
+}
+/* *****************   NAVIGATION ******************************* */
+nav {
+  text-align: center;
+  margin-bottom: 40px;
+  list-style: none;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+}
+
+nav li {
+  white-space: nowrap;
+  font-size: 1.2rem;
+}
+
+nav a {
+  display: block;
+  padding: 0.5rem 0;
+}
+
+nav li.router-link-exact-active a {
+  background: #0bf;
+}
+
+@media (min-width: 360px) {
+  nav {
+    position: relative;
+    width: 100%;
+    border-top: none;
+    display: flex;
+    justify-content: center;
+  }
+  nav li, nav li > a {
+    position: relative;
+    display: block;
+    float: left;
+  }
+  nav li {
+    margin-bottom: -1px;
+  }
+  nav li > a {
+    margin-right: 2px;
+    line-height: 1.4rem;
+    border: 1px solid transparent;
+    border-radius: 4px 4px 0 0;
+    padding: 0.6rem 1rem;
+  }
+  nav li.router-link-exact-active > a {
+    color: #0077b3;
+    cursor: default;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-bottom-color: transparent;
+  }
 }
 </style>
