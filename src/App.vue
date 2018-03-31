@@ -87,40 +87,7 @@ button::-moz-focus-inner {
   user-select: none;
 }
 
-/* **************************  DASHBOARD ************************* */
-
-.dashboard {
-  width: 80%;
-  min-height: 400px;
-  margin: 0 auto;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.deck {
-  width: 140px;
-  height: 200px;
-  margin: 40px;
-  padding: 60px 0;
-  background: rgb(240, 240, 240);
-  border-radius: 10px;
-  box-shadow: 2px 5px 0px rgb(200, 200, 200),
-    4px 10px 0px rgb(180, 180, 180),
-    12px 15px 10px rgba(0, 0, 0, 0.2);
-}
-
-/* ************************   CARD ****************************** */
-.cards-container{
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-  width: 100%;
-  max-width: 2000px;
-  margin: 0 auto;
-  padding: 3vh;
-}
+/* ***********************  BUTTONS ********************************* */
 
 .btn {
   color: #fff;
@@ -163,6 +130,7 @@ button::-moz-focus-inner {
 }
 
 /* ********************* EASY MARGINS AND PADDINGS *************** */
+
 .mb-2 {
   margin-bottom: 2rem;
 }
@@ -181,6 +149,49 @@ button::-moz-focus-inner {
   text-align: center;
 }
 
+/* **************************  DASHBOARD ************************* */
+
+.dashboard {
+  padding: 0 3%;
+  min-height: 400px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+@media (min-width: 360px) {
+  .dashboard {
+    padding: 0 5%;
+  }
+}
+@media (min-width: 720px) {
+  .dashboard {
+    padding: 0 10%;
+  }
+}
+
+.deck {
+  display: table;
+  width: 140px;
+  height: 200px;
+  margin: 0 15px 40px 15px;
+  background: rgb(240, 240, 240);
+  border-radius: 10px;
+  box-shadow: 2px 5px 0px rgb(200, 200, 200),
+    4px 10px 0px rgb(180, 180, 180),
+    12px 15px 10px rgba(0, 0, 0, 0.2);
+}
+
+.deck a {
+  display: table-cell;
+  vertical-align: middle;
+  width: 100%;
+  height: 100%;
+  padding: 0.4rem;
+  text-align: center;
+  font-size: 1.4rem;
+  font-weight: bold;
+}
 
 /* ************************   EDITOR  ****************************** */
 
@@ -239,6 +250,18 @@ button::-moz-focus-inner {
 	font-family: inherit;
 	color: inherit;
 	height: inherit;
+}
+
+/* ************************   CARD ****************************** */
+.cards-container{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+  max-width: 2000px;
+  margin: 0 auto;
+  padding: 3vh;
 }
 
 /* ************************** HEADER ***************************** */
