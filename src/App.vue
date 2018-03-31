@@ -201,14 +201,12 @@ nav li.router-link-exact-active a {
 
 @media (min-width: 360px) {
   nav {
-    position: relative;
     width: 100%;
     border-top: none;
     display: flex;
     justify-content: center;
   }
   nav li, nav li > a {
-    position: relative;
     display: block;
     float: left;
   }
