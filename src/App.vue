@@ -13,8 +13,10 @@ export default {
 <style>
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
-#app {
+body {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -30,6 +32,8 @@ body, #app, .homepage {
 
 h1, h2, h3, h4, h5, h6 {
   text-align: center;
+  margin-top: 1.3rem;
+  margin-bottom: 0.6rem;
 }
 
 a {
@@ -37,6 +41,13 @@ a {
   color: black;
 }
 
+a, a:active, a:focus, button, button:active, button:focus, input[type="button"]:focus {
+  outline: none;
+}
+input[type="button"]::-moz-focus-inner,
+button::-moz-focus-inner {
+   border: 0;
+}
 .ellipsis {
   overflow: hidden;
   text-overflow: ellipsis;
