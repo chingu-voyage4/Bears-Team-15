@@ -2,6 +2,9 @@
 <div>
   <h1>{{ greeting }}</h1>
   <app-nav-tabs :navItems="navItems"></app-nav-tabs>
+  <!-- <div class="container mb-2">
+    <button class="btn btn-save" @click="refresh">Refresh</button>
+  </div> -->
   <router-view/>
 </div>
 </template>
@@ -29,6 +32,12 @@ export default {
     ]
   }),
   computed: mapState(['collections']),
+  methods: {
+    refresh () {
+      this.$store.dispatch('fetchRemoteCollections')
+      this.$store.dispatch('fetchLocalCollections')
+    }
+  },
 }
 </script>
 
