@@ -51,15 +51,32 @@ button::-moz-focus-inner {
    border: 0;
 }
 
+.hidden {
+  display: none;
+}
+
 .ellipsis {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: pre-line;
 }
+
 .nowrap {
   white-space: nowrap;
 }
 
+.pointer {
+  /* To  not  select  text  on  double-click */
+  cursor: pointer;
+
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+
+/* ************************   CARD ****************************** */
 .cards-container{
   display: flex;
   flex-direction: row;

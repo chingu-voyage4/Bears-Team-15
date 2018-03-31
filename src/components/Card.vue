@@ -78,20 +78,6 @@ export default {
   font-size: 1.4rem;
 }
 
-/* ***********************************
-*  don't  select  text  on  double-click
-* ************************************* */
-.pointer {
-  cursor: pointer;
-
-  -webkit-user-select: none; /* Chrome/Safari */
-  -moz-user-select: none; /* Firefox */
-  -ms-user-select: none; /* IE10+ */
-  -o-user-select: none;
-  user-select: none;
-}
-
-
 
 /* *******************
 *    flipping logic:

@@ -79,7 +79,4 @@ export default {
   background-color: #d4edda;
   border-color: #c3e6cb;
 }
-.hidden {
-  display: none;
-}
 </style>
