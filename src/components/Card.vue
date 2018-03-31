@@ -54,10 +54,6 @@ export default {
   line-height: 2rem;
 }
 
-p {
-  margin: 0;
-}
-
 .front, .back {
   padding: 1rem;
   display: flex;
