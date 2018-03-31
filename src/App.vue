@@ -41,7 +41,9 @@ a {
   color: black;
 }
 
-a, a:active, a:focus, button, button:active, button:focus, input[type="button"]:focus {
+a, a:active, a:focus,
+button, button:active, button:focus,
+input[type="button"]:focus {
   outline: none;
 }
 input[type="button"]::-moz-focus-inner,
