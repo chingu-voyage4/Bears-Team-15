@@ -215,8 +215,7 @@ footer {
   line-height: 3rem;
   width: 100%;
   background: #ddd;
-  margin-top: 2rem;
-  /* margin: auto auto 0 0; */
+  margin: auto auto 0 0;
 }
 
 footer .content {
