@@ -168,7 +168,7 @@ header .content span{
 
 header a{
   color: white;
-  font-size: 2em;
+  font-size: 1.4em;
 }
 
 header img{
