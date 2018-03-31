@@ -144,7 +144,7 @@ export default {
     },
 	  fork(){
 	    this.$store.dispatch('fork', this.collection)
-	    this.$router.push(this.homeRoute)
+			this.pushMsg('succ', 'This collection is now in your list')
 	  },
 		changeTitle (title) {
 			if (title === this.collection.collectionName) {
