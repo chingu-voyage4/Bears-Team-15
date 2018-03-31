@@ -12,7 +12,8 @@ export default new Vuex.Store({
     counter: 1,
     loadingMode: false,
     notifications: [],
-    token: ''
+    token: null,
+    user: null
   },
   getters: {
     collection: state => id => {
@@ -76,6 +77,9 @@ export default new Vuex.Store({
     },
     changeToken(state, token){
       state.token = token
+    },
+    saveUser(state, user){
+      state.user = user
     },
     /* ***     notifications     ***  */
     dismissNotification(state, { iat, delay }) {
@@ -151,6 +155,10 @@ export default new Vuex.Store({
     },
     saveToken({ commit }, token){
       commit('changeToken', token)
+      commit('saveLocally')
+    },
+    saveUser({ commit }, user){
+      commit('saveUser', user)
       commit('saveLocally')
     },
     /* ***     notifications     ***  */

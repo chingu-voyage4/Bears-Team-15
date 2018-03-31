@@ -14,14 +14,17 @@ export default {
   },
   data: () => ({
     homeRoute: { name: 'home' },
-    authorization: ''
+    token: '',
+    user: {}
   }),
   methods: {
     login(payload) {
       axios.post('/login', payload)
         .then(response => {
-            this.authorization = response.headers.authorization
-            this.$store.dispatch('saveToken', this.authorization)
+            this.token = response.headers.authorization
+            this.user = response.data
+            this.$store.dispatch('saveUser', this.user)
+            this.$store.dispatch('saveToken', this.token)
             this.$router.push(this.homeRoute)
           })
         .catch(e => {
