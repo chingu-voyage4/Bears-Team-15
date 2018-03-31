@@ -1,7 +1,7 @@
 <template>
 <div class="homepage">
   <app-header/>
-  <div>
+  <div class="mb-2">
     <app-notifications/>
     <router-view/>
   </div>

@@ -120,6 +120,11 @@ form input{
   background-color:  #1a69a4;
 }
 
+/* ********************* EASY MARGINS AND PADDINGS *************** */
+.mb-2 {
+  margin-bottom: 2rem;
+}
+
 /* ************************** HEADER ***************************** */
 
 header{
