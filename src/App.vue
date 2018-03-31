@@ -55,6 +55,17 @@ button::-moz-focus-inner {
   display: none;
 }
 
+.container {
+	text-align: center;
+	max-width: 1200px;
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+}
+.container.collection-edit {
+  max-width: 400px;
+}
+
 .ellipsis {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -166,6 +177,66 @@ form input{
 /* ********************* EASY MARGINS AND PADDINGS *************** */
 .mb-2 {
   margin-bottom: 2rem;
+}
+
+
+/* ************************   EDITOR  ****************************** */
+
+.error {
+  border: 1px solid red;
+	border-radius: 3px;
+}
+.editable {
+	cursor: text;
+}
+.card {
+	padding: 0.5rem;
+}
+.card * {
+	margin: 0;
+	height: 2em;
+	line-height: 2em;
+}
+.card button {
+	padding: 0 1rem;
+}
+.qa {
+	display: inline-block;
+	float: left;
+	width: 150px;
+	margin-right: 1rem;
+}
+.qa p {
+	text-align: left;
+}
+.qa * {
+	width: inherit;
+	padding: 0 0.5rem;
+}
+.title {
+	width: 100%;
+	padding: 2rem 0.5rem;
+}
+.title * {
+	width: inherit;
+}
+.title-label {
+	font-size: 1em;
+	line-height: 1em;
+	height: 1em;
+	display: block;
+	text-align: left;
+}
+.title input, .title p {
+	display: block;
+	margin: 0;
+	font-size: 1.8rem;
+	text-align: center;
+}
+.collection-edit input {
+	font-family: inherit;
+	color: inherit;
+	height: inherit;
 }
 
 /* ************************** HEADER ***************************** */
