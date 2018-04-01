@@ -7,7 +7,7 @@
     </span>
     <p v-if="loadingMode">Loading...</p>       
     <router-link to="/login" v-if='!user'>Login</router-link>
-    <a href="" v-if='user'>Logout</a>    
+    <a href="" v-if='user'>Logout {{ user.login}}</a>    
   </div>
 </header>
 </template>
