@@ -81,6 +81,12 @@ export default new Vuex.Store({
     saveUser(state, user){
       state.user = user
     },
+    unsetToken(state){
+      state.token = null
+    },
+    unsetUser(state){
+      state.user = null
+    },
     /* ***     notifications     ***  */
     dismissNotification(state, { iat, delay }) {
       const delayMs = delay*1000 || 0
@@ -159,6 +165,11 @@ export default new Vuex.Store({
     },
     saveUser({ commit }, user){
       commit('saveUser', user)
+      commit('saveLocally')
+    },
+    processLogout({ commit }){
+      commit('unsetUser')
+      commit('unsetToken')
       commit('saveLocally')
     },
     /* ***     notifications     ***  */
