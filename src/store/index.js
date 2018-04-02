@@ -159,7 +159,7 @@ export default new Vuex.Store({
       commit('saveNewCollection', collectionCopy.id)
       commit('saveLocally')
     },
-    processLogin({ commit }, user, token){
+    processLogin({ commit }, { user, token} ){
       commit('saveUser', user)
       commit('changeToken', token)
       commit('saveLocally')
