@@ -1,5 +1,5 @@
 <template>
-<form @submit.prevent="auth">
+<form @submit.prevent="auth" class="auth-form">
   <label>Name</label>
   <input type="text" placeholder="Your login name" v-model="name">
   <label>Password</label>
@@ -21,4 +21,3 @@ export default {
   }
 }
 </script>
-

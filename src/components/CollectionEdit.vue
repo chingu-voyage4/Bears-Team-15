@@ -144,7 +144,7 @@ export default {
     },
 	  fork(){
 	    this.$store.dispatch('fork', this.collection)
-	    this.$router.push(this.homeRoute)
+			this.pushMsg('succ', 'This collection is now in your list')
 	  },
 		changeTitle (title) {
 			if (title === this.collection.collectionName) {
@@ -249,66 +249,4 @@ export default {
 </script>
 
 <style>
-.container {
-	text-align: center;
-	max-width: 400px;
-	width: 100%;
-	margin: 0 auto;
-}
-.error {
-  border: 1px solid red;
-	border-radius: 3px;
-}
-.editable {
-	cursor: text;
-}
-.card {
-	padding: 0.5rem;
-}
-.card * {
-	margin: 0;
-	height: 2em;
-	line-height: 2em;
-}
-.card button {
-	padding: 0 1rem;
-}
-.qa {
-	display: inline-block;
-	float: left;
-	width: 150px;
-	margin-right: 1rem;
-}
-.qa p {
-	text-align: left;
-}
-.qa * {
-	width: inherit;
-	padding: 0 0.5rem;
-}
-.title {
-	width: 100%;
-	padding: 2rem 0.5rem;
-}
-.title * {
-	width: inherit;
-}
-.title-label {
-	font-size: 1em;
-	line-height: 1em;
-	height: 1em;
-	display: block;
-	text-align: left;
-}
-.title input, .title p {
-	display: block;
-	margin: 0;
-	font-size: 1.8rem;
-	text-align: center;
-}
-.collection-edit input {
-	font-family: inherit;
-	color: inherit;
-	height: inherit;
-}
 </style>

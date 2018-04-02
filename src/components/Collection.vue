@@ -1,6 +1,6 @@
 <template>
 <div v-if="collection">
-  <h1 class="ellipsis"> {{ collection.collectionName }} </h1>
+  <h1 class="ellipsis nowrap"> {{ collection.collectionName }} </h1>
   <app-nav-tabs :navItems="navItems"/>
   <router-view/>
 </div>
@@ -41,8 +41,4 @@ export default {
 </script>
 
 <style scoped>
-h1 {
-  width: 100%;
-  white-space: nowrap;
-}
 </style>
