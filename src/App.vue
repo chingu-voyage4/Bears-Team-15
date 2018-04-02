@@ -276,12 +276,13 @@ button::-moz-focus-inner {
 }
 .cards-container.lesson {
   overflow: hidden;
+  min-height: 21rem;
 }
 
 /* **** just  styling * ***** */
 
 .flip-container {
-  margin: 15px;
+  margin: 1rem;
   position: relative;
 }
 
