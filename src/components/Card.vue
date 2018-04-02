@@ -28,11 +28,9 @@ export default {
     flip () {
       if (this.endlessFlip) {
         this.question = !this.question
-      } else {
-        if(this.question) {
+      } else if(this.question) {
           this.question = !this.question
-        } else this.$emit('nextCard')
-      }
+      } else this.$emit('nextCard')
     }
   },
 }
