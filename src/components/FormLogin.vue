@@ -13,13 +13,23 @@ export default {
     formFields: FormFields,
   },
   data: () => ({
+    homeRoute: { name: 'home' },
+    token: '',
+    user: {}
   }),
   methods: {
     login(payload) {
       axios.post('/login', payload)
-        .then(response => { })
+        .then(response => {
+          this.token = response.headers.authorization
+          this.user = response.data
+          this.$store.dispatch('saveUser', this.user)
+          this.$store.dispatch('saveToken', this.token)            
+          this.$store.dispatch('pushNotificationSucc', 'Successfully logged in as ' + this.user.login)
+          this.$router.push(this.homeRoute)
+        })
         .catch(e => {
-          console.log(e.response.data)
+          if(e.response){ this.$store.dispatch('pushNotificationErr', e.response.data) }          
         })
     }
   }

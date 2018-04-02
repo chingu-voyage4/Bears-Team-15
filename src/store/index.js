@@ -12,6 +12,8 @@ export default new Vuex.Store({
     counter: 1,
     loadingMode: false,
     notifications: [],
+    token: null,
+    user: null
   },
   getters: {
     collection: state => id => {
@@ -72,6 +74,18 @@ export default new Vuex.Store({
     },
     pushCollection(state, collection){
       state.collections.push(collection)
+    },
+    changeToken(state, token){
+      state.token = token
+    },
+    saveUser(state, user){
+      state.user = user
+    },
+    unsetToken(state){
+      state.token = null
+    },
+    unsetUser(state){
+      state.user = null
     },
     /* ***     notifications     ***  */
     dismissNotification(state, { iat, delay }) {
@@ -143,6 +157,19 @@ export default new Vuex.Store({
       collectionCopy.shared = false
       commit('pushCollection', collectionCopy)
       commit('saveNewCollection', collectionCopy.id)
+      commit('saveLocally')
+    },
+    saveToken({ commit }, token){
+      commit('changeToken', token)
+      commit('saveLocally')
+    },
+    saveUser({ commit }, user){
+      commit('saveUser', user)
+      commit('saveLocally')
+    },
+    processLogout({ commit }){
+      commit('unsetUser')
+      commit('unsetToken')
       commit('saveLocally')
     },
     /* ***     notifications     ***  */

@@ -6,7 +6,10 @@
       <router-link to="/">Home</router-link>
     </span>
     <p v-if="loadingMode">Loading...</p>
-    <router-link to="/login">Login</router-link>
+    <span>
+      <router-link to="/login" v-if='!user'>Login</router-link>
+      <router-link to="/" v-else @click.native="logout">Logout {{ user.login }}</router-link>
+    </span>
   </div>
 </header>
 </template>
@@ -15,7 +18,12 @@
 import { mapState } from 'vuex'
 
 export default {
-  computed: mapState(['loadingMode']),
+  computed: mapState(['loadingMode', 'user']),
+  methods: {
+    logout() {
+      this.$store.dispatch('processLogout')
+    }
+  }
 }
 </script>
 
