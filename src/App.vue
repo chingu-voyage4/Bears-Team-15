@@ -331,7 +331,7 @@ button::-moz-focus-inner {
 }
 
 .flipper {
-  transition: 0.3s;
+  transition: 0.4s;
   transform-style: preserve-3d;
   position: relative;
 }
@@ -346,8 +346,8 @@ button::-moz-focus-inner {
 
 /* *******  ON CARD CHANGE ****************** */
 .bounce-enter-active, .bounce-leave-active {
-  -webkit-animation-duration: 0.3s;
-  animation-duration: 0.3s;
+  -webkit-animation-duration: 0.4s;
+  animation-duration: 0.4s;
   -webkit-animation-fill-mode: both;
   animation-fill-mode: both;
 }

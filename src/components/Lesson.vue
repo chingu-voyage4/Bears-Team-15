@@ -7,7 +7,7 @@
     <app-card
       v-if="showCard"
       :card="card"
-      @nextCard="nextCard(600)"
+      @nextCard="nextCard(800)"
     ></app-card>
   </transition>
   <p v-else>No cards in this collection</p>
