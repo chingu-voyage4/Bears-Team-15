@@ -2,9 +2,10 @@
 <div>
   <h1>{{ greeting }}</h1>
   <app-nav-tabs :navItems="navItems"></app-nav-tabs>
-  <div>
-    <router-view/>
-  </div>
+  <!-- <div class="container mb-2">
+    <button class="btn btn-save" @click="refresh">Refresh</button>
+  </div> -->
+  <router-view/>
 </div>
 </template>
 
@@ -31,28 +32,14 @@ export default {
     ]
   }),
   computed: mapState(['collections']),
+  methods: {
+    refresh () {
+      this.$store.dispatch('fetchRemoteCollections')
+      this.$store.dispatch('fetchLocalCollections')
+    }
+  },
 }
 </script>
 
 <style>
-.dashboard {
-  width: 80%;
-  min-height: 400px;
-  margin: 0 auto;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.deck {
-  width: 140px;
-  height: 200px;
-  margin: 40px;
-  padding: 60px 0;
-  background: rgb(240, 240, 240);
-  border-radius: 10px;
-  box-shadow: 2px 5px 0px rgb(200, 200, 200),
-    4px 10px 0px rgb(180, 180, 180),
-    12px 15px 10px rgba(0, 0, 0, 0.2);
-}
 </style>
