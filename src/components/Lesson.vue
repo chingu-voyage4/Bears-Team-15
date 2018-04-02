@@ -1,10 +1,15 @@
 <template>
-<div class="cards-container">
-  <app-card
+<div class="cards-container lesson">
+  <transition
     v-if="card"
-    :card="card"
-    @nextCard="nextCard"
-  ></app-card>
+    name="bounce"
+  >
+    <app-card
+      v-if="showCard"
+      :card="card"
+      @nextCard="nextCard(600)"
+    ></app-card>
+  </transition>
   <p v-else>No cards in this collection</p>
 </div>
 </template>
@@ -22,9 +27,10 @@ export default {
   },
   data: () => ({
     index: 0,
+    showCard: false,
   }),
   created () {
-    this.index = this.randIndex()
+    this.nextCard(100)
   },
   computed: {
     collection () {
@@ -38,8 +44,13 @@ export default {
     }
   },
   methods: {
-    nextCard () {
+    nextCard(delay) {
+      this.showCard = false
       this.index = this.randIndex()
+      const self = this
+      setTimeout(() => {
+        self.showCard = true
+      }, delay)
     },
     randIndex () {
       return Math.floor(Math.random()*(this.quantity))
