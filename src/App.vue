@@ -279,6 +279,7 @@ button::-moz-focus-inner {
 
 .flip-container {
   margin: 15px;
+  position: relative;
 }
 
 .flip-container, .front, .back {
@@ -299,6 +300,11 @@ button::-moz-focus-inner {
 
   border: none;
   box-shadow: 2px 2px 15px rgb(140, 140, 140);
+
+  backface-visibility: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .front {
@@ -313,40 +319,20 @@ button::-moz-focus-inner {
 }
 
 
-/* ****** flipping logic: ***** */
+/* ************ CARD ANIMATION: ************* */
 
-.flip-container {
-  position: relative;
-  /*perspective: 1000px;*/
-}
-
-.flip {
+/* *******  ON SIDE CHANGE *********** */
+.flip-container.flip .flipper {
   transform: rotateY(180deg);
-  /*transform-origin: 50%;*/
 }
 
-.flipper, .flipperFast {
+.flipper {
+  transition: 0.3s;
   transform-style: preserve-3d;
   position: relative;
 }
 
-.flipper {
-  transition: 0.6s;
-}
-
-.flipperFast {
-  transition: 0;
-}
-
-.front, .back {
-  backface-visibility: hidden;
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
 .front {
-  /*z-index: 2;*/
   transform: rotateY(0deg);
 }
 
