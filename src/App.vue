@@ -182,6 +182,17 @@ button::-moz-focus-inner {
     12px 15px 10px rgba(0, 0, 0, 0.2);
 }
 
+@media (min-width: 360px) {
+  .deck {
+    margin: 0 20px 50px 20px;
+  }
+}
+@media (min-width: 720px) {
+  .deck {
+    margin: 0 30px 70px 30px;
+  }
+}
+
 .deck a {
   display: table-cell;
   vertical-align: middle;
