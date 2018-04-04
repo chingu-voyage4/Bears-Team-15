@@ -19,7 +19,11 @@ router.post('/register', (req, res) => {
   const { login, password } = req.body
   User.create({ login, password })
     .then(user => {
-      res.status(200).send(user)
+      const newToken = jwt.sign({
+        _id: user._id.toString()
+      }, JWT_SECRET, { expiresIn: '30d' })
+
+      res.status(200).set('authorization', `Bearer ${newToken}`).send(user)
     })
     .catch(err => {
       let statusCode = 400
