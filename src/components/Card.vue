@@ -21,21 +21,17 @@ export default {
     flipClass () {
       return {
         flip: !this.question,
-        flipper: this.endlessFlip || !this.endlessFlip && !this.question,
-        flipperFast: !this.endlessFlip,
       }
     }
   },
   methods: {
     flip () {
-      if (!this.question) {
-        this.$emit('nextCard')
-      }
-      this.question = !this.question
+      if (this.endlessFlip) {
+        this.question = !this.question
+      } else if(this.question) {
+          this.question = !this.question
+      } else this.$emit('nextCard')
     }
   },
 }
 </script>
-
-<style scoped>
-</style>
