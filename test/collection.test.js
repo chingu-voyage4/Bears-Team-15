@@ -249,6 +249,51 @@ describe('PUT `/collection/:id`', () => {
       )
     })
   )
+
+  it('should not update without authToken', () => chai.request(app)
+    .put(path)
+    .send(changes)
+    .then(res => expect(res).toBeUndefined())
+    .catch(err => {
+      const res = err.response
+      expect(res).toHaveProperty('status', 403)
+      expect(res).toHaveProperty('text', errors.login.invalidToken)
+    })
+  )
+
+  it('should not update other user\'s collection', () => chai.request(app)
+    .put(path)
+    .set('authorization', hacker.authHeader)
+    .send(changes)
+    .then(res => expect(res).toBeUndefined())
+    .catch(err => {
+      const res = err.response
+      expect(res).toHaveProperty('status', 403)
+      expect(res).toHaveProperty('text', errors.notAuthorized)
+    })
+  )
+
+  it('should respond with 404 if wrong ID', () => chai.request(app)
+    .put(`/collection/${new ObjectId}`)
+    .set('authorization', registeredUser.authHeader)
+    .then(res => expect(res).toBeUndefined())
+    .catch(err => {
+      const res = err.response
+      expect(res).toHaveProperty('status', 404)
+      expect(res).toHaveProperty('text', errors.collection.notFound)
+    })
+  )
+
+  it('should respond with 400 if invalid ID', () => chai.request(app)
+    .put('/collection/23920215a87687f87')
+    .set('authorization', registeredUser.authHeader)
+    .then(res => expect(res).toBeUndefined())
+    .catch(err => {
+      const res = err.response
+      expect(res).toHaveProperty('status', 400)
+      expect(res).toHaveProperty('text', errors.collection.badRequest)
+    })
+  )
 })
 
 // DESTROY
