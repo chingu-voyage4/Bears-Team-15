@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 
+import { authenticated } from '../middleware'
 import errors from '../errMessages'
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
