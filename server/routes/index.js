@@ -68,7 +68,7 @@ router.post('/login', async (req, res) => {
     } else {
       const token = authHeader.split(' ')[1]
       const decoded = jwt.verify(token, JWT_SECRET)
-      if (!decoded) throw 'invaidToken'
+      if (!decoded) throw 'invalidToken'
       user = await User.findById(decoded._id)
     }
 
