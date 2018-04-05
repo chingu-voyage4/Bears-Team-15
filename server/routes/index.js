@@ -267,13 +267,20 @@ router.put('/collection/:id', authenticated, async (req, res) => {
 })
 
 // DESTROY collection
-router.delete('/collection/:id', async (req, res) => {
+router.delete('/collection/:id', authenticated, async (req, res) => {
   let statusCode = 200
   let msg = errors.worstScenario
   const { id }  = req.params
+
   try {
     const collection = await Collection.findById(id)
     if (!collection) throw 'notFound'
+
+    // authorized:
+    if (!req.user.collections.find(x => x.toString() === id.toString())) {
+      return res.status(403).send(errors.notAuthorized)
+    }
+
     const deletedCards = await Promise.all(
       collection.items.map(cardId =>
         Card.findByIdAndRemove(cardId)
