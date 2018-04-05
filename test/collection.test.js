@@ -316,6 +316,27 @@ describe('DELETE `/collection/:id`', () => {
     .then(res => deck.items = res.body.items)
   )
 
+  it('should not destroy without authToken', () => chai.request(app)
+    .delete(path)
+    .then(res => expect(res).toBeUndefined())
+    .catch(err => {
+      const res = err.response
+      expect(res).toHaveProperty('status', 403)
+      expect(res).toHaveProperty('text', errors.login.invalidToken)
+    })
+  )
+
+  it('should not destroy other user\'s collection', () => chai.request(app)
+    .delete(path)
+    .set('authorization', hacker.authHeader)
+    .then(res => expect(res).toBeUndefined())
+    .catch(err => {
+      const res = err.response
+      expect(res).toHaveProperty('status', 403)
+      expect(res).toHaveProperty('text', errors.notAuthorized)
+    })
+  )
+
   it('should destroy colleciton and cards', () => chai.request(app)
     .delete(path)
     .set('authorization', registeredUser.authHeader)
