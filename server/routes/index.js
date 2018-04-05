@@ -190,13 +190,21 @@ router.get('/collections/public', (req, res) => {
 })
 
 // UPDATE collection
-router.put('/collection/:id', async (req, res) => {
+router.put('/collection/:id', authenticated, async (req, res) => {
   let statusCode = 200
   let msg = errors.worstScenario
   const { id }  = req.params
+
   const { collectionName, shared, items } = req.body
   try {
     const collection = await Collection.findById(id).populate('items')
+    if (!collection) throw 'notFound'
+    
+    // authorized:
+    if (!req.user.collections.find(x => x.toString() === id.toString())) {
+      return res.status(403).send(errors.notAuthorized)
+    }
+
     if (collectionName) {
       collection.collectionName = collectionName
     }
