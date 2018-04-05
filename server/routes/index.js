@@ -112,7 +112,7 @@ const handleSearch = (err, res, statusCode, msg, type, crud) => {
 }
 
 // CREATE collection
-router.post('/collection/create', async (req, res) => {
+router.post('/collection/create', authenticated, async (req, res) => {
   const { collectionName, items } = req.body
   let statusCode = 400
   let msg = errors.collection.badRequest
@@ -129,7 +129,12 @@ router.post('/collection/create', async (req, res) => {
     const collection = await Collection.create({
       collectionName,
       items: itemsId,
+      shared: true,
     })
+
+    const collections = req.user.collections
+    collections.push(collection._id)
+    await User.findByIdAndUpdate(req.user._id, { collections })
     res.status(200).send({ _id: collection._id })
   } catch (err) {
     if (err !== 'bad') {
