@@ -150,6 +150,83 @@ describe('GET `/collection/:id`', () => {
   )
 })
 
+// FORK
+describe('GET `/collection/fork/:id`', () => {
+  let id = ''
+  let path = ''
+  const originalCard = { 'q': 'foo', 'a': 'bar' }
+  const original = {
+      collectionName: 'to clone',
+      items: [originalCard]
+  }
+
+  beforeAll(() =>
+    chai.request(app).post('/collection/create')
+      .send(original)
+      .set('authorization', registeredUser.authHeader)
+      .then(res => {
+        original._id = res.body._id
+        path = `/collection/fork/${original._id}`
+      })
+  )
+
+  it('should respond with new _id', () => chai.request(app)
+    .get(path)
+    .set('authorization', registeredUser.authHeader)
+    .then(res => {
+      const received = res.body
+      expect(ObjectId.isValid(received._id)).toBeTruthy()
+      expect(received._id).not.toEqual(original._id)
+      return Promise.resolve(received._id)
+    })
+    .then(id => chai.request(app).get(`/collection/${id}`))
+    .then(res => {
+      const received = res.body
+      expect(received).toHaveProperty('collectionName', original.collectionName)
+      expect(received.items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            q: originalCard.q,
+            a: originalCard.a,
+          })
+        ])
+      )
+    })
+  )
+
+  it('should respond with 404 if wrong ID', () => chai.request(app)
+    .get(`/collection/fork/${new ObjectId}`)
+    .set('authorization', registeredUser.authHeader)
+    .then(res => expect(res).toBeUndefined())
+    .catch(err => {
+      const res = err.response
+      expect(res).toHaveProperty('status', 404)
+      expect(res).toHaveProperty('text', errors.collection.notFound)
+    })
+  )
+
+  it('should respond with 400 if invalid ID', () => chai.request(app)
+    .get('/collection/fork/239b25a87687f87')
+    .set('authorization', registeredUser.authHeader)
+    .then(res => expect(res).toBeUndefined())
+    .catch(err => {
+      const res = err.response
+      expect(res).toHaveProperty('status', 400)
+      expect(res).toHaveProperty('text', errors.collection.badRequest)
+    })
+  )
+
+  it('should deny access if no authToken', () => chai.request(app)
+    .get(path)
+    .then(res => expect(res).toBeUndefined())
+    .catch(err => {
+      const res = err.response
+      expect(res).toHaveProperty('status', 403)
+      expect(res).toHaveProperty('text', errors.login.invalidToken)
+    })
+  )
+})
+
 // UPDATE
 describe('PUT `/collection/:id`', () => {
   let path = ''
