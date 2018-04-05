@@ -46,6 +46,12 @@ describe('POST `/register`', () => {
         expect(received).toHaveProperty('_id')
         expect(received).toHaveProperty('login', newUser.login)
         expect(received).not.toHaveProperty('password')
+
+        expect(response.headers).toHaveProperty('authorization')
+        const token = response.headers.authorization.split(' ')[1]
+        expect(token).toBeDefined()
+        const decoded = jwt.verify(token, JWT_SECRET)
+        expect(received._id).toEqual(decoded._id)
       })
   )
 
