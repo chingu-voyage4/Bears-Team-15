@@ -12,12 +12,19 @@ const registeredUser = {
   login: 'johndoe',
   password: 'password',
 }
+const hacker = {
+  login: 'hacker',
+  password: 'password',
+}
 
 beforeAll(async () => {
   await seed.resetAllCollections()
   const res = await chai.request(app).post('/register').send(registeredUser)
   registeredUser._id = res.body._id.toString()
   registeredUser.authHeader = res.headers.authorization
+  const hack = await chai.request(app).post('/register').send(hacker)
+  hacker._id = hack.body._id.toString()
+  hacker.authHeader = hack.headers.authorization
 })
 
 afterAll(server.close())
