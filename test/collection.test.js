@@ -8,8 +8,23 @@ import { ObjectId } from 'mongodb'
 
 chai.use(chaiHttp)
 
+const registeredUser = {
+  login: 'johndoe',
+  password: 'password',
+}
+const hacker = {
+  login: 'hacker',
+  password: 'password',
+}
+
 beforeAll(async () => {
   await seed.resetAllCollections()
+  const res = await chai.request(app).post('/register').send(registeredUser)
+  registeredUser._id = res.body._id.toString()
+  registeredUser.authHeader = res.headers.authorization
+  const hack = await chai.request(app).post('/register').send(hacker)
+  hacker._id = hack.body._id.toString()
+  hacker.authHeader = hack.headers.authorization
 })
 
 afterAll(server.close())
@@ -17,19 +32,32 @@ afterAll(server.close())
 // CREATE
 describe('POST `/collection/create`', () => {
   const path = '/collection/create'
-
-  it('should respond with _id', () => chai.request(app)
-    .post(path)
-    .send({
+  const newCollection = {
       collectionName: 'lorem ipsum',
       items: [{
         'q': 'lorem',
         'a': 'ipsum',
       }]
-    })
+  }
+
+  it('should respond with _id, add to user\'s array', () => chai.request(app)
+    .post(path)
+    .set('authorization', registeredUser.authHeader)
+    .send(newCollection)
     .then(res => {
       expect(res.body).toHaveProperty('_id')
       expect(ObjectId.isValid(res.body._id)).toBeTruthy()
+      const id = res.body._id
+      chai.request(app).post(`/login`)
+        .set('authorization', registeredUser.authHeader)
+        .send()
+        .end((err, res) => {
+          const user = res.body
+          expect(user).toHaveProperty('collections')
+          expect(user.collections).toEqual(
+            expect.arrayContaining([id])
+          )
+        })
     })
   )
 
@@ -41,14 +69,26 @@ describe('POST `/collection/create`', () => {
 
   it('should respond 400 to invalid', () => chai.request(app)
     .post(path)
+    .set('authorization', registeredUser.authHeader)
     .send({ gibberish: 'foobar', items: 'buzz' })
     .catch(badRequest)
   )
 
   it('should respond 400 to empty', () => chai.request(app)
     .post(path)
+    .set('authorization', registeredUser.authHeader)
     .send({})
     .catch(badRequest)
+  )
+
+  it('should deny access if no authToken', () => chai.request(app)
+    .post(path)
+    .send(newCollection)
+    .catch(err => {
+      const res = err.response
+      expect(res).toHaveProperty('status', 403)
+      expect(res).toHaveProperty('text', errors.login.invalidToken)
+    })
   )
 })
 
@@ -65,6 +105,7 @@ describe('GET `/collection/:id`', () => {
   beforeAll(() =>
     chai.request(app).post('/collection/create')
       .send(expected)
+      .set('authorization', registeredUser.authHeader)
       .then(res => {
         expected._id = res.body._id
         path = `/collection/${expected._id}`
@@ -154,6 +195,7 @@ describe('PUT `/collection/:id`', () => {
 
   beforeAll(() => chai.request(app)
     .post('/collection/create')
+    .set('authorization', registeredUser.authHeader)
     .send(deck)
     .then(res => path = `/collection/${res.body._id}`)
     .then(() => chai.request(app).get(path))
@@ -172,6 +214,7 @@ describe('PUT `/collection/:id`', () => {
 
   it('should only update `name`, `shared`', () => chai.request(app)
     .put(path)
+    .set('authorization', registeredUser.authHeader)
     .send({ collectionName: 'Updated name', shared: true })
     .then(res => {
       expect(res.body).toHaveProperty('collectionName', 'Updated name')
@@ -190,6 +233,7 @@ describe('PUT `/collection/:id`', () => {
 
   it('should modify items', () => chai.request(app)
     .put(path)
+    .set('authorization', registeredUser.authHeader)
     .send(changes)
     .then(res => {
       expect(res.body).toHaveProperty('collectionName', expected.collectionName)
@@ -205,6 +249,51 @@ describe('PUT `/collection/:id`', () => {
       )
     })
   )
+
+  it('should not update without authToken', () => chai.request(app)
+    .put(path)
+    .send(changes)
+    .then(res => expect(res).toBeUndefined())
+    .catch(err => {
+      const res = err.response
+      expect(res).toHaveProperty('status', 403)
+      expect(res).toHaveProperty('text', errors.login.invalidToken)
+    })
+  )
+
+  it('should not update other user\'s collection', () => chai.request(app)
+    .put(path)
+    .set('authorization', hacker.authHeader)
+    .send(changes)
+    .then(res => expect(res).toBeUndefined())
+    .catch(err => {
+      const res = err.response
+      expect(res).toHaveProperty('status', 403)
+      expect(res).toHaveProperty('text', errors.notAuthorized)
+    })
+  )
+
+  it('should respond with 404 if wrong ID', () => chai.request(app)
+    .put(`/collection/${new ObjectId}`)
+    .set('authorization', registeredUser.authHeader)
+    .then(res => expect(res).toBeUndefined())
+    .catch(err => {
+      const res = err.response
+      expect(res).toHaveProperty('status', 404)
+      expect(res).toHaveProperty('text', errors.collection.notFound)
+    })
+  )
+
+  it('should respond with 400 if invalid ID', () => chai.request(app)
+    .put('/collection/23920215a87687f87')
+    .set('authorization', registeredUser.authHeader)
+    .then(res => expect(res).toBeUndefined())
+    .catch(err => {
+      const res = err.response
+      expect(res).toHaveProperty('status', 400)
+      expect(res).toHaveProperty('text', errors.collection.badRequest)
+    })
+  )
 })
 
 // DESTROY
@@ -217,6 +306,7 @@ describe('DELETE `/collection/:id`', () => {
 
   beforeAll(() => chai.request(app)
     .post('/collection/create')
+    .set('authorization', registeredUser.authHeader)
     .send(deck)
     .then(res => {
       deck._id = res.body._id
@@ -226,8 +316,30 @@ describe('DELETE `/collection/:id`', () => {
     .then(res => deck.items = res.body.items)
   )
 
+  it('should not destroy without authToken', () => chai.request(app)
+    .delete(path)
+    .then(res => expect(res).toBeUndefined())
+    .catch(err => {
+      const res = err.response
+      expect(res).toHaveProperty('status', 403)
+      expect(res).toHaveProperty('text', errors.login.invalidToken)
+    })
+  )
+
+  it('should not destroy other user\'s collection', () => chai.request(app)
+    .delete(path)
+    .set('authorization', hacker.authHeader)
+    .then(res => expect(res).toBeUndefined())
+    .catch(err => {
+      const res = err.response
+      expect(res).toHaveProperty('status', 403)
+      expect(res).toHaveProperty('text', errors.notAuthorized)
+    })
+  )
+
   it('should destroy colleciton and cards', () => chai.request(app)
     .delete(path)
+    .set('authorization', registeredUser.authHeader)
     .then(res => {
       expect(res.body._id).toEqual(deck._id)
     })
@@ -250,6 +362,8 @@ describe('DELETE `/collection/:id`', () => {
 
   it('should respond with 404 if wrong ID', () => chai.request(app)
     .delete(`/collection/${new ObjectId}`)
+    .set('authorization', registeredUser.authHeader)
+    .then(res => expect(res).toBeUndefined())
     .catch(err => {
       const res = err.response
       expect(res).toHaveProperty('status', 404)
@@ -259,6 +373,8 @@ describe('DELETE `/collection/:id`', () => {
 
   it('should respond with 400 if invalid ID', () => chai.request(app)
     .delete('/collection/23920215a87687f87')
+    .set('authorization', registeredUser.authHeader)
+    .then(res => expect(res).toBeUndefined())
     .catch(err => {
       const res = err.response
       expect(res).toHaveProperty('status', 400)

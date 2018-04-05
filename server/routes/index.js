@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 
+import { authenticated } from '../middleware'
 import errors from '../errMessages'
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
@@ -67,7 +68,7 @@ router.post('/login', async (req, res) => {
     } else {
       const token = authHeader.split(' ')[1]
       const decoded = jwt.verify(token, JWT_SECRET)
-      if (!decoded) throw 'invaidToken'
+      if (!decoded) throw 'invalidToken'
       user = await User.findById(decoded._id)
     }
 
@@ -111,7 +112,7 @@ const handleSearch = (err, res, statusCode, msg, type, crud) => {
 }
 
 // CREATE collection
-router.post('/collection/create', async (req, res) => {
+router.post('/collection/create', authenticated, async (req, res) => {
   const { collectionName, items } = req.body
   let statusCode = 400
   let msg = errors.collection.badRequest
@@ -128,7 +129,12 @@ router.post('/collection/create', async (req, res) => {
     const collection = await Collection.create({
       collectionName,
       items: itemsId,
+      shared: true,
     })
+
+    const collections = req.user.collections
+    collections.push(collection._id)
+    await User.findByIdAndUpdate(req.user._id, { collections })
     res.status(200).send({ _id: collection._id })
   } catch (err) {
     if (err !== 'bad') {
@@ -184,13 +190,21 @@ router.get('/collections/public', (req, res) => {
 })
 
 // UPDATE collection
-router.put('/collection/:id', async (req, res) => {
+router.put('/collection/:id', authenticated, async (req, res) => {
   let statusCode = 200
   let msg = errors.worstScenario
   const { id }  = req.params
+
   const { collectionName, shared, items } = req.body
   try {
     const collection = await Collection.findById(id).populate('items')
+    if (!collection) throw 'notFound'
+    
+    // authorized:
+    if (!req.user.collections.find(x => x.toString() === id.toString())) {
+      return res.status(403).send(errors.notAuthorized)
+    }
+
     if (collectionName) {
       collection.collectionName = collectionName
     }
@@ -253,13 +267,20 @@ router.put('/collection/:id', async (req, res) => {
 })
 
 // DESTROY collection
-router.delete('/collection/:id', async (req, res) => {
+router.delete('/collection/:id', authenticated, async (req, res) => {
   let statusCode = 200
   let msg = errors.worstScenario
   const { id }  = req.params
+
   try {
     const collection = await Collection.findById(id)
     if (!collection) throw 'notFound'
+
+    // authorized:
+    if (!req.user.collections.find(x => x.toString() === id.toString())) {
+      return res.status(403).send(errors.notAuthorized)
+    }
+
     const deletedCards = await Promise.all(
       collection.items.map(cardId =>
         Card.findByIdAndRemove(cardId)

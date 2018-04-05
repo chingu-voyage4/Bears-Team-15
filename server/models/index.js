@@ -38,11 +38,15 @@ const UserSchema = new mongoose.Schema({
       type: 'invalidPwd',
     },
   },
+  collections: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Collection',
+  }],
 })
 
 UserSchema.methods.toJSON = function () {
-  const { login, _id } = this
-  return { login, _id }
+  const { login, _id, collections } = this
+  return { login, _id, collections }
 }
 
 UserSchema.pre('save', function (next) {
