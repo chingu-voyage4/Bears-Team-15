@@ -8,8 +8,16 @@ import { ObjectId } from 'mongodb'
 
 chai.use(chaiHttp)
 
+const registeredUser = {
+  login: 'johndoe',
+  password: 'password',
+}
+
 beforeAll(async () => {
   await seed.resetAllCollections()
+  const res = await chai.request(app).post('/register').send(registeredUser)
+  registeredUser._id = res.body._id.toString()
+  registeredUser.authHeader = res.headers.authorization
 })
 
 afterAll(server.close())
@@ -17,19 +25,32 @@ afterAll(server.close())
 // CREATE
 describe('POST `/collection/create`', () => {
   const path = '/collection/create'
-
-  it('should respond with _id', () => chai.request(app)
-    .post(path)
-    .send({
+  const newCollection = {
       collectionName: 'lorem ipsum',
       items: [{
         'q': 'lorem',
         'a': 'ipsum',
       }]
-    })
+  }
+
+  it('should respond with _id, add to user\'s array', () => chai.request(app)
+    .post(path)
+    .set('authorization', registeredUser.authHeader)
+    .send(newCollection)
     .then(res => {
       expect(res.body).toHaveProperty('_id')
       expect(ObjectId.isValid(res.body._id)).toBeTruthy()
+      const id = res.body._id
+      chai.request(app).post(`/login`)
+        .set('authorization', registeredUser.authHeader)
+        .send()
+        .end((err, res) => {
+          const user = res.body
+          expect(user).toHaveProperty('collections')
+          expect(user.collections).toEqual(
+            expect.arrayContaining([id])
+          )
+        })
     })
   )
 
@@ -41,14 +62,26 @@ describe('POST `/collection/create`', () => {
 
   it('should respond 400 to invalid', () => chai.request(app)
     .post(path)
+    .set('authorization', registeredUser.authHeader)
     .send({ gibberish: 'foobar', items: 'buzz' })
     .catch(badRequest)
   )
 
   it('should respond 400 to empty', () => chai.request(app)
     .post(path)
+    .set('authorization', registeredUser.authHeader)
     .send({})
     .catch(badRequest)
+  )
+
+  it('should deny access if no authToken', () => chai.request(app)
+    .post(path)
+    .send(newCollection)
+    .catch(err => {
+      const res = err.response
+      expect(res).toHaveProperty('status', 403)
+      expect(res).toHaveProperty('text', errors.login.invalidToken)
+    })
   )
 })
 
