@@ -146,6 +146,40 @@ router.post('/collection/create', authenticated, async (req, res) => {
   }
 })
 
+// FORK collection
+router.get('/collection/fork/:id', authenticated, async (req, res) => {
+  const { id } = req.params
+  let statusCode = 404
+  let msg = errors.collection.common('read')
+
+  try {
+    const original = await Collection.findById(id).populate('items')
+    if (!original) throw 'notFound'
+
+    const { collectionName, shared } = original
+    const items = original.items
+      .map(({ _doc }) => {
+        const { _id, __v, ...item } = _doc
+        return item
+      })
+    const itemsId = await Promise.all(
+      items.map(async item => await Card.create(item))
+    )
+    const clone = await Collection.create({
+      collectionName,
+      items: itemsId,
+      shared
+    })
+
+    const collections = req.user.collections
+    collections.push(clone._id)
+    await User.findByIdAndUpdate(req.user._id, { collections })
+    res.status(200).send({ _id: clone._id})
+  } catch(err) {
+    handleSearch(err, res, statusCode, msg, 'collection', 'read')
+  }
+})
+
 // READ collection
 router.get('/collection/:id', (req, res) => {
   const { id } = req.params
@@ -199,7 +233,7 @@ router.put('/collection/:id', authenticated, async (req, res) => {
   try {
     const collection = await Collection.findById(id).populate('items')
     if (!collection) throw 'notFound'
-    
+
     // authorized:
     if (!req.user.collections.find(x => x.toString() === id.toString())) {
       return res.status(403).send(errors.notAuthorized)
