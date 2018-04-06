@@ -13,11 +13,18 @@ export default {
     formFields: FormFields,
   },
   data: () => ({
+    homeRoute: { name: 'home' },
   }),
   methods: {
     register(payload) {
       axios.post('/register', payload)
-        .then(response => { })
+        .then(response => { 
+          const token = response.headers.authorization
+          const user = response.data
+          this.$store.dispatch('processLogin', { user, token} )        
+          this.$store.dispatch('pushNotificationSucc', 'Successfully registered as ' + user.login)
+          this.$router.push(this.homeRoute)
+         })
         .catch(e => {
           console.log(e.response.data)
         })
