@@ -17,7 +17,7 @@ export default {
   }),
   methods: {
     register(payload) {
-      if(this.validateLogin(payload.login) && this.validatePassword(payload.password)){
+      if(this.validateLogin(payload.login) & this.validatePassword(payload.password)){
         axios.post('/register', payload)
           .then(response => { 
             const token = response.headers.authorization
@@ -32,7 +32,12 @@ export default {
       }
     },
     validateLogin(x){
-      return /^[\w\-\.@]+$/.test(x)
+      if(/^[\w\-\.@]+$/.test(x)){
+        return true
+      }else{
+        this.$store.dispatch('pushNotificationErr', 'Login can consist of: latin lowercase and uppercase letters, digits, dot, @, hyphen, underscore. Minimum length is 1 character.')
+        return false
+      }
     },
     validatePassword(x){
       const bytes = x.split('')
@@ -47,8 +52,16 @@ export default {
         .reduce((sum, bytes) => sum + bytes)
         
       const l = x.length
-      if (l < 8 || l > 72) return false
-      return !!bytes && bytes <= 72
+      if (l < 8 || l > 72){
+        this.$store.dispatch('pushNotificationErr', 'Password length should be min 8, max 72 characters')
+        return false
+      }
+      if(!!bytes && bytes <= 72){
+        return true
+      }else{
+        this.$store.dispatch('pushNotificationErr', 'Password can have max 72 bytes')
+        return false
+      }
     }
   }
 }
