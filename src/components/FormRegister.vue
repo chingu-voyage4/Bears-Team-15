@@ -27,7 +27,7 @@ export default {
             this.$router.push(this.homeRoute)
           })
           .catch(e => {
-            console.log(e.response.data)
+            if(e.response){ this.$store.dispatch('pushNotificationErr', e.response.data) }
           })
       }
     },
