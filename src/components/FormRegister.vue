@@ -7,6 +7,7 @@
 <script>
 import FormFields from '@/components/FormFields'
 import axios from 'axios'
+import errors from '@/../server/errMessages.js'
 
 export default {
   components: {
@@ -37,10 +38,12 @@ export default {
       }
     },
     validateLogin(x){
-      if(/^[\w\-\.@]+$/.test(x)){
+      if (x.length === 0) {
+        this.$store.dispatch('pushNotificationErr', errors.registration.emptyLogin)
+      } else if (/^[\w\-\.@]+$/.test(x)) {
         return true
-      }else{
-        this.$store.dispatch('pushNotificationErr', 'Login can consist of: latin lowercase and uppercase letters, digits, dot, @, hyphen, underscore. Minimum length is 1 character.')
+      } else {
+        this.$store.dispatch('pushNotificationErr', errors.registration.invalidLogin)
         return false
       }
     },
@@ -58,13 +61,13 @@ export default {
         
       const l = x.length
       if (l < 8 || l > 72){
-        this.$store.dispatch('pushNotificationErr', 'Password length should be min 8, max 72 characters')
+        this.$store.dispatch('pushNotificationErr', errors.registration.passwordLength)
         return false
       }
       if(!!bytes && bytes <= 72){
         return true
       }else{
-        this.$store.dispatch('pushNotificationErr', 'Password can have max 72 bytes')
+        this.$store.dispatch('pushNotificationErr', errors.registration.passwordByteLength)
         return false
       }
     }
