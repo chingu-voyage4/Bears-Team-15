@@ -17,17 +17,22 @@ export default {
   }),
   methods: {
     register(payload) {
-      axios.post('/register', payload)
-        .then(response => { 
-          const token = response.headers.authorization
-          const user = response.data
-          this.$store.dispatch('processRegistration', token)        
-          this.$store.dispatch('pushNotificationSucc', 'Successfully registered as ' + user.login)
-          this.$router.push(this.homeRoute)
-         })
-        .catch(e => {
-          console.log(e.response.data)
-        })
+      if(this.validateLogin(payload.login)){
+        axios.post('/register', payload)
+          .then(response => { 
+            const token = response.headers.authorization
+            const user = response.data
+            this.$store.dispatch('processRegistration', token)        
+            this.$store.dispatch('pushNotificationSucc', 'Successfully registered as ' + user.login)
+            this.$router.push(this.homeRoute)
+          })
+          .catch(e => {
+            console.log(e.response.data)
+          })
+      }
+    },
+    validateLogin(x){
+      return /^[\w\-\.@]+$/.test(x)
     }
   }
 }
