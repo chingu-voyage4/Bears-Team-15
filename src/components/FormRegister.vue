@@ -22,15 +22,14 @@ export default {
           .then(response => { 
             const token = response.headers.authorization
             const user = response.data
-            this.$store.dispatch('processRegistration', token)        
+            this.$store.dispatch('processLogin', {user, token})        
             this.$store.dispatch('pushNotificationSucc', 'Successfully registered as ' + user.login)
             this.$router.push(this.homeRoute)
           })
           .catch(e => {
             if(e.response){
               this.$store.dispatch('pushNotificationErr', e.response.data)
-            }
-            if(e.message){
+            }else if(e.message){
               this.$store.dispatch('pushNotificationErr', e.message)
             }
           })
