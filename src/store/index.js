@@ -169,6 +169,10 @@ export default new Vuex.Store({
       commit('unsetToken')
       commit('saveLocally')
     },
+    processRegistration({ commit }, token){
+      commit('changeToken', token)
+      commit('saveLocally')
+    },
     /* ***     notifications     ***  */
     pushNotification({ commit, state }, { type, msg }) {
       let iat = Date.now()

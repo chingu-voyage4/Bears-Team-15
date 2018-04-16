@@ -26,7 +26,12 @@ export default {
           this.$router.push(this.homeRoute)
         })
         .catch(e => {
-          if(e.response){ this.$store.dispatch('pushNotificationErr', e.response.data) }          
+          if(e.response){
+              this.$store.dispatch('pushNotificationErr', e.response.data)
+          }
+          if(e.message){
+            this.$store.dispatch('pushNotificationErr', e.message)
+          }          
         })
     }
   }

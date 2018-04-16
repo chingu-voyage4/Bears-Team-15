@@ -1,9 +1,9 @@
 <template>
 <form @submit.prevent="auth" class="auth-form">
   <label>Name</label>
-  <input type="text" placeholder="Your login name" v-model="name">
+  <input type="text" placeholder="Your login name" v-model.trim="name">
   <label>Password</label>
-  <input type="password" placeholder="Your password" v-model="password">
+  <input type="password" placeholder="Your password" v-model.trim="password">
   <button class="btn btn-add" type="submit"><slot name="btnName"></slot></button>
 </form>
 </template>

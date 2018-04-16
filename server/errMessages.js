@@ -2,8 +2,10 @@ export default {
   registration: {
     common: 'Failed to register user',
     duplicate: 'User is already registered',
-    invalidLogin: 'Login should only contain numbers, digits, hyphen, underscore, period and @',
+    invalidLogin: 'Login should only contain latin letters, digits, hyphen, underscore, period and @',
     invalidPwd: 'Password should be 8 - 72 characters, 72 bytes max',
+    passwordLength: 'Password length should be min 8, max 72 characters',
+    passwordByteLength: 'Password size should be 72 bytes max. UTF-8 characters could take more than 1 byte',
     emptyLogin: 'Failed to register. Login must be provided',
     emptyPwd: 'Failed to register. Password must be provided'
   },
