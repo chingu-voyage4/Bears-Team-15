@@ -28,8 +28,7 @@ export default {
         .catch(e => {
           if(e.response){
               this.$store.dispatch('pushNotificationErr', e.response.data)
-          }
-          if(e.message){
+          }else if(e.message){
             this.$store.dispatch('pushNotificationErr', e.message)
           }          
         })
