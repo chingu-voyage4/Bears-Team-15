@@ -105,8 +105,48 @@ export default new Vuex.Store({
       }
       commit('setLoadingMode', false)
     },
-    fetchRemoteCollections ({ commit }) {
+    async fetchRemoteCollections({ dispatch, commit }) {
       commit('setLoadingMode', true)
+      try {
+        await dispatch('fetchRemotePublicCollections')
+        await dispatch('fetchRemotePrivateCollections')
+        commit('saveLocally')
+      } catch (err) {
+        dispatch('pushNotificationErr', err)
+      } finally {
+        commit('setLoadingMode', false)
+      }
+    },
+    async fetchRemotePublicCollections({ state }) {
+      try {
+        const res = await axios({
+          method: 'get',
+          url: '/collections/public',
+        })
+        if (!res) throw new Error('No response')
+        state.publicCollections = res.data.collections
+        return new Promise((resolve, reject) => resolve())
+      } catch (err) {
+        const message = err.response ? err.response.data : err.message
+        return new Promise((resolve, reject) => reject(message))
+      }
+    },
+    async fetchRemotePrivateCollections({ state }) {
+      try {
+        if (!state.token) return console.error('Must provide `authToken` [TODO: fetch it from localStorage]')
+        const res = await axios({
+          method: 'get',
+          url: '/collections/my',
+          headers: {'authorization': state.token},
+        })
+        if (!res) throw new Error('No response')
+        state.collections = res.data.collections
+        return new Promise((resolve, reject) => resolve())
+      } catch (err) {
+        const message = err.response ? err.response.data : err.message
+        return new Promise((resolve, reject) => reject(message))
+      }
+    },
       axios({
         method: 'get',
         url: '/collections/public',
@@ -172,9 +212,10 @@ export default new Vuex.Store({
           commit('setLoadingMode', false)
         })
     },
-    processLogin({ commit }, { user, token} ){
+    processLogin({ dispatch, commit }, { user, token} ){
       commit('saveUser', user)
       commit('changeToken', token)
+      dispatch('fetchRemoteCollections')
       commit('saveLocally')
     },
     processLogout({ commit }){

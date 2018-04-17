@@ -223,6 +223,37 @@ router.get('/collections/public', (req, res) => {
     })
 })
 
+// INDEX private
+router.get('/collections/my', authenticated, (req, res) => {
+  let statusCode = 404
+  let msg = errors.noPrivateFound
+  User.findById(req.user._id)
+    .populate({
+      path: 'collections',
+      populate: { path: 'items' }
+    })
+    .then(({ collections }) => {
+      if (collections.length == 0) return Promise.reject('notFound')
+      const toSend = []
+      collections.forEach(({ _id, collectionName, shared, items }) => {
+        const cards = []
+        items.forEach(({ _id, q, a }) => {
+          cards.push({ _id, q, a })
+        })
+        toSend.push({ _id, collectionName, shared, items: cards })
+      })
+      res.status(200).send({ collections: toSend })
+    })
+    .catch(err => {
+      if (err !== 'notFound') {
+        statusCode = 500
+        msg = errors.worstScenario
+        console.error(err)
+      }
+      res.status(statusCode).send(msg)
+    })
+})
+
 // UPDATE collection
 router.put('/collection/:id', authenticated, async (req, res) => {
   let statusCode = 200

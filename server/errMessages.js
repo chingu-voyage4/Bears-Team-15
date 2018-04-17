@@ -29,6 +29,7 @@ export default {
     badRequest: 'Bad request. Check your card object\'s structure',
   },
   noPublicFound: 'No public collections found',
+  noPrivateFound: 'You have no saved private collections',
   notAuthorized: 'Access forbidden. Not authorized',
   worstScenario: 'Server error'
 }
