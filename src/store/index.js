@@ -50,13 +50,6 @@ export default new Vuex.Store({
     setLoadingMode (state, status) {
       state.loadingMode = status
     },
-    readCollections (state, { collections, counter }) {
-      state.collections = collections
-      state.counter = counter
-    },
-    readPublicCollections (state, { collections }) {
-      state.publicCollections = collections
-    },
     saveLocally (state) {
       localStorage.setItem('store', JSON.stringify(state));
     },
