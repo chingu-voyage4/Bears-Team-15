@@ -6,10 +6,9 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    appVersion: '0.4',
+    appVersion: '0.5',
     collections: [],
     publicCollections: [],
-    counter: 1,
     loadingMode: false,
     notifications: [],
     token: null,
