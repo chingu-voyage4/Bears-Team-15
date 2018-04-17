@@ -96,14 +96,18 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    fetchLocalCollections ({ commit, state }) {
+    fetchLocalCollections ({ dispatch, commit, state }) {
       commit('setLoadingMode', true)
       const loc = localStorage.getItem('store')
       if (loc) {
         const parsed = JSON.parse(loc)
         const ver = parsed.appVersion
-        if (ver && ver >= state.appVersion) {
-          commit('readCollections', parsed)
+        if (ver) {
+          if (ver == state.appVersion) {
+            state.collections = parsed.collections
+          } else {
+            dispatch('pushNotificationErr', 'Your locally saved data is incompatible with current version. Please connect to network to see your private collections')
+          }
         }
       }
       commit('setLoadingMode', false)
