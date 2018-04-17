@@ -22,6 +22,8 @@ export default {
     'appNotifications': Notifications,
   },
   beforeCreate () {
+    // TODO: try to login with authToken from localStorage
+    // and even if there's no connection – show Username from localStorage
     this.$store.dispatch('fetchLocalCollections')
     this.$store.dispatch('fetchRemoteCollections')
   },
