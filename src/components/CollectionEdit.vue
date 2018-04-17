@@ -134,7 +134,7 @@ export default {
         if (this.createMode) {
           this.$emit('save')
         } else {
-          this.$store.dispatch('updateCollection', this.toSend)
+          this.$store.dispatch('updateCollection', this.id, this.toSend)
         }
 				this.pushMsg('succ', 'collectionSaved')
         this.$router.push(this.homeRoute)

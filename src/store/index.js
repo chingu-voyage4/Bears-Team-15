@@ -147,31 +147,33 @@ export default new Vuex.Store({
         return new Promise((resolve, reject) => reject(message))
       }
     },
+    deleteCollection ({ commit }, id) {
+      commit('deleteCollection', id)
+      commit('saveLocally')
+    },
+    updateCollection ({ dispatch, commit, state }, id, toSend) {
+      commit('setLoadingMode', true)
+      // TODO: should be modified to receive `toSend` and save
+      // accordingly to the data from this object
+
+      // save to DB
       axios({
-        method: 'get',
-        url: '/collections/public',
-        headers: {'x-auth': 'im-the-user'},
+        method: 'put',
+        url: `/collection/${id}`,
+        headers: {'authorization': state.token},
       })
         .then(res => {
           if (res) {
-            commit('readPublicCollections', res.data)
+            dispatch('pushNotificationSucc', 'updated')
             commit('setLoadingMode', false)
           } else throw new Error('No response')
         })
         .catch(err => {
           commit('setLoadingMode', false)
-          console.error(err.response ? err.response.statusText : err.message )
+          dispatch('pushNotificationErr', err.response ? err.response.data : err.message )
         })
-    },
-    deleteCollection ({ commit }, id) {
-      commit('deleteCollection', id)
+      // save locally
       commit('saveLocally')
-    },
-    updateCollection ({ commit }, toSend) {
-      // TODO: should be modified to receive `toSend` and save
-      // accordingly to the data from this object
-      commit('saveLocally') // save locally
-      // save to DB
     },
     createCollection ({ commit }, id) {
       const collection = {
