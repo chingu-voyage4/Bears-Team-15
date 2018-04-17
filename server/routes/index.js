@@ -156,7 +156,7 @@ router.get('/collection/fork/:id', authenticated, async (req, res) => {
     const original = await Collection.findById(id).populate('items')
     if (!original) throw 'notFound'
 
-    const { collectionName, shared } = original
+    const { collectionName } = original
     const items = original.items
       .map(({ _doc }) => {
         const { _id, __v, ...item } = _doc
@@ -168,13 +168,13 @@ router.get('/collection/fork/:id', authenticated, async (req, res) => {
     const clone = await Collection.create({
       collectionName,
       items: itemsId,
-      shared
+      shared: false,
     })
 
     const collections = req.user.collections
     collections.push(clone._id)
     await User.findByIdAndUpdate(req.user._id, { collections })
-    res.status(200).send({ _id: clone._id})
+    res.status(200).send(clone)
   } catch(err) {
     handleSearch(err, res, statusCode, msg, 'collection', 'read')
   }
