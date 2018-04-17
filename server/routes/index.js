@@ -209,7 +209,7 @@ router.get('/collections/public', (req, res) => {
         items.forEach(({ _id, q, a }) => {
           cards.push({ _id, q, a })
         })
-        toSend.push({ id: _id, collectionName, shared, items: cards })
+        toSend.push({ _id, collectionName, shared, items: cards })
       })
       res.status(200).send({ collections: toSend })
     })

@@ -17,12 +17,12 @@ export default new Vuex.Store({
   },
   getters: {
     collection: state => id => {
-      return state.collections.find(x => x.id == id) ||
-        state.publicCollections.find(x => x.id == id)
+      return state.collections.find(x => x._id == id) ||
+        state.publicCollections.find(x => x._id == id)
     },
     alphabeticalDeck: state => id => {
-      const collection = state.collections.find(x => x.id == id) ||
-        state.publicCollections.find(x => x.id == id)
+      const collection = state.collections.find(x => x._id == id) ||
+        state.publicCollections.find(x => x._id == id)
       const deck = [...collection.items]
       deck.sort((prev, next) => {
         if (prev.q.toLowerCase() > next.q.toLowerCase()) return 1
@@ -34,10 +34,10 @@ export default new Vuex.Store({
   },
   mutations: {
     addCard (state, { id, card }) {
-      state.collections.find(x => x.id == id).items.push(card)
+      state.collections.find(x => x._id == id).items.push(card)
     },
     removeCard (state, { id, index }) {
-      state.collections.find(x => x.id == id).items.splice(index, 1)
+      state.collections.find(x => x._id == id).items.splice(index, 1)
     },
     saveNewCollection (state, id) {
       const toSave = state.collections.find(x => x.id == id)
@@ -45,7 +45,7 @@ export default new Vuex.Store({
       state.counter += 1
     },
     deleteCollection (state, id){
-      state.collections = state.collections.filter(x => x.id != id)
+      state.collections = state.collections.filter(x => x._id != id)
     },
     setLoadingMode (state, status) {
       state.loadingMode = status
