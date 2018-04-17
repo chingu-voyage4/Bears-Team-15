@@ -143,8 +143,7 @@ export default {
 			}
     },
 	  fork(){
-	    this.$store.dispatch('fork', this.collection)
-			this.pushMsg('succ', 'This collection is now in your list')
+	    this.$store.dispatch('fork', this.id)
 	  },
 		changeTitle (title) {
 			if (title === this.collection.collectionName) {

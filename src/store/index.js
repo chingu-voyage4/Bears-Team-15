@@ -149,12 +149,28 @@ export default new Vuex.Store({
     removeDuplicates ({ commit }, id) {
       commit('removeDuplicates', id)
     },
-    fork ({ commit }, collection) {
-      const collectionCopy = {...collection}
-      collectionCopy.shared = false
-      commit('pushCollection', collectionCopy)
-      commit('saveNewCollection', collectionCopy.id)
-      commit('saveLocally')
+    fork ({ dispatch, commit, state }, id) {
+      if (!state.token) {
+        return dispatch('pushNotificationErr', 'You have to login first')
+      }
+      axios({
+        method: 'get',
+        url: `/collection/fork/${id}`,
+        headers: {'authorization': state.token},
+      })
+        .then(res => {
+          if (!res) throw new Error('No response')
+          const collectionCopy = res.data
+          commit('pushCollection', collectionCopy)
+          dispatch('pushNotificationSucc', 'This collection is now in your list')
+          commit('saveLocally')
+        })
+        .catch(err => {
+          dispatch('pushNotificationErr', err.response ? err.response.statusText : err.message )
+        })
+        .finally(()=> {
+          commit('setLoadingMode', false)
+        })
     },
     processLogin({ commit }, { user, token} ){
       commit('saveUser', user)
