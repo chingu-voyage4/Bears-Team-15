@@ -88,6 +88,7 @@ export default new Vuex.Store({
     },
   },
   actions: {
+    /* **********   fetching collections     ************************ */
     fetchLocalCollections ({ dispatch, commit, state }) {
       commit('setLoadingMode', true)
       const loc = localStorage.getItem('store')
@@ -146,6 +147,8 @@ export default new Vuex.Store({
         return new Promise((resolve, reject) => reject(message))
       }
     },
+
+    /* **********      collection actions    ************************ */
     deleteCollection ({ commit }, id) {
       commit('deleteCollection', id)
       commit('saveLocally')
@@ -213,6 +216,7 @@ export default new Vuex.Store({
           commit('setLoadingMode', false)
         })
     },
+    /* **********      authentication        ************************ */
     processLogin({ dispatch, commit }, { user, token} ){
       commit('saveUser', user)
       commit('changeToken', token)
@@ -224,7 +228,7 @@ export default new Vuex.Store({
       commit('unsetToken')
       commit('saveLocally')
     },
-    /* ***     notifications     ***  */
+    /* **********       notifications        ************************ */
     pushNotification({ commit, state }, { type, msg }) {
       let iat = Date.now()
       const notificationsLength = state.notifications.length
