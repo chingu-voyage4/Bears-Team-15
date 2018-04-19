@@ -38,11 +38,6 @@ export default new Vuex.Store({
     removeCard (state, { id, index }) {
       state.collections.find(x => x._id == id).items.splice(index, 1)
     },
-    saveNewCollection (state, id) {
-      const toSave = state.collections.find(x => x.id == id)
-      toSave.id = state.counter
-      state.counter += 1
-    },
     deleteCollection (state, id){
       state.collections = state.collections.filter(x => x._id != id)
     },
@@ -181,15 +176,44 @@ export default new Vuex.Store({
     createCollection ({ commit }, id) {
       const collection = {
         collectionName: '',
-        id,
+        _id: id,
         items: [],
       }
       commit('deleteCollection', id)
       commit('pushCollection', collection)
     },
-    saveNewCollection ({ commit }, id) {
-      commit('saveNewCollection', id)
-      commit('saveLocally')
+    saveNewCollection ({ dispatch, commit, state }, id) {
+      if (!state.token) {
+        return dispatch('pushNotificationErr', 'You have to login first')
+      }
+      commit('setLoadingMode', true)
+      const temp = state.collections.find(x => x._id == id)
+      temp.collectionName = temp.collectionNameTemp
+      const toSend = {
+        collectionName: temp.collectionName,
+        items: temp.items,
+      }
+      axios({
+        method: 'post',
+        url: '/collection/create',
+        headers: {'authorization': state.token},
+        data: toSend,
+      })
+        .then(res => {
+          if (!res) throw new Error('No response')
+          const { _id } = res.data
+          temp._id = _id
+          delete temp.collectionNameTemp
+
+          commit('saveLocally')
+          dispatch('pushNotificationSucc', 'Collection is saved')
+        })
+        .catch(err => {
+          dispatch('pushNotificationErr', err.response ? err.response.statusText : err.message )
+        })
+        .finally(()=> {
+          commit('setLoadingMode', false)
+        })
     },
     removeDuplicates ({ commit }, id) {
       commit('removeDuplicates', id)

@@ -122,7 +122,6 @@ export default {
   methods: {
     deleteCollection () {
       this.$store.dispatch('deleteCollection', this.id)
-			this.pushMsg('succ', 'collectionDeleted')
       this.$router.push(this.homeRoute)
     },
     removeDuplicates () {
@@ -136,7 +135,6 @@ export default {
         } else {
           this.$store.dispatch('updateCollection', this.id, this.toSend)
         }
-				this.pushMsg('succ', 'collectionSaved')
         this.$router.push(this.homeRoute)
 			} else {
 				this.pushMsg('err', this.notReadyToSave)
@@ -238,8 +236,6 @@ export default {
 				lastEmpty: 'You already opened empty card',
 				emptyFields: 'Please fill all empty fields',
 				emptyTitle: 'Please fill collection name',
-			  collectionSaved: 'Collection is saved',
-				collectionDeleted: 'Collection is deleted',
 			}
 			this.$store.dispatch(action, message[msg] ? message[msg] : msg)
 		},
