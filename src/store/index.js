@@ -88,12 +88,16 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    /* **********   fetching collections     ************************ */
-    fetchLocalCollections ({ dispatch, commit, state }) {
+    readLocalStorage({ dispatch, commit, state }) {
       commit('setLoadingMode', true)
       const loc = localStorage.getItem('store')
       if (loc) {
         const parsed = JSON.parse(loc)
+        if (parsed.token && parsed.user) {
+          const token = parsed.token
+          const user = parsed.user
+          commit('saveUser', { user, token })
+        }
         const ver = parsed.appVersion
         if (ver) {
           if (ver == state.appVersion) {
@@ -105,6 +109,7 @@ export default new Vuex.Store({
       }
       commit('setLoadingMode', false)
     },
+    /* **********   fetching collections     ************************ */
     async fetchRemoteCollections({ dispatch, commit }) {
       commit('setLoadingMode', true)
       try {
@@ -222,7 +227,6 @@ export default new Vuex.Store({
     processLogin({ dispatch, commit }, { user, token} ){
       commit('saveUser', user)
       commit('changeToken', token)
-      dispatch('fetchRemoteCollections')
       commit('saveLocally')
     },
     processLogout({ commit }){

@@ -34,8 +34,8 @@ export default {
   computed: mapState(['collections']),
   methods: {
     refresh () {
+      this.$store.dispatch('readLocalStorage')
       this.$store.dispatch('fetchRemoteCollections')
-      this.$store.dispatch('fetchLocalCollections')
     }
   },
 }
