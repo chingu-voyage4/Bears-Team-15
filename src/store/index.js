@@ -222,6 +222,7 @@ export default new Vuex.Store({
       if (!state.token) {
         return dispatch('pushNotificationErr', 'You have to login first')
       }
+      commit('setLoadingMode', true)
       axios({
         method: 'get',
         url: `/collection/fork/${id}`,
