@@ -133,9 +133,7 @@ export default new Vuex.Store({
       }
     },
     async fetchRemotePrivateCollections({ state }) {
-      if (!state.token) return console.error('Must provide `authToken` [TODO: fetch it from localStorage]')
-      // TODO: remove console.error and make sure that
-      //  authToken from localStorage  is used  to log in 
+      if (!state.token) return;
       try {
         const res = await axios({
           method: 'get',
