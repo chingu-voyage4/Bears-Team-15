@@ -149,7 +149,7 @@ export default new Vuex.Store({
       commit('deleteCollection', id)
       commit('saveLocally')
     },
-    updateCollection ({ dispatch, commit, state }, id, toSend) {
+    updateCollection ({ dispatch, commit, state }, { id, toSend }) {
       commit('setLoadingMode', true)
       // TODO: should be modified to receive `toSend` and save
       // accordingly to the data from this object
@@ -159,6 +159,7 @@ export default new Vuex.Store({
         method: 'put',
         url: `/collection/${id}`,
         headers: {'authorization': state.token},
+        data: toSend,
       })
         .then(res => {
           if (res) {
