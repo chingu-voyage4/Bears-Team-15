@@ -67,17 +67,13 @@ export default new Vuex.Store({
     pushCollection(state, collection){
       state.collections.push(collection)
     },
-    changeToken(state, token){
-      state.token = token
-    },
-    saveUser(state, user){
+    saveUser(state, { user, token }){
       state.user = user
-    },
-    unsetToken(state){
-      state.token = null
+      state.token = token
     },
     unsetUser(state){
       state.user = null
+      state.token = null
     },
     /* ***     notifications     ***  */
     dismissNotification(state, { iat, delay }) {
@@ -225,13 +221,11 @@ export default new Vuex.Store({
     },
     /* **********      authentication        ************************ */
     processLogin({ dispatch, commit }, { user, token} ){
-      commit('saveUser', user)
-      commit('changeToken', token)
+      commit('saveUser', { user, token })
       commit('saveLocally')
     },
     processLogout({ commit }){
       commit('unsetUser')
-      commit('unsetToken')
       commit('saveLocally')
     },
     /* **********       notifications        ************************ */
