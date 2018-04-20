@@ -140,6 +140,9 @@ export default new Vuex.Store({
         state.collections.forEach(x => x.editable = true)
         return new Promise((resolve, reject) => resolve())
       } catch (err) {
+        if (err.response.status == 404) {
+          return new Promise((resolve, reject) => resolve())
+        }
         const message = err.response ? err.response.data : err.message
         return new Promise((resolve, reject) => reject(message))
       }
