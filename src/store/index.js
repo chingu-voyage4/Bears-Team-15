@@ -212,7 +212,7 @@ export default new Vuex.Store({
           dispatch('pushNotificationSucc', 'Collection is saved')
         })
         .catch(err => {
-          dispatch('pushNotificationErr', err.response ? err.response.statusText : err.message )
+          dispatch('pushNotificationErr', err.response ? err.response.data : err.message )
         })
         .finally(()=> {
           commit('setLoadingMode', false)
@@ -240,7 +240,7 @@ export default new Vuex.Store({
           commit('saveLocally')
         })
         .catch(err => {
-          dispatch('pushNotificationErr', err.response ? err.response.statusText : err.message )
+          dispatch('pushNotificationErr', err.response ? err.response.data : err.message )
         })
         .finally(()=> {
           commit('setLoadingMode', false)
