@@ -146,9 +146,28 @@ export default new Vuex.Store({
     },
 
     /* **********      collection actions    ************************ */
-    deleteCollection ({ commit }, id) {
-      commit('deleteCollection', id)
-      commit('saveLocally')
+    deleteCollection ({ dispatch, commit, state }, id) {
+      if (!state.token) {
+        return dispatch('pushNotificationErr', 'You have to login first')
+      }
+      commit('setLoadingMode', true)
+      axios({
+        method: 'delete',
+        url: `/collection/${id}`,
+        headers: {'authorization': state.token},
+      })
+        .then(res => {
+          if (!res) throw new Error('No response')
+          commit('deleteCollection', id)
+          commit('saveLocally')
+          dispatch('pushNotificationSucc', 'Successfully deleted')
+        })
+        .catch(err => {
+          dispatch('pushNotificationErr', err.response ? err.response.data : err.message )
+        })
+        .finally(() => {
+          commit('setLoadingMode', false)
+        })
     },
     updateCollection ({ dispatch, commit, state }, { id, toSend }) {
       if (!state.token) {
