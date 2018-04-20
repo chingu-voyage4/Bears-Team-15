@@ -184,6 +184,7 @@ router.get('/collection/fork/:id', authenticated, async (req, res) => {
   }
 })
 
+/* this route is not used and does not have auth middleware
 // READ collection
 router.get('/collection/:id', (req, res) => {
   const { id } = req.params
@@ -198,6 +199,7 @@ router.get('/collection/:id', (req, res) => {
     })
     .catch(err => handleSearch(err, res, statusCode, msg, 'collection', 'read'))
 })
+*/
 
 // INDEX public
 router.get('/collections/public', (req, res) => {
