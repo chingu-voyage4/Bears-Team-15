@@ -151,11 +151,11 @@ export default new Vuex.Store({
       commit('saveLocally')
     },
     updateCollection ({ dispatch, commit, state }, { id, toSend }) {
+      if (!state.token) {
+        return dispatch('pushNotificationErr', 'You have to login first')
+      }
       commit('setLoadingMode', true)
-      // TODO: should be modified to receive `toSend` and save
-      // accordingly to the data from this object
-
-      // save to DB
+      const edited = state.collections.find(x => x._id == id)
       axios({
         method: 'put',
         url: `/collection/${id}`,
@@ -163,17 +163,18 @@ export default new Vuex.Store({
         data: toSend,
       })
         .then(res => {
-          if (res) {
-            dispatch('pushNotificationSucc', 'updated')
-            commit('setLoadingMode', false)
-          } else throw new Error('No response')
+          if (!res) throw new Error('No response')
+          edited.collectionName = res.data.collectionName
+          edited.items = [...res.data.items]
+          commit('saveLocally')
+          dispatch('pushNotificationSucc', 'Successfully updated')
         })
         .catch(err => {
-          commit('setLoadingMode', false)
           dispatch('pushNotificationErr', err.response ? err.response.data : err.message )
         })
-      // save locally
-      commit('saveLocally')
+        .finally(() => {
+          commit('setLoadingMode', false)
+        })
     },
     createCollection ({ commit }, id) {
       const collection = {
