@@ -172,6 +172,10 @@ router.get('/collection/fork/:id', authenticated, async (req, res) => {
     })
 
     const collections = req.user.collections
+    const thisIsOfCurrentUser = !!collections.find(x => x.toString() === id.toString())
+    if (thisIsOfCurrentUser) {
+      return res.status(400).send(errors.collection.forkingSelf)
+    }
     collections.push(clone._id)
     await User.findByIdAndUpdate(req.user._id, { collections })
     res.status(200).send(clone)

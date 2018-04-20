@@ -20,6 +20,7 @@ export default {
     },
     notFound: 'Collection not found',
     badRequest: 'Bad request. Check your collection object\'s structure',
+    forkingSelf: 'You can\'t fork your own collection',
   },
   card: {
     common (crud) {
