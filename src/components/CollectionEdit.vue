@@ -1,6 +1,6 @@
 <template>
 <div class="container collection-edit">
-<div v-if="collection.shared">
+<div v-if="!collection.editable">
 	This collection is locked! To edit it fork it to your decks.
 	<div>
 	  <button

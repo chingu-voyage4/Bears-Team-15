@@ -137,6 +137,7 @@ export default new Vuex.Store({
         })
         if (!res) throw new Error('No response')
         state.collections = res.data.collections
+        state.collections.forEach(x => x.editable = true)
         return new Promise((resolve, reject) => resolve())
       } catch (err) {
         const message = err.response ? err.response.data : err.message
@@ -179,6 +180,7 @@ export default new Vuex.Store({
         collectionName: '',
         _id: id,
         items: [],
+        editable: true,
       }
       commit('deleteCollection', id)
       commit('pushCollection', collection)
@@ -232,6 +234,7 @@ export default new Vuex.Store({
         .then(res => {
           if (!res) throw new Error('No response')
           const collectionCopy = res.data
+          collectionCopy.editable = true
           commit('pushCollection', collectionCopy)
           dispatch('pushNotificationSucc', 'This collection is now in your list')
           commit('saveLocally')
