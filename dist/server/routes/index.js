@@ -12,10 +12,6 @@ var _jsonwebtoken = require('jsonwebtoken');
 
 var _jsonwebtoken2 = _interopRequireDefault(_jsonwebtoken);
 
-var _dotenv = require('dotenv');
-
-var _dotenv2 = _interopRequireDefault(_dotenv);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
@@ -25,7 +21,6 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 var express = require('express');
 var router = express.Router();
 
-_dotenv2.default.config();
 var JWT_SECRET = process.env.JWT_SECRET;
 
 router.get('/', function (req, res) {

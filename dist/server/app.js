@@ -30,7 +30,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var app = (0, _express2.default)();
 
 var NODE_ENV = process.env.NODE_ENV || 'development';
-if (NODE_ENV !== 'production') require('dotenv').config();
 var PORT = process.env.PORT;
 
 var MONGODB_URI = NODE_ENV === 'test' ? process.env.MONGODB_URI + '-test' : process.env.MONGODB_URI;

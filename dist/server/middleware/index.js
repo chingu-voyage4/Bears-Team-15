@@ -9,10 +9,6 @@ var _jsonwebtoken = require('jsonwebtoken');
 
 var _jsonwebtoken2 = _interopRequireDefault(_jsonwebtoken);
 
-var _dotenv = require('dotenv');
-
-var _dotenv2 = _interopRequireDefault(_dotenv);
-
 var _errMessages = require('../errMessages');
 
 var _errMessages2 = _interopRequireDefault(_errMessages);
@@ -23,7 +19,6 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 require('regenerator-runtime/runtime');
 
-_dotenv2.default.config();
 var JWT_SECRET = process.env.JWT_SECRET;
 
 var _require = require('../models'),
