@@ -20,6 +20,7 @@ export default {
     },
     notFound: 'Collection not found',
     badRequest: 'Bad request. Check your collection object\'s structure',
+    forkingSelf: 'You can\'t fork your own collection',
   },
   card: {
     common (crud) {
@@ -29,6 +30,7 @@ export default {
     badRequest: 'Bad request. Check your card object\'s structure',
   },
   noPublicFound: 'No public collections found',
+  noPrivateFound: 'You have no saved private collections',
   notAuthorized: 'Access forbidden. Not authorized',
   worstScenario: 'Server error'
 }

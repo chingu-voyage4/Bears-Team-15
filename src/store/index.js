@@ -6,10 +6,9 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    appVersion: '0.4',
+    appVersion: '0.5',
     collections: [],
     publicCollections: [],
-    counter: 1,
     loadingMode: false,
     notifications: [],
     token: null,
@@ -17,12 +16,12 @@ export default new Vuex.Store({
   },
   getters: {
     collection: state => id => {
-      return state.collections.find(x => x.id == id) ||
-        state.publicCollections.find(x => x.id == id)
+      return state.collections.find(x => x._id == id) ||
+        state.publicCollections.find(x => x._id == id)
     },
     alphabeticalDeck: state => id => {
-      const collection = state.collections.find(x => x.id == id) ||
-        state.publicCollections.find(x => x.id == id)
+      const collection = state.collections.find(x => x._id == id) ||
+        state.publicCollections.find(x => x._id == id)
       const deck = [...collection.items]
       deck.sort((prev, next) => {
         if (prev.q.toLowerCase() > next.q.toLowerCase()) return 1
@@ -34,28 +33,16 @@ export default new Vuex.Store({
   },
   mutations: {
     addCard (state, { id, card }) {
-      state.collections.find(x => x.id == id).items.push(card)
+      state.collections.find(x => x._id == id).items.push(card)
     },
     removeCard (state, { id, index }) {
-      state.collections.find(x => x.id == id).items.splice(index, 1)
-    },
-    saveNewCollection (state, id) {
-      const toSave = state.collections.find(x => x.id == id)
-      toSave.id = state.counter
-      state.counter += 1
+      state.collections.find(x => x._id == id).items.splice(index, 1)
     },
     deleteCollection (state, id){
-      state.collections = state.collections.filter(x => x.id != id)
+      state.collections = state.collections.filter(x => x._id != id)
     },
     setLoadingMode (state, status) {
       state.loadingMode = status
-    },
-    readCollections (state, { collections, counter }) {
-      state.collections = collections
-      state.counter = counter
-    },
-    readPublicCollections (state, { collections }) {
-      state.publicCollections = collections
     },
     saveLocally (state) {
       localStorage.setItem('store', JSON.stringify(state));
@@ -75,17 +62,13 @@ export default new Vuex.Store({
     pushCollection(state, collection){
       state.collections.push(collection)
     },
-    changeToken(state, token){
-      state.token = token
-    },
-    saveUser(state, user){
+    saveUser(state, { user, token }){
       state.user = user
-    },
-    unsetToken(state){
-      state.token = null
+      state.token = token
     },
     unsetUser(state){
       state.user = null
+      state.token = null
     },
     /* ***     notifications     ***  */
     dismissNotification(state, { iat, delay }) {
@@ -96,80 +79,206 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    fetchLocalCollections ({ commit, state }) {
+    readLocalStorage({ dispatch, commit, state }) {
       commit('setLoadingMode', true)
       const loc = localStorage.getItem('store')
       if (loc) {
         const parsed = JSON.parse(loc)
+        if (parsed.token && parsed.user) {
+          const token = parsed.token
+          const user = parsed.user
+          commit('saveUser', { user, token })
+        }
         const ver = parsed.appVersion
-        if (ver && ver >= state.appVersion) {
-          commit('readCollections', parsed)
+        if (ver) {
+          if (ver == state.appVersion) {
+            state.collections = parsed.collections
+          } else {
+            dispatch('pushNotificationErr', 'Your locally saved data is incompatible with current version. Please connect to network to see your private collections')
+          }
         }
       }
       commit('setLoadingMode', false)
     },
-    fetchRemoteCollections ({ commit }) {
+    /* **********   fetching collections     ************************ */
+    async fetchRemoteCollections({ dispatch, commit }) {
+      commit('setLoadingMode', true)
+      try {
+        await dispatch('fetchRemotePublicCollections')
+        await dispatch('fetchRemotePrivateCollections')
+        commit('saveLocally')
+      } catch (err) {
+        dispatch('pushNotificationErr', err)
+      } finally {
+        commit('setLoadingMode', false)
+      }
+    },
+    async fetchRemotePublicCollections({ state }) {
+      try {
+        const res = await axios({
+          method: 'get',
+          url: '/collections/public',
+        })
+        if (!res) throw new Error('No response')
+        state.publicCollections = res.data.collections
+        return new Promise((resolve, reject) => resolve())
+      } catch (err) {
+        const message = err.response ? err.response.data : err.message
+        return new Promise((resolve, reject) => reject(message))
+      }
+    },
+    async fetchRemotePrivateCollections({ state }) {
+      if (!state.token) return;
+      try {
+        const res = await axios({
+          method: 'get',
+          url: '/collections/my',
+          headers: {'authorization': state.token},
+        })
+        if (!res) throw new Error('No response')
+        state.collections = res.data.collections
+        state.collections.forEach(x => x.editable = true)
+        return new Promise((resolve, reject) => resolve())
+      } catch (err) {
+        if (err.response.status == 404) {
+          return new Promise((resolve, reject) => resolve())
+        }
+        const message = err.response ? err.response.data : err.message
+        return new Promise((resolve, reject) => reject(message))
+      }
+    },
+
+    /* **********      collection actions    ************************ */
+    deleteCollection ({ dispatch, commit, state }, id) {
+      if (!state.token) {
+        return dispatch('pushNotificationErr', 'You have to login first')
+      }
       commit('setLoadingMode', true)
       axios({
-        method: 'get',
-        url: '/collections/public',
-        headers: {'x-auth': 'im-the-user'},
+        method: 'delete',
+        url: `/collection/${id}`,
+        headers: {'authorization': state.token},
       })
         .then(res => {
-          if (res) {
-            commit('readPublicCollections', res.data)
-            commit('setLoadingMode', false)
-          } else throw new Error('No response')
+          if (!res) throw new Error('No response')
+          commit('deleteCollection', id)
+          commit('saveLocally')
+          dispatch('pushNotificationSucc', 'Successfully deleted')
         })
         .catch(err => {
+          dispatch('pushNotificationErr', err.response ? err.response.data : err.message )
+        })
+        .finally(() => {
           commit('setLoadingMode', false)
-          console.error(err.response ? err.response.statusText : err.message )
         })
     },
-    deleteCollection ({ commit }, id) {
-      commit('deleteCollection', id)
-      commit('saveLocally')
-    },
-    updateCollection ({ commit }, toSend) {
-      // TODO: should be modified to receive `toSend` and save
-      // accordingly to the data from this object
-      commit('saveLocally') // save locally
-      // save to DB
+    updateCollection ({ dispatch, commit, state }, { id, toSend }) {
+      if (!state.token) {
+        return dispatch('pushNotificationErr', 'You have to login first')
+      }
+      commit('setLoadingMode', true)
+      const edited = state.collections.find(x => x._id == id)
+      axios({
+        method: 'put',
+        url: `/collection/${id}`,
+        headers: {'authorization': state.token},
+        data: toSend,
+      })
+        .then(res => {
+          if (!res) throw new Error('No response')
+          edited.collectionName = res.data.collectionName
+          edited.items = [...res.data.items]
+          commit('saveLocally')
+          dispatch('pushNotificationSucc', 'Successfully updated')
+        })
+        .catch(err => {
+          dispatch('pushNotificationErr', err.response ? err.response.data : err.message )
+        })
+        .finally(() => {
+          commit('setLoadingMode', false)
+        })
     },
     createCollection ({ commit }, id) {
       const collection = {
         collectionName: '',
-        id,
+        _id: id,
         items: [],
+        editable: true,
       }
       commit('deleteCollection', id)
       commit('pushCollection', collection)
     },
-    saveNewCollection ({ commit }, id) {
-      commit('saveNewCollection', id)
-      commit('saveLocally')
+    saveNewCollection ({ dispatch, commit, state }, id) {
+      if (!state.token) {
+        return dispatch('pushNotificationErr', 'You have to login first')
+      }
+      commit('setLoadingMode', true)
+      const temp = state.collections.find(x => x._id == id)
+      temp.collectionName = temp.collectionNameTemp
+      const toSend = {
+        collectionName: temp.collectionName,
+        items: temp.items,
+      }
+      axios({
+        method: 'post',
+        url: '/collection/create',
+        headers: {'authorization': state.token},
+        data: toSend,
+      })
+        .then(res => {
+          if (!res) throw new Error('No response')
+          const { _id } = res.data
+          temp._id = _id
+          delete temp.collectionNameTemp
+
+          commit('saveLocally')
+          dispatch('pushNotificationSucc', 'Collection is saved')
+        })
+        .catch(err => {
+          dispatch('pushNotificationErr', err.response ? err.response.data : err.message )
+        })
+        .finally(()=> {
+          commit('setLoadingMode', false)
+        })
     },
     removeDuplicates ({ commit }, id) {
       commit('removeDuplicates', id)
     },
-    fork ({ commit }, collection) {
-      const collectionCopy = {...collection}
-      collectionCopy.shared = false
-      commit('pushCollection', collectionCopy)
-      commit('saveNewCollection', collectionCopy.id)
-      commit('saveLocally')
+    fork ({ dispatch, commit, state }, id) {
+      if (!state.token) {
+        return dispatch('pushNotificationErr', 'You have to login first')
+      }
+      commit('setLoadingMode', true)
+      axios({
+        method: 'get',
+        url: `/collection/fork/${id}`,
+        headers: {'authorization': state.token},
+      })
+        .then(res => {
+          if (!res) throw new Error('No response')
+          const collectionCopy = res.data
+          collectionCopy.editable = true
+          commit('pushCollection', collectionCopy)
+          dispatch('pushNotificationSucc', 'This collection is now in your list')
+          commit('saveLocally')
+        })
+        .catch(err => {
+          dispatch('pushNotificationErr', err.response ? err.response.data : err.message )
+        })
+        .finally(()=> {
+          commit('setLoadingMode', false)
+        })
     },
-    processLogin({ commit }, { user, token} ){
-      commit('saveUser', user)
-      commit('changeToken', token)
+    /* **********      authentication        ************************ */
+    processLogin({ dispatch, commit }, { user, token} ){
+      commit('saveUser', { user, token })
       commit('saveLocally')
     },
     processLogout({ commit }){
       commit('unsetUser')
-      commit('unsetToken')
       commit('saveLocally')
     },
-    /* ***     notifications     ***  */
+    /* **********       notifications        ************************ */
     pushNotification({ commit, state }, { type, msg }) {
       let iat = Date.now()
       const notificationsLength = state.notifications.length

@@ -2,9 +2,9 @@
 <div class="dashboard">
   <app-dashboard-link
     v-for="(deck, index) in collections" :key="index"
-    :link="{ name: 'collection', params: { id: deck.id } }"
+    :link="{ name: 'collection', params: { id: deck._id } }"
   >{{ deck.collectionName }}</app-dashboard-link>
-  
+
   <app-dashboard-link
     :link="{ name: 'collectionNew' }"
   >+</app-dashboard-link>

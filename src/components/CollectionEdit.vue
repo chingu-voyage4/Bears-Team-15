@@ -1,6 +1,6 @@
 <template>
 <div class="container collection-edit">
-<div v-if="collection.shared">
+<div v-if="!collection.editable">
 	This collection is locked! To edit it fork it to your decks.
 	<div>
 	  <button
@@ -122,7 +122,6 @@ export default {
   methods: {
     deleteCollection () {
       this.$store.dispatch('deleteCollection', this.id)
-			this.pushMsg('succ', 'collectionDeleted')
       this.$router.push(this.homeRoute)
     },
     removeDuplicates () {
@@ -134,17 +133,15 @@ export default {
         if (this.createMode) {
           this.$emit('save')
         } else {
-          this.$store.dispatch('updateCollection', this.toSend)
+          this.$store.dispatch('updateCollection', { id: this.id, toSend: this.toSend })
         }
-				this.pushMsg('succ', 'collectionSaved')
         this.$router.push(this.homeRoute)
 			} else {
 				this.pushMsg('err', this.notReadyToSave)
 			}
     },
 	  fork(){
-	    this.$store.dispatch('fork', this.collection)
-			this.pushMsg('succ', 'This collection is now in your list')
+	    this.$store.dispatch('fork', this.id)
 	  },
 		changeTitle (title) {
 			if (title === this.collection.collectionName) {
@@ -239,8 +236,6 @@ export default {
 				lastEmpty: 'You already opened empty card',
 				emptyFields: 'Please fill all empty fields',
 				emptyTitle: 'Please fill collection name',
-			  collectionSaved: 'Collection is saved',
-				collectionDeleted: 'Collection is deleted',
 			}
 			this.$store.dispatch(action, message[msg] ? message[msg] : msg)
 		},

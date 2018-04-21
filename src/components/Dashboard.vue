@@ -1,10 +1,11 @@
 <template>
 <div>
   <h1>{{ greeting }}</h1>
-  <app-nav-tabs :navItems="navItems"></app-nav-tabs>
-  <!-- <div class="container mb-2">
-    <button class="btn btn-save" @click="refresh">Refresh</button>
-  </div> -->
+  <app-nav-tabs :navItems="navItems">
+    <template slot="extraIcons">
+      <button class="btn-ico btn-ico-reload" @click="refresh"></button>
+    </template>
+  </app-nav-tabs>
   <router-view/>
 </div>
 </template>
@@ -34,12 +35,24 @@ export default {
   computed: mapState(['collections']),
   methods: {
     refresh () {
+      this.$store.dispatch('readLocalStorage')
       this.$store.dispatch('fetchRemoteCollections')
-      this.$store.dispatch('fetchLocalCollections')
     }
   },
 }
 </script>
 
-<style>
+<style scoped>
+.btn-ico {
+  background: transparent;
+  background-position: center center;
+  background-repeat: no-repeat;
+  border: none;
+  cursor: pointer;
+  width: 26px;
+  margin: 0 0.4rem;
+}
+.btn-ico-reload {
+  background-image: url('../assets/reload.png');
+}
 </style>

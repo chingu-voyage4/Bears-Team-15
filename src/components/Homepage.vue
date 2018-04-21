@@ -22,7 +22,7 @@ export default {
     'appNotifications': Notifications,
   },
   beforeCreate () {
-    this.$store.dispatch('fetchLocalCollections')
+    this.$store.dispatch('readLocalStorage')
     this.$store.dispatch('fetchRemoteCollections')
   },
 }

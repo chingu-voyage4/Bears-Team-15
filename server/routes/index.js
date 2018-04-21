@@ -156,7 +156,7 @@ router.get('/collection/fork/:id', authenticated, async (req, res) => {
     const original = await Collection.findById(id).populate('items')
     if (!original) throw 'notFound'
 
-    const { collectionName, shared } = original
+    const { collectionName } = original
     const items = original.items
       .map(({ _doc }) => {
         const { _id, __v, ...item } = _doc
@@ -168,18 +168,23 @@ router.get('/collection/fork/:id', authenticated, async (req, res) => {
     const clone = await Collection.create({
       collectionName,
       items: itemsId,
-      shared
+      shared: false,
     })
 
     const collections = req.user.collections
+    const thisIsOfCurrentUser = !!collections.find(x => x.toString() === id.toString())
+    if (thisIsOfCurrentUser) {
+      return res.status(400).send(errors.collection.forkingSelf)
+    }
     collections.push(clone._id)
     await User.findByIdAndUpdate(req.user._id, { collections })
-    res.status(200).send({ _id: clone._id})
+    res.status(200).send(clone)
   } catch(err) {
     handleSearch(err, res, statusCode, msg, 'collection', 'read')
   }
 })
 
+/* this route is not used and does not have auth middleware
 // READ collection
 router.get('/collection/:id', (req, res) => {
   const { id } = req.params
@@ -194,6 +199,7 @@ router.get('/collection/:id', (req, res) => {
     })
     .catch(err => handleSearch(err, res, statusCode, msg, 'collection', 'read'))
 })
+*/
 
 // INDEX public
 router.get('/collections/public', (req, res) => {
@@ -209,7 +215,38 @@ router.get('/collections/public', (req, res) => {
         items.forEach(({ _id, q, a }) => {
           cards.push({ _id, q, a })
         })
-        toSend.push({ id: _id, collectionName, shared, items: cards })
+        toSend.push({ _id, collectionName, shared, items: cards })
+      })
+      res.status(200).send({ collections: toSend })
+    })
+    .catch(err => {
+      if (err !== 'notFound') {
+        statusCode = 500
+        msg = errors.worstScenario
+        console.error(err)
+      }
+      res.status(statusCode).send(msg)
+    })
+})
+
+// INDEX private
+router.get('/collections/my', authenticated, (req, res) => {
+  let statusCode = 404
+  let msg = errors.noPrivateFound
+  User.findById(req.user._id)
+    .populate({
+      path: 'collections',
+      populate: { path: 'items' }
+    })
+    .then(({ collections }) => {
+      if (collections.length == 0) return Promise.reject('notFound')
+      const toSend = []
+      collections.forEach(({ _id, collectionName, shared, items }) => {
+        const cards = []
+        items.forEach(({ _id, q, a }) => {
+          cards.push({ _id, q, a })
+        })
+        toSend.push({ _id, collectionName, shared, items: cards })
       })
       res.status(200).send({ collections: toSend })
     })

@@ -7,6 +7,7 @@
       :to="item.route"
     ><a>{{ item.display }}</a></router-link>
   </ul>
+  <slot name="extraIcons"></slot>
 </nav>
 </template>
 
