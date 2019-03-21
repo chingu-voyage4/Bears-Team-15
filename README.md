@@ -1,5 +1,8 @@
 [![Waffle.io - Columns and their card count](https://badge.waffle.io/chingu-voyage4/Bears-Team-15.svg?columns=all)](http://waffle.io/chingu-voyage4/Bears-Team-15)
 
+
+Check out current demo version: **[https://cards-bears-15.herokuapp.com](https://cards-bears-15.herokuapp.com)**
+
 ### Our project
 
 In this voyage we are aiming to create a Flashcards application.
